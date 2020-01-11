@@ -5,7 +5,10 @@ import {
   ActivityIndicator,
   Colors
 } from "react-native-paper";
-import { VoiceRecorder } from "./src/components";
+import { VoiceRecorder, Geolocation } from "./src/components";
+import { setUpBackgroundLocationTask } from "./src/utils";
+
+setUpBackgroundLocationTask();
 
 export default function App() {
   return (
@@ -13,6 +16,7 @@ export default function App() {
       <View style={styles.container}>
         <Text>Open up App.tsx to start working on your app!</Text>
         <VoiceRecorder />
+        <Geolocation />
       </View>
     </PaperProvider>
   );

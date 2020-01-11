@@ -5,13 +5,14 @@ import {
   ActivityIndicator,
   Colors
 } from "react-native-paper";
+import { VoiceRecorder } from "./src/components";
 
 export default function App() {
   return (
     <PaperProvider>
       <View style={styles.container}>
         <Text>Open up App.tsx to start working on your app!</Text>
-        <ActivityIndicator animating={true} color={Colors.red800} />
+        <VoiceRecorder />
       </View>
     </PaperProvider>
   );

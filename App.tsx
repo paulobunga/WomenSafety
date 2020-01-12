@@ -1,25 +1,22 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import { Provider as PaperProvider, Button } from "react-native-paper";
-import { VoiceRecorder, Geolocation } from "./src/components";
+import { VoiceRecorder, Geolocation, TranslatedText } from "./src/components";
 import { setUpBackgroundLocationTask } from "./src/utils";
 import "./src/utils/localization";
 import { useTranslation } from "react-i18next";
 setUpBackgroundLocationTask();
 
 export default function App() {
+  const { i18n } = useTranslation();
   const changeLanguage = () => {
     i18n.changeLanguage("gu");
   };
 
-  const { t, i18n } = useTranslation();
-
-  useEffect(() => {}, []);
-
   return (
     <PaperProvider>
       <View style={styles.container}>
-        <Text>{t("title")}</Text>
+        <TranslatedText text="title" />
         <VoiceRecorder />
         <Geolocation />
         <Button onPress={changeLanguage}>Change language</Button>

@@ -5,6 +5,7 @@ import { VoiceRecorder, Geolocation, TranslatedText } from "./src/components";
 import { setUpBackgroundLocationTask } from "./src/utils";
 import "./src/utils/localization";
 import { useTranslation } from "react-i18next";
+import "./config";
 setUpBackgroundLocationTask();
 
 export default function App() {

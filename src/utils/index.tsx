@@ -1,11 +1,12 @@
 import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
-
+import { startSendingLocation } from "packages";
 export const BACKGROUND_LOCATION_TASK = "background-location-task";
 
 export const setUpBackgroundLocationTask = () => {
   TaskManager.defineTask(BACKGROUND_LOCATION_TASK, (data: any) => {
     console.log("data from background location task ", data);
+    startSendingLocation();
   });
 };
 

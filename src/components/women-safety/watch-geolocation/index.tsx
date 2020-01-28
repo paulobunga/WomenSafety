@@ -4,7 +4,7 @@ import * as Permissions from "expo-permissions";
 import { Button } from "react-native-paper";
 import { BACKGROUND_LOCATION_TASK, backgroundLocationOptions } from "utils";
 
-function Geolocation() {
+function WatchGeoLocation() {
   const onStopWatchingLocation = () => {
     Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
   };
@@ -30,4 +30,4 @@ function Geolocation() {
   );
 }
 
-export { Geolocation };
+export { WatchGeoLocation };

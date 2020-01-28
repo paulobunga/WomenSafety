@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Provider as PaperProvider, Button } from "react-native-paper";
-import { VoiceRecorder, Geolocation, TranslatedText } from "./src/components";
-// import { setUpBackgroundLocationTask } from "./src/utils";
+import {
+  VoiceRecorder,
+  WatchGeoLocation,
+  TranslatedText,
+  SubscribeToGeolocation
+} from "./src/components";
 import "./src/utils/localization";
 import { useTranslation } from "react-i18next";
-import { firestore } from "./config/firebase";
-import { SubscribeToGeolocation } from "./src/containers/geolocation";
+import { setUpBackgroundLocationTask } from "./src/utils";
 
-// setUpBackgroundLocationTask();
+setUpBackgroundLocationTask();
 
 export default function App() {
   const { i18n } = useTranslation();
@@ -21,8 +24,8 @@ export default function App() {
       <View style={styles.container}>
         <TranslatedText labelFor="title" />
         <VoiceRecorder />
-        <Geolocation />
         <Button onPress={changeLanguage}>Change language</Button>
+        <WatchGeoLocation />
         <SubscribeToGeolocation />
       </View>
     </PaperProvider>

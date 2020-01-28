@@ -1,2 +1,3 @@
-export { VoiceRecorder } from "./voice-recorder";
-export { Geolocation } from "./geolocation";
+export * from "./voice-recorder";
+export * from "./watch-geolocation";
+export * from "./subscribe-geolocation";

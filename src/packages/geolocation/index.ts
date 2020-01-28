@@ -5,27 +5,29 @@ import { myUserId } from "../../../config";
 const usersRef = firestore.collection("users");
 
 const [useLocationsStore] = create(set => ({
-  locations: {},
-  updateLocation: (
-    userId: string,
-    coordinates: { lat: number; long: number }
-  ) => set(state => ({ ...state, [userId]: coordinates }))
+  sender: {},
+  coordinates: [],
+  setLocationStore: (data: any) => set(() => data)
 }));
 
 export async function startSendingLocation(lat: number, long: number) {
   const documentSnapshot = await usersRef.doc(myUserId).get();
   const favorites = documentSnapshot.data().favorites;
-  const geopoint = new firebase.firestore.GeoPoint(lat, long);
+  const geoPoint = new firebase.firestore.GeoPoint(lat, long);
+  const message = {
+    type: "location",
+    data: geoPoint,
+    sender_id: myUserId
+  };
+
+  const messageRef = await firestore.collection("messages").add(message);
 
   favorites.forEach(user_id => {
-    console.log("user id ", user_id);
-    firestore.collection("chat_history").add({
-      location: geopoint,
-      message_type: "Location",
-      receiver_id: user_id,
-      sender_id: myUserId
+    firestore.collection("message_history").add({
+      message: messageRef,
+      receiver_id: user_id
     });
   });
 }
 
-// startSendingLocation(25, 78);
+export { useLocationsStore };

@@ -5,7 +5,7 @@ import {
   WatchGeoLocation,
   TranslatedText,
   SubscribeToGeolocation
-} from "../components";
+} from "components";
 import { useTranslation } from "react-i18next";
 import { View, StyleSheet } from "react-native";
 

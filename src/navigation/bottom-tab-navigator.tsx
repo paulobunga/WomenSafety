@@ -5,7 +5,7 @@ import { CreateAlertScreen, ReceivedAlertsScreen } from "screens";
 const Tab = createBottomTabNavigator();
 export const BottomTabNavigator = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName="Create">
       <Tab.Screen name="Received" component={ReceivedAlertsScreen} />
       <Tab.Screen name="Create" component={CreateAlertScreen} />
     </Tab.Navigator>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Provider as PaperProvider, Button } from "react-native-paper";
+import { Provider as PaperProvider } from "react-native-paper";
 import { NavigationNativeContainer } from "@react-navigation/native";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
@@ -8,7 +7,7 @@ import "./src/utils/localization";
 import DefaulTheme from "./config/theme";
 import { useTranslation } from "react-i18next";
 import { setUpBackgroundLocationTask } from "./src/utils";
-import { BottomTabNavigator } from "navigation";
+import { BottomTabNavigator, DrawerNavigator } from "navigation";
 
 // setUpBackgroundLocationTask();
 
@@ -27,9 +26,6 @@ const fetchFonts = () => {
 export default function App() {
   const { i18n } = useTranslation();
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const changeLanguage = () => {
-    i18n.changeLanguage("gu");
-  };
 
   if (!fontsLoaded) {
     return (
@@ -44,6 +40,10 @@ export default function App() {
       <NavigationNativeContainer>
         <BottomTabNavigator />
       </NavigationNativeContainer>
+
+      {/* <NavigationNativeContainer>
+        <DrawerNavigator />
+      </NavigationNativeContainer> */}
     </PaperProvider>
   );
 }

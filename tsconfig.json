@@ -6,6 +6,18 @@
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "utils": ["./src/utils"],
+      "config": ["./config"],
+      "components": ["./src/components"],
+      "containers": ["./src/containers"],
+      "packages": ["./src/packages"],
+      "screens": ["./src/screens"],
+      "navigation": ["./src/navigation"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "include": ["**/*.ts", "**/*.tsx"]
 }

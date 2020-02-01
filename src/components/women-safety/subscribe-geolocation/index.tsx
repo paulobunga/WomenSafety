@@ -3,6 +3,8 @@ import { firestore } from "config/firebase";
 import { Text } from "react-native-paper";
 import { myUserId } from "config";
 import { useLocationsStore } from "../../../packages";
+import { MapViewWithCoordinates } from "../map-view";
+import { Marker } from "react-native-maps";
 
 const messageCollection = firestore
   .collection("message_history")
@@ -21,8 +23,14 @@ export function SubscribeToGeolocation() {
             const senderRef = firestore.collection("users").doc(senderId);
             const sender = await senderRef.get();
             console.log("Sender data ", sender.data());
+            const messageData = message.data().data;
+            const coordinates = {
+              latitude: messageData._lat,
+              longitude: messageData._long
+            };
+
             locationStore.setLocationStore({
-              coordinates: message.data().data,
+              coordinates,
               sender: sender.data()
             });
           }
@@ -38,10 +46,23 @@ export function SubscribeToGeolocation() {
 
   console.log("location store ", locationStore);
 
+  const coordinates = locationStore.coordinates;
+
+  console.log("coordinates ", coordinates);
   return (
-    <Text>
-      Location from your favorites : {locationStore.sender.name} :{" "}
-      {JSON.stringify(locationStore.coordinates)}
-    </Text>
+    <>
+      {coordinates.latitude && (
+        <MapViewWithCoordinates coordinates={coordinates} />
+      )}
+      {/* <Marker
+      coordinate={marker.latlng}
+      title={marker.title}
+      description={marker.description}
+    /> */}
+      <Text>
+        Location from your favorites : {locationStore.sender.name} :{" "}
+        {JSON.stringify(locationStore.coordinates)}
+      </Text>
+    </>
   );
 }

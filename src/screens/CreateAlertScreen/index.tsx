@@ -1,11 +1,6 @@
 import React from "react";
 import { Button } from "react-native-paper";
-import {
-  VoiceRecorder,
-  WatchGeoLocation,
-  TranslatedText,
-  SubscribeToGeolocation
-} from "components";
+import { VoiceRecorder, TranslatedText } from "components";
 import { useTranslation } from "react-i18next";
 import { View, StyleSheet } from "react-native";
 
@@ -20,8 +15,6 @@ export const CreateAlertScreen = () => {
       <TranslatedText labelFor="title" />
       <VoiceRecorder />
       <Button onPress={changeLanguage}>Change language</Button>
-      <WatchGeoLocation />
-      <SubscribeToGeolocation />
     </View>
   );
 };

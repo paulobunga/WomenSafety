@@ -6,7 +6,7 @@ const usersRef = firestore.collection("users");
 
 const [useLocationsStore] = create(set => ({
   sender: {},
-  coordinates: [],
+  coordinates: {},
   setLocationStore: (data: any) => set(() => data)
 }));
 

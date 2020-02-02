@@ -54,11 +54,6 @@ export function SubscribeToGeolocation() {
       {coordinates.latitude && (
         <MapViewWithCoordinates coordinates={coordinates} />
       )}
-      {/* <Marker
-      coordinate={marker.latlng}
-      title={marker.title}
-      description={marker.description}
-    /> */}
       <Text>
         Location from your favorites : {locationStore.sender.name} :{" "}
         {JSON.stringify(locationStore.coordinates)}

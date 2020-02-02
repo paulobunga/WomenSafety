@@ -8,7 +8,11 @@ import DefaulTheme from "./config/theme";
 import { useTranslation } from "react-i18next";
 import { setUpBackgroundLocationTask } from "./src/utils";
 import { BottomTabNavigator, DrawerNavigator } from "navigation";
-import { WatchGeoLocation, SubscribeToGeolocation } from "components";
+import {
+  WatchGeoLocation,
+  SubscribeToGeolocation,
+  AndroidSafeAreaView
+} from "components";
 // setUpBackgroundLocationTask();
 
 const fetchFonts = () => {
@@ -37,14 +41,14 @@ export default function App() {
   }
   return (
     <PaperProvider theme={DefaulTheme}>
-      <SubscribeToGeolocation />
+      {/* <SubscribeToGeolocation /> */}
       {/* <WatchGeoLocation /> */}
-      <NavigationNativeContainer>
-        <BottomTabNavigator />
-      </NavigationNativeContainer>
       {/* <NavigationNativeContainer>
-        <DrawerNavigator />
+        <BottomTabNavigator />
       </NavigationNativeContainer> */}
+      <NavigationNativeContainer>
+        <DrawerNavigator />
+      </NavigationNativeContainer>
     </PaperProvider>
   );
 }

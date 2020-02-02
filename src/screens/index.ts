@@ -1,3 +1,3 @@
 export * from "./CreateAlertScreen";
 export * from "./ReceivedAlertsScreen";
-export * from "./AddFavorites";
+export * from "./manage-favorites";

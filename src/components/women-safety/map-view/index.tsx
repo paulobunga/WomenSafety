@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, Dimensions, View, Linking, Platform } from "react-native";
 import MapView, { Marker, Region } from "react-native-maps";
 import { watchPositionAsync, getPositionAsync } from "utils";
@@ -26,6 +26,10 @@ export function MapViewWithCoordinates({ coordinates }: IProps) {
     longitudeDelta: 0.05
   };
 
+  const openMapsMemoized = useCallback(() => {
+    openMaps(coordinates.latitude, coordinates.longitude);
+  }, [coordinates]);
+
   return (
     <View style={styles.container}>
       <MapView
@@ -35,9 +39,7 @@ export function MapViewWithCoordinates({ coordinates }: IProps) {
         style={styles.mapStyle}
       >
         <Marker
-          onPress={() => {
-            openMaps(coordinates.latitude, coordinates.longitude);
-          }}
+          onPress={openMapsMemoized}
           coordinate={coordinates}
           title="emergency contact"
           description="hello world"

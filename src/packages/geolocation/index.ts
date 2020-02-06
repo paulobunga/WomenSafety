@@ -7,13 +7,22 @@ const messageCollection = firestore
   .collection("message_history")
   .where("receiver_id", "==", myUserId);
 
-const [useLocationsStore, api] = create(set => ({
+const [useLocationsStore, locationAPI] = create(() => ({
   sender: {},
   coordinates: {}
 }));
 
+const [useAudioStore, audioAPI] = create(() => ({
+  sender: null,
+  data: null
+}));
+
 const setLocationStore = (data: any) => {
-  api.setState(data);
+  locationAPI.setState(data);
+};
+
+const setAudioStore = (data: any) => {
+  audioAPI.setState(data);
 };
 
 export async function startSendingLocation(lat: number, long: number) {
@@ -31,17 +40,25 @@ export const subscribeMessagesFromFavorites = () => {
           const senderId = message.data().sender_id;
           const senderRef = firestore.collection("users").doc(senderId);
           const sender = await senderRef.get();
-          console.log("Sender data ", sender.data());
-          const messageData = message.data().data;
-          const coordinates = {
-            latitude: messageData._lat,
-            longitude: messageData._long
-          };
-
-          setLocationStore({
-            coordinates,
-            sender: sender.data()
-          });
+          const messageData = message.data();
+          console.log("message dat ", messageData);
+          if (messageData.type === "location") {
+            const { _lat, _long } = messageData.data;
+            const coordinates = {
+              latitude: _lat,
+              longitude: _long
+            };
+            setLocationStore({
+              coordinates,
+              sender: sender.data()
+            });
+          } else if (messageData.type === "audio") {
+            const data = messageData.data;
+            setAudioStore({
+              data,
+              sender
+            });
+          }
         }
       });
     },
@@ -53,4 +70,4 @@ export const subscribeMessagesFromFavorites = () => {
   return unsubscribe;
 };
 
-export { useLocationsStore };
+export { useLocationsStore, useAudioStore };

@@ -9,7 +9,7 @@ import { Drawer, Text } from "react-native-paper";
 import { ManageFavorites, CreateAlertScreen } from "screens";
 import { Dimensions } from "react-native";
 import { useTranslatedText } from "components";
-import { useLocationsStore } from "packages";
+import { useLocationsStore, useAudioStore } from "packages";
 
 const DrawerNav = createDrawerNavigator();
 
@@ -44,11 +44,12 @@ function CustomDrawerContent(props: any) {
 
 export function DrawerNavigator({ navigation }) {
   const locationStore = useLocationsStore();
+  const audioStore = useAudioStore();
   useEffect(() => {
-    if (locationStore.coordinates.latitude) {
+    if (locationStore.coordinates.latitude || audioStore.data) {
       navigation.navigate("ReceivingScreen");
     }
-  }, [locationStore]);
+  }, [locationStore, audioStore]);
 
   return (
     <DrawerNav.Navigator

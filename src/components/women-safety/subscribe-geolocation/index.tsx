@@ -17,10 +17,10 @@ export function SubscribeToGeolocation({ setIsMapLoaded }) {
           coordinates={coordinates}
         />
       )}
-      <Text>
+      {/* <Text>
         Location from your favorites : {locationStore.sender.name} :{" "}
         {JSON.stringify(locationStore.coordinates)}
-      </Text>
+      </Text> */}
     </>
   );
 }

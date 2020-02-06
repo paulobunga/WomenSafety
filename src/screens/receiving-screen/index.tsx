@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Button, ActivityIndicator } from "react-native";
-import { SubscribeToGeolocation, AppBar } from "components";
+import { SubscribeToGeolocation, AppBar, ListenRecording } from "components";
 import { useState } from "react";
 import { colors } from "config/colors";
 
@@ -25,6 +25,7 @@ export function ReceivingScreen({ navigation }) {
         />
       )}
       <SubscribeToGeolocation setIsMapLoaded={setIsMapLoaded} />
+      <ListenRecording />
     </>
   );
 }

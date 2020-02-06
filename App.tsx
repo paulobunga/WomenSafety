@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import { NavigationNativeContainer } from "@react-navigation/native";
 import { AppLoading } from "expo";
@@ -7,12 +7,8 @@ import "./src/utils/localization";
 import DefaulTheme from "./config/theme";
 import { useTranslation } from "react-i18next";
 import { setUpBackgroundLocationTask } from "./src/utils";
-import { BottomTabNavigator, DrawerNavigator } from "navigation";
-import {
-  WatchGeoLocation,
-  SubscribeToGeolocation,
-  AndroidSafeAreaView
-} from "components";
+import { BottomTabNavigator, RootStackScreen } from "navigation";
+import { subscribeMessagesFromFavorites } from "packages";
 // setUpBackgroundLocationTask();
 
 const fetchFonts = () => {
@@ -28,7 +24,12 @@ const fetchFonts = () => {
   });
 };
 export default function App() {
-  const { i18n } = useTranslation();
+  useEffect(() => {
+    // Subscribe to messages on App start
+
+    subscribeMessagesFromFavorites();
+  }, []);
+
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   if (!fontsLoaded) {
@@ -41,13 +42,8 @@ export default function App() {
   }
   return (
     <PaperProvider theme={DefaulTheme}>
-      {/* <SubscribeToGeolocation /> */}
-      {/* <WatchGeoLocation /> */}
-      {/* <NavigationNativeContainer>
-        <BottomTabNavigator />
-      </NavigationNativeContainer> */}
       <NavigationNativeContainer>
-        <DrawerNavigator />
+        <RootStackScreen />
       </NavigationNativeContainer>
     </PaperProvider>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import {
   createDrawerNavigator,
@@ -9,6 +9,7 @@ import { Drawer, Text } from "react-native-paper";
 import { ManageFavorites, CreateAlertScreen } from "screens";
 import { Dimensions } from "react-native";
 import { useTranslatedText } from "components";
+import { useLocationsStore } from "packages";
 
 const DrawerNav = createDrawerNavigator();
 
@@ -41,7 +42,14 @@ function CustomDrawerContent(props: any) {
   );
 }
 
-export function DrawerNavigator() {
+export function DrawerNavigator({ navigation }) {
+  const locationStore = useLocationsStore();
+  useEffect(() => {
+    if (locationStore.coordinates.latitude) {
+      navigation.navigate("ReceivingScreen");
+    }
+  }, [locationStore]);
+
   return (
     <DrawerNav.Navigator
       drawerPosition="left"

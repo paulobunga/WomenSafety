@@ -9,6 +9,7 @@ export const setUpBackgroundLocationTask = () => {
     BACKGROUND_LOCATION_TASK,
     ({ data: { locations }, error }: any) => {
       if (error) {
+        console.log("error ", error);
         return;
       }
 

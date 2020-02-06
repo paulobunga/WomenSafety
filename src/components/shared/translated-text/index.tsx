@@ -10,6 +10,11 @@ export function TranslatedText({
   labelFor: string;
   rest?: TextProperties;
 }) {
+  const translatedText = useTranslatedText(labelFor);
+  return <Text {...rest}>{translatedText}</Text>;
+}
+
+export function useTranslatedText(text: string) {
   const { t } = useTranslation();
-  return <Text {...rest}>{t(labelFor)}</Text>;
+  return t(text);
 }

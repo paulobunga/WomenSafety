@@ -7,62 +7,60 @@ import { MapViewWithCoordinates } from "../map-view";
 import { Marker } from "react-native-maps";
 
 const messageCollection = firestore
-    .collection("message_history")
-    .where("receiver_id", "==", myUserId);
+  .collection("message_history")
+  .where("receiver_id", "==", myUserId);
 
 export function SubscribeToGeolocation({ setIsMapLoaded }) {
-    const locationStore = useLocationsStore();
-    useEffect(() => {
-        const unsubscribe = messageCollection.onSnapshot(
-            function(snapshot) {
-                snapshot.docChanges().forEach(async function(change) {
-                    if (change.type === "added") {
-                        const messageRef = change.doc.data().message;
-                        const message = await messageRef.get();
-                        const senderId = message.data().sender_id;
-                        const senderRef = firestore
-                            .collection("users")
-                            .doc(senderId);
-                        const sender = await senderRef.get();
-                        console.log("Sender data ", sender.data());
-                        const messageData = message.data().data;
-                        const coordinates = {
-                            latitude: messageData._lat,
-                            longitude: messageData._long
-                        };
+  const locationStore = useLocationsStore();
+  useEffect(() => {
+    const unsubscribe = messageCollection.onSnapshot(
+      function(snapshot) {
+        snapshot.docChanges().forEach(async function(change) {
+          if (change.type === "added") {
+            const messageRef = change.doc.data().message;
+            const message = await messageRef.get();
+            const senderId = message.data().sender_id;
+            const senderRef = firestore.collection("users").doc(senderId);
+            const sender = await senderRef.get();
+            console.log("Sender data ", sender.data());
+            const messageData = message.data().data;
+            const coordinates = {
+              latitude: messageData._lat,
+              longitude: messageData._long
+            };
 
-                        locationStore.setLocationStore({
-                            coordinates,
-                            sender: sender.data()
-                        });
-                    }
-                });
-            },
-            function(error) {
-                console.log("error ", error);
-            }
-        );
+            locationStore.setLocationStore({
+              coordinates,
+              sender: sender.data()
+            });
+          }
+        });
+      },
+      function(error) {
+        console.log("error ", error);
+      }
+    );
 
-        return unsubscribe;
-    }, []);
+    return unsubscribe;
+  }, []);
 
-    console.log("location store ", locationStore);
+  console.log("location store ", locationStore);
 
-    const coordinates = locationStore.coordinates;
+  const coordinates = locationStore.coordinates;
 
-    console.log("coordinates ", coordinates);
-    return (
-        <>
-            {coordinates.latitude && (
-                <MapViewWithCoordinates
-                    setIsMapLoaded={setIsMapLoaded}
-                    coordinates={coordinates}
-                />
-            )}
-            <Text>
+  console.log("coordinates ", coordinates);
+  return (
+    <>
+      {coordinates.latitude && (
+        <MapViewWithCoordinates
+          setIsMapLoaded={setIsMapLoaded}
+          coordinates={coordinates}
+        />
+      )}
+      {/* <Text>
                 Location from your favorites : {locationStore.sender.name} :{" "}
                 {JSON.stringify(locationStore.coordinates)}
-            </Text>
-        </>
-    );
+            </Text> */}
+    </>
+  );
 }

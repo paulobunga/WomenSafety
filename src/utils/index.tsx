@@ -73,3 +73,21 @@ export const watchPositionAsync = async callback => {
     );
   });
 };
+
+const appendZero = value => {
+  if (value < 10) {
+    return "0" + value;
+  }
+  return value;
+};
+
+export function formatTime(time) {
+  const hour = Math.floor(time / 3600);
+  const min = Math.floor(time / 60);
+  const sec = Math.floor(time % 60);
+  if (hour > 0) {
+    return appendZero(hour) + ":" + appendZero(min) + ":" + appendZero(sec);
+  } else {
+    return appendZero(min) + ":" + appendZero(sec);
+  }
+}

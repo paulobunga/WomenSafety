@@ -5,12 +5,18 @@ i18n.use(initReactI18next).init({
   resources: {
     en: {
       translation: {
-        title: "Welcome"
+        title: "Welcome",
+        alerts: "Alerts",
+        favorites: "Favorites",
+        record: "Record"
       }
     },
     gu: {
       translation: {
-        title: "સ્વાગત છે"
+        title: "સ્વાગત છે",
+        alerts: "સંપર્ક",
+        favorites: "મિત્રો",
+        record: "રેકોર્ડ"
       }
     },
     hi: {

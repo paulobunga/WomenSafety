@@ -4,104 +4,116 @@ import { Feather } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
 import { colors } from "config/colors";
+import { formatTime } from "utils";
 let recording;
 
 function VoiceRecorder() {
-    const [recordingStatus, setRecordingStatus] = useState<
-        Audio.RecordingStatus
-    >({
-        canRecord: false,
-        isDoneRecording: false,
-        durationMillis: 0,
-        isRecording: false
-    });
+  const [recordingStatus, setRecordingStatus] = useState<Audio.RecordingStatus>(
+    {
+      canRecord: false,
+      isDoneRecording: false,
+      durationMillis: 0,
+      isRecording: false
+    }
+  );
 
-    const onRecordingStatusUpdate = (status: Audio.RecordingStatus) => {
-        setRecordingStatus(status);
-    };
+  const onRecordingStatusUpdate = (status: Audio.RecordingStatus) => {
+    setRecordingStatus(status);
+  };
 
-    const onStartRecording = async () => {
-        recording = new Audio.Recording();
+  const onStartRecording = async () => {
+    recording = new Audio.Recording();
 
-        const permissionStatus = await Audio.requestPermissionsAsync();
+    const permissionStatus = await Audio.requestPermissionsAsync();
 
-        if (permissionStatus.granted) {
-            try {
-                await recording.prepareToRecordAsync(
-                    Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY
-                );
-                await recording.startAsync();
-                recording.setOnRecordingStatusUpdate(onRecordingStatusUpdate);
-                recording.setProgressUpdateInterval(1000);
-            } catch (error) {}
-        }
-    };
+    if (permissionStatus.granted) {
+      try {
+        await recording.prepareToRecordAsync(
+          Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY
+        );
+        await recording.startAsync();
+        recording.setOnRecordingStatusUpdate(onRecordingStatusUpdate);
+        recording.setProgressUpdateInterval(1000);
+      } catch (error) {}
+    }
+  };
 
-    const onStopRecording = async () => {
-        await recording.stopAndUnloadAsync();
-        const fileURI = recording.getURI();
-        console.log("file uri ", fileURI);
-    };
+  const onStopRecording = async () => {
+    await recording.stopAndUnloadAsync();
+    const fileURI = recording.getURI();
+    console.log("file uri ", fileURI);
+  };
 
-    const onPlayRecordedAudio = async () => {
-        const soundObject = new Audio.Sound();
+  const onPlayRecordedAudio = async () => {
+    const soundObject = new Audio.Sound();
 
-        await soundObject.loadAsync({ uri: recording.getURI() });
-        await soundObject.playAsync();
-    };
+    await soundObject.loadAsync({ uri: recording.getURI() });
+    await soundObject.playAsync();
+  };
 
-    return (
-        <>
-            {/* {recordingStatus.isRecording ? (
-                <Button icon="stop" mode="contained" onPress={onStopRecording}>
-                    Stop
-                </Button>
-            ) : (
-                <Button
-                    icon="microphone-outline"
-                    mode="contained"
-                    onPress={onStartRecording}
-                >
-                    Start
-                </Button>
-            )} */}
-            <View style={styles.buttonContainer}>
-                <Button
-                    mode="text"
-                    icon="alert"
-                    onPress={onStartRecording}
-                    uppercase
-                    color={colors["red-vivid-600"]}
-                    labelStyle={{
-                        color: colors["cyan-vivid-100"]
-                    }}
-                    contentStyle={{
-                        paddingHorizontal: 70,
-                        paddingVertical: 4,
-                        borderRadius: 35
-                    }}
-                >
-                    Help
-                </Button>
-            </View>
-            <Text>
-                Recording audio{" "}
-                {Math.floor(recordingStatus.durationMillis / 1000)}
+  return (
+    <>
+      <View style={styles.buttonContainer}>
+        {recordingStatus.isRecording ? (
+          <Button
+            mode="text"
+            icon="send"
+            onPress={onStopRecording}
+            uppercase
+            color={colors["yellow-vivid-800"]}
+            labelStyle={{
+              color: colors["yellow-vivid-050"]
+            }}
+            contentStyle={{
+              backgroundColor: colors["green-vivid-800"],
+              paddingHorizontal: 80,
+              paddingVertical: 8,
+              borderRadius: 35
+            }}
+          >
+            Send
+          </Button>
+        ) : (
+          <Button
+            mode="text"
+            icon="phone"
+            onPress={onStartRecording}
+            uppercase
+            color={colors["red-vivid-600"]}
+            labelStyle={{
+              color: colors["cyan-vivid-100"]
+            }}
+            contentStyle={{
+              backgroundColor: colors["red-vivid-800"],
+              paddingHorizontal: 80,
+              paddingVertical: 8,
+              borderRadius: 35
+            }}
+          >
+            Record
+          </Button>
+        )}
+
+        {recordingStatus.isRecording ? (
+          <>
+            <Text style={{ marginTop: 10 }}>
+              {formatTime(Math.floor(recordingStatus.durationMillis / 1000))}
             </Text>
-            {recordingStatus.isDoneRecording && (
-                <Button onPress={onPlayRecordedAudio} icon="play">
-                    Play Recording{" "}
-                </Button>
-            )}
-        </>
-    );
+            <Button onPress={onStopRecording} icon="cancel">
+              Cancel
+            </Button>
+          </>
+        ) : null}
+      </View>
+    </>
+  );
 }
 const styles = StyleSheet.create({
-    buttonContainer: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center"
-    }
+  buttonContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
 
 export { VoiceRecorder };

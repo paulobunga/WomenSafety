@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
-import { NavigationNativeContainer } from "@react-navigation/native";
-import { AppLoading } from "expo";
+import { NavigationContainer } from "@react-navigation/native";
 import * as Font from "expo-font";
 import "./src/utils/localization";
 import DefaulTheme from "./config/theme";
@@ -9,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import { setUpBackgroundLocationTask } from "./src/utils";
 import { BottomTabNavigator, RootStackScreen } from "navigation";
 import { subscribeMessagesFromFavorites } from "packages";
+import { Text } from "react-native";
+
 // setUpBackgroundLocationTask();
 
 const fetchFonts = () => {
@@ -24,27 +25,25 @@ const fetchFonts = () => {
   });
 };
 export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
   useEffect(() => {
+    fetchFonts().then(() => {
+      setFontsLoaded(true);
+    });
     // Subscribe to messages on App start
 
     subscribeMessagesFromFavorites();
   }, []);
 
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-
   if (!fontsLoaded) {
-    return (
-      <AppLoading
-        startAsync={fetchFonts}
-        onFinish={() => setFontsLoaded(true)}
-      />
-    );
+    return null;
   }
   return (
     <PaperProvider theme={DefaulTheme}>
-      <NavigationNativeContainer>
+      <NavigationContainer>
         <RootStackScreen />
-      </NavigationNativeContainer>
+      </NavigationContainer>
     </PaperProvider>
   );
 }

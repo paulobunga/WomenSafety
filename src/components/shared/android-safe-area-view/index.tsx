@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  StyleSheet,
-  Platform,
-  StatusBar,
-  SafeAreaView,
-  View
-} from "react-native";
+import { StyleSheet, Platform, StatusBar, View } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
 
 export const AndroidSafeAreaView = props => {
   if (Platform.OS === "android") {

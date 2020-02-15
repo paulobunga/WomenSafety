@@ -10,6 +10,7 @@ import { ManageFavorites, CreateAlertScreen } from "screens";
 import { Dimensions } from "react-native";
 import { useTranslatedText } from "components";
 import { useLocationsStore, useAudioStore } from "packages";
+import { firebaseAuth } from "config/firebase";
 
 const DrawerNav = createDrawerNavigator();
 
@@ -35,6 +36,14 @@ function CustomDrawerContent(props: any) {
           active={currentActiveIndex === 1}
           onPress={() => {
             props.navigation.navigate("manageFavorites");
+          }}
+        />
+        <Drawer.Item
+          icon="account-heart-outline"
+          label={"logout"}
+          active={currentActiveIndex === 100}
+          onPress={() => {
+            firebaseAuth.signOut();
           }}
         />
       </Drawer.Section>

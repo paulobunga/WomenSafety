@@ -4,11 +4,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as Font from "expo-font";
 import "./src/utils/localization";
 import DefaulTheme from "./config/theme";
-import { useTranslation } from "react-i18next";
-import { setUpBackgroundLocationTask } from "./src/utils";
-import { BottomTabNavigator, RootStackScreen } from "navigation";
-import { subscribeMessagesFromFavorites } from "packages";
-import { Text } from "react-native";
+import { RootStackScreen, LoginStack } from "navigation";
+import { subscribeMessagesFromFavorites, useUserStore } from "packages";
+import { firebaseAuth } from "config/firebase";
 
 // setUpBackgroundLocationTask();
 
@@ -26,24 +24,52 @@ const fetchFonts = () => {
 };
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [initializing, setInitializing] = useState(true);
+
+  const user = useUserStore(state => state.user);
+  const setUser = useUserStore(state => state.setUser);
+
+  function onAuthStateChanged(user) {
+    if (user) {
+      setUser(user._user);
+    } else {
+      //@ts-ignore
+      setUser({});
+    }
+
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = firebaseAuth.onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
 
   useEffect(() => {
     fetchFonts().then(() => {
       setFontsLoaded(true);
     });
-    // Subscribe to messages on App start
-
     subscribeMessagesFromFavorites();
   }, []);
+
+  if (initializing) return null;
 
   if (!fontsLoaded) {
     return null;
   }
+
+  console.log("user astate ", user);
   return (
     <PaperProvider theme={DefaulTheme}>
-      <NavigationContainer>
-        <RootStackScreen />
-      </NavigationContainer>
+      {user.providerData ? (
+        <NavigationContainer>
+          <RootStackScreen />
+        </NavigationContainer>
+      ) : (
+        <NavigationContainer>
+          <LoginStack />
+        </NavigationContainer>
+      )}
     </PaperProvider>
   );
 }

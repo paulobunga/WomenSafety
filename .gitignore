@@ -1,4 +1,5 @@
 node_modules/**/*
+android/app/build/*
 ios/Pods/*
 .expo/*
 npm-debug.*

@@ -1,4 +1,4 @@
-import { firestore } from "config/firebase";
+import { firestore, default as firebase } from "config/firebase";
 const usersRef = firestore.collection("users");
 
 async function getUserFavorites(userId: any) {
@@ -14,21 +14,21 @@ export async function sendUserLocation(
 ) {
   const favorites = await getUserFavorites(senderId);
   console.log("favorites", favorites);
-  // const geoPoint = new firestore.GeoPoint(lat, long);
-  // const message = {
-  //   type: "location",
-  //   data: geoPoint,
-  //   sender_id: senderId
-  // };
+  const geoPoint = new firebase.firestore.GeoPoint(lat, long);
+  const message = {
+    type: "location",
+    data: geoPoint,
+    sender_id: senderId
+  };
 
-  // const messageRef = await firestore.collection("messages").add(message);
+  const messageRef = await firestore.collection("messages").add(message);
 
-  // favorites.forEach(user_id => {
-  //   firestore.collection("message_history").add({
-  //     message: messageRef,
-  //     receiver_id: user_id
-  //   });
-  // });
+  favorites.forEach(user_id => {
+    firestore.collection("message_history").add({
+      message: messageRef,
+      receiver_id: user_id
+    });
+  });
 }
 
 export async function sendAudioMessage(senderId: any, audioURI: string) {

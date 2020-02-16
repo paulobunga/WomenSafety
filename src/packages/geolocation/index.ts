@@ -14,6 +14,7 @@ const [useAudioStore, audioAPI] = create(() => ({
 }));
 
 const setLocationStore = (data: any) => {
+  console.log("setting location store ", data);
   locationAPI.setState(data);
 };
 
@@ -39,18 +40,20 @@ export const subscribeMessagesFromFavorites = (myNumber: string) => {
           const message = await messageRef.get();
           const senderId = message.data().sender_id;
           const senderRef = firestore.collection("users").doc(senderId);
-          const sender = await senderRef.get();
+          const senderSnapshot = await senderRef.get();
+          const sender = senderSnapshot._data;
+          console.log("sender ", sender, senderId);
           const messageData = message.data();
           console.log("message dat ", messageData);
           if (messageData.type === "location") {
-            const { _lat, _long } = messageData.data;
+            const { _latitude, _longitude } = messageData.data;
             const coordinates = {
-              latitude: _lat,
-              longitude: _long
+              latitude: _latitude,
+              longitude: _longitude
             };
             setLocationStore({
               coordinates,
-              sender: sender.data()
+              sender
             });
           } else if (messageData.type === "audio") {
             const data = messageData.data;

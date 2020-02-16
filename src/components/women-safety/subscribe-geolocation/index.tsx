@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocationsStore } from "packages";
 import { MapViewWithCoordinates } from "../map-view";
 import { Text } from "react-native";

@@ -49,7 +49,7 @@ export function ListenRecording() {
 
   return (
     <>
-      <Text>{sender.name}</Text>
+      {/* <Text>{sender.name}</Text> */}
       {playbackStatus.positionMillis ? (
         <Text>{formatTime(playbackStatus.positionMillis / 1000)}</Text>
       ) : null}

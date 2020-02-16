@@ -3,7 +3,7 @@ import { Audio } from "expo-av";
 import { Button } from "react-native-paper";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
 import { colors } from "config/colors";
-import { formatTime } from "utils";
+import { formatTime, startWatchingLocation } from "utils";
 import { uploadAudio } from "config/storage";
 import {
   RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
@@ -91,6 +91,7 @@ function VoiceRecorder() {
   };
 
   const onUploadRecording = async () => {
+    startWatchingLocation();
     await recording.stopAndUnloadAsync();
     tryUpload();
   };

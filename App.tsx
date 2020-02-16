@@ -40,17 +40,17 @@ export default function App() {
         subscribeMessagesFromFavorites(_user.phoneNumber);
 
         // put only once, when user is new
-        firestore
-          .collection("users")
-          .doc(_user.uid)
-          .set(
-            {
-              favorites: [],
-              phone: _user.phoneNumber,
-              name: _user.displayName
-            },
-            { merge: true }
-          );
+        // firestore
+        //   .collection("users")
+        //   .doc(_user.uid)
+        //   .set(
+        //     {
+        //       favorites: [],
+        //       phone: _user.phoneNumber,
+        //       name: _user.displayName
+        //     },
+        //     { merge: true }
+        //   );
       } catch (e) {}
     } else {
       //@ts-ignore

@@ -55,6 +55,7 @@ export function DrawerNavigator({ navigation }) {
   const locationStore = useLocationsStore();
   const audioStore = useAudioStore();
   useEffect(() => {
+    console.log("navigating ", locationStore, audioStore);
     if (locationStore.coordinates.latitude || audioStore.data) {
       navigation.navigate("ReceivingScreen");
     }

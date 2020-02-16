@@ -3,6 +3,7 @@ package com.quable.womensafety;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 import io.invertase.firebase.firestore.ReactNativeFirebaseFirestorePackage;
 import io.invertase.firebase.storage.ReactNativeFirebaseStoragePackage;
 import io.invertase.firebase.auth.ReactNativeFirebaseAuthPackage;
@@ -40,6 +41,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new MapsPackage(),
             new ReactNativeFirebaseFirestorePackage(),
             new ReactNativeFirebaseStoragePackage(),
             new ReactNativeFirebaseAuthPackage(),

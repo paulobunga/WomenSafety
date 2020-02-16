@@ -52,4 +52,6 @@ target 'WomenSafety' do
 
   pod 'RNFBStorage', :path => '../node_modules/@react-native-firebase/storage'
 
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
 end

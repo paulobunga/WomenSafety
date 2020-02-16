@@ -14,11 +14,6 @@ export const setUpBackgroundLocationTask = () => {
   //       return;
   //     }
   //     console.log("my location", locations[0]);
-  //     startSendingLocation(
-  //       locations[0].coords.latitude,
-  //       locations[0].coords.longitude
-  //     );
-  //   }
   // );
 };
 
@@ -35,11 +30,16 @@ export const backgroundLocationOptions: any = {
 
 export const startWatchingLocation = () => {
   locationPermissionMiddleWare(() => {
-    Location.startLocationUpdatesAsync(
-      BACKGROUND_LOCATION_TASK,
-      backgroundLocationOptions
-    );
+    Location.watchPositionAsync(backgroundLocationOptions, data => {
+      console.log("data ", data);
+      startSendingLocation(data.coords.latitude, data.coords.longitude);
+    });
   });
+  //   Location.startLocationUpdatesAsync(
+  //     BACKGROUND_LOCATION_TASK,
+  //     backgroundLocationOptions
+  //   );
+  // });
 };
 
 const locationPermissionMiddleWare = async next => {

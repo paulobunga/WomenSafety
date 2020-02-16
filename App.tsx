@@ -37,6 +37,7 @@ export default function App() {
       console.log("user ", _user);
       try {
         setUser(_user);
+        subscribeMessagesFromFavorites(_user.phoneNumber);
 
         // put only once, when user is new
         firestore
@@ -51,8 +52,6 @@ export default function App() {
             { merge: true }
           );
       } catch (e) {}
-
-      // subscribeMessagesFromFavorites();
     } else {
       //@ts-ignore
       setUser({});

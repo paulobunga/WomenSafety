@@ -1,17 +1,11 @@
-import { myUserId } from "config";
 import { firestore } from "config/firebase";
 const usersRef = firestore.collection("users");
 
 async function getUserFavorites(userId: any) {
-  console.log("document snapshot ", userId);
-
   const documentSnapshot = await usersRef.doc(userId).get();
-  console.log("document snapshot ", documentSnapshot, userId);
   const favorites = documentSnapshot.data().favorites;
   return favorites;
 }
-
-getUserFavorites(myUserId);
 
 export async function sendUserLocation(
   senderId: any,

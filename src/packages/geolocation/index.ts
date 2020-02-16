@@ -3,10 +3,6 @@ import { myUserId } from "../../../config";
 import { sendUserLocation } from "../message";
 import { firestore } from "config/firebase";
 
-const messageCollection = firestore
-  .collection("message_history")
-  .where("receiver_id", "==", myUserId);
-
 const [useLocationsStore, locationAPI] = create(() => ({
   sender: {},
   coordinates: {}
@@ -29,7 +25,11 @@ export async function startSendingLocation(lat: number, long: number) {
   sendUserLocation(myUserId, lat, long);
 }
 
-export const subscribeMessagesFromFavorites = () => {
+export const subscribeMessagesFromFavorites = (myNumber: string) => {
+  const messageCollection = firestore
+    .collection("message_history")
+    .where("receiver_id", "==", myNumber);
+
   const unsubscribe = messageCollection.onSnapshot(
     function(snapshot) {
       navigator;

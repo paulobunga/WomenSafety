@@ -1,27 +1,25 @@
-import * as TaskManager from "expo-task-manager";
+// import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 import { startSendingLocation } from "packages";
 import * as Permissions from "expo-permissions";
 export const BACKGROUND_LOCATION_TASK = "background-location-task";
 
 export const setUpBackgroundLocationTask = () => {
-  TaskManager.defineTask(
-    BACKGROUND_LOCATION_TASK,
-    ({ data: { locations }, error }: any) => {
-      console.log(";ofu");
-      if (error) {
-        console.log("error ", error);
-        return;
-      }
-
-      console.log("my location", locations[0]);
-
-      startSendingLocation(
-        locations[0].coords.latitude,
-        locations[0].coords.longitude
-      );
-    }
-  );
+  // TaskManager.defineTask(
+  //   BACKGROUND_LOCATION_TASK,
+  //   ({ data: { locations }, error }: any) => {
+  //     console.log(";ofu");
+  //     if (error) {
+  //       console.log("error ", error);
+  //       return;
+  //     }
+  //     console.log("my location", locations[0]);
+  //     startSendingLocation(
+  //       locations[0].coords.latitude,
+  //       locations[0].coords.longitude
+  //     );
+  //   }
+  // );
 };
 
 export const backgroundLocationOptions: any = {

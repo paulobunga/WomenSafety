@@ -34,15 +34,25 @@ export default function App() {
   function onAuthStateChanged(user) {
     if (user) {
       const _user: FirebaseAuthTypes.User = user._user;
-      firestore
-        .collection("users")
-        .doc(_user.uid)
-        .set(
-          { favorites: [], phone: _user.phoneNumber, name: _user.displayName },
-          { merge: true }
-        );
-      setUser(_user);
-      subscribeMessagesFromFavorites();
+      console.log("user ", _user);
+      try {
+        setUser(_user);
+
+        // put only once, when user is new
+        firestore
+          .collection("users")
+          .doc(_user.uid)
+          .set(
+            {
+              favorites: [],
+              phone: _user.phoneNumber,
+              name: _user.displayName
+            },
+            { merge: true }
+          );
+      } catch (e) {}
+
+      // subscribeMessagesFromFavorites();
     } else {
       //@ts-ignore
       setUser({});

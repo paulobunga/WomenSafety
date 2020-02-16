@@ -54,6 +54,7 @@ const PhoneNumber = ({ onSubmit }: { onSubmit: any }) => {
       );
       onSubmit();
     } catch (e) {
+      console.log("Error ", e);
       setError("Invalid number");
     } finally {
       setLoading(false);

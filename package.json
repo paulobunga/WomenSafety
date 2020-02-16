@@ -21,7 +21,6 @@
     "expo": "~36.0.0",
     "expo-av": "~8.0.0",
     "expo-location": "~8.0.0",
-    "expo-task-manager": "~8.0.0",
     "firebase": "^7.6.2",
     "i18next": "^19.0.3",
     "react": "~16.9.0",

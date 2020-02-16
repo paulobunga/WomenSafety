@@ -8,6 +8,7 @@ export const setUpBackgroundLocationTask = () => {
   TaskManager.defineTask(
     BACKGROUND_LOCATION_TASK,
     ({ data: { locations }, error }: any) => {
+      console.log(";ofu");
       if (error) {
         console.log("error ", error);
         return;

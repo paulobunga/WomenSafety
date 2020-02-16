@@ -1,6 +1,4 @@
-import firebase from "./firebase";
-
-const storage = firebase.storage();
+import { storage } from "config/firebase";
 storage.setMaxOperationRetryTime(1000);
 
 export const uploadAudio = async (uri, onProgress, onError, onCompletion) => {
@@ -17,7 +15,7 @@ export const uploadAudio = async (uri, onProgress, onError, onCompletion) => {
     },
     onError,
     async () => {
-      const downloadURI = await uploadTask.snapshot.ref.getDownloadURL();
+      const downloadURI = (await uploadTask).ref.getDownloadURL();
       onCompletion(downloadURI);
     }
   );

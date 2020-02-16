@@ -6,9 +6,11 @@ import "./src/utils/localization";
 import DefaulTheme from "./config/theme";
 import { RootStackScreen, LoginStack } from "navigation";
 import { subscribeMessagesFromFavorites, useUserStore } from "packages";
-import { firebaseAuth } from "config/firebase";
+import { firebaseAuth, firestore } from "config/firebase";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { setUpBackgroundLocationTask } from "utils";
 
-// setUpBackgroundLocationTask();
+setUpBackgroundLocationTask();
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -31,7 +33,16 @@ export default function App() {
 
   function onAuthStateChanged(user) {
     if (user) {
-      setUser(user._user);
+      const _user: FirebaseAuthTypes.User = user._user;
+      firestore
+        .collection("users")
+        .doc(_user.uid)
+        .set(
+          { favorites: [], phone: _user.phoneNumber, name: _user.displayName },
+          { merge: true }
+        );
+      setUser(_user);
+      subscribeMessagesFromFavorites();
     } else {
       //@ts-ignore
       setUser({});
@@ -49,7 +60,6 @@ export default function App() {
     fetchFonts().then(() => {
       setFontsLoaded(true);
     });
-    subscribeMessagesFromFavorites();
   }, []);
 
   if (initializing) return null;

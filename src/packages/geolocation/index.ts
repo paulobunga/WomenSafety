@@ -28,13 +28,14 @@ export async function startSendingLocation(lat: number, long: number) {
   sendUserLocation(myUserId, lat, long);
 }
 
-const past5Mins = subMinutes(new Date(), 1);
-
 export const subscribeMessagesFromFavorites = (myNumber: string) => {
+  const past5Mins = subMinutes(new Date(), 1);
   const messageCollection = firestore
     .collection("message_history")
     .where("receiver_id", "==", myNumber)
-    .where("created_at", ">", past5Mins);
+    .where("created_at", ">", past5Mins)
+    .orderBy("created_at", "desc")
+    .limit(1);
 
   const unsubscribe = messageCollection.onSnapshot(
     function(snapshot) {

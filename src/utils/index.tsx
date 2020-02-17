@@ -29,11 +29,15 @@ export const backgroundLocationOptions: any = {
 };
 
 export const startWatchingLocation = () => {
-  locationPermissionMiddleWare(() => {
-    Location.watchPositionAsync(backgroundLocationOptions, data => {
-      console.log("data ", data);
-      startSendingLocation(data.coords.latitude, data.coords.longitude);
-    });
+  return locationPermissionMiddleWare(() => {
+    const remove = Location.watchPositionAsync(
+      backgroundLocationOptions,
+      data => {
+        console.log("data ", data);
+        startSendingLocation(data.coords.latitude, data.coords.longitude);
+      }
+    );
+    return remove;
   });
   //   Location.startLocationUpdatesAsync(
   //     BACKGROUND_LOCATION_TASK,

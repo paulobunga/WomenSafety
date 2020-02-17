@@ -167,8 +167,7 @@ function VoiceRecorder() {
             </Button>
           </>
         ) : null}
-
-        <Text>Upload progress: {state.progress}</Text>
+        {state.progress ? <Text>Upload progress: {state.progress}</Text> : null}
         {recordingStatus.isRecording ? (
           <>
             <Text style={{ marginTop: 10 }}>

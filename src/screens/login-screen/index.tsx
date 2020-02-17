@@ -13,6 +13,7 @@ import { firebaseAuth } from "config/firebase";
 import { useForm } from "react-hook-form";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import { ErrorText } from "components";
+import { colors } from "config/colors";
 let confirmation;
 
 export function LoginScreen() {
@@ -62,7 +63,7 @@ const PhoneNumber = ({ onSubmit }: { onSubmit: any }) => {
   };
 
   return (
-    <>
+    <KeyboardAvoidingView>
       <View style={{ flexDirection: "row" }}>
         <View style={{ width: "25%" }}>
           <TextInput
@@ -73,24 +74,24 @@ const PhoneNumber = ({ onSubmit }: { onSubmit: any }) => {
         </View>
         <View style={{ width: "75%" }}>
           <TextInput
+            returnKeyLabel="next"
+            onSubmitEditing={handleSubmit(onPhoneSubmit)}
             placeholder="Enter Mobile number"
             keyboardType="phone-pad"
             style={styles.loginFormTextInput}
             onChangeText={text => setValue("phoneNumber", text)}
           />
-          <Text>
-            {errors.phoneNumber ? (
-              <ErrorText message={"Please enter a valid phone number"} />
-            ) : null}
-          </Text>
+          {errors.phoneNumber ? (
+            <ErrorText message={"Please enter a valid phone number"} />
+          ) : null}
+          {error ? <ErrorText message={error} /> : null}
         </View>
       </View>
-      <Button disabled={loading} onPress={handleSubmit(onPhoneSubmit)}>
+      {/* <Button disabled={loading} onPress={handleSubmit(onPhoneSubmit)}>
         Submit
-      </Button>
+      </Button> */}
       {loading ? <ActivityIndicator /> : null}
-      {error ? <ErrorText message={error} /> : null}
-    </>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -146,6 +147,7 @@ const otpStyles = StyleSheet.create({
   underlineStyleBase: {
     width: 30,
     height: 45,
+    color: colors["cyan-vivid-900"],
     borderWidth: 0,
     borderBottomWidth: 1
   },

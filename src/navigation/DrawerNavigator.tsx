@@ -39,7 +39,7 @@ function CustomDrawerContent(props: any) {
           }}
         />
         <Drawer.Item
-          icon="account-heart-outline"
+          icon="account-arrow-right-outline"
           label={"logout"}
           active={currentActiveIndex === 100}
           onPress={() => {

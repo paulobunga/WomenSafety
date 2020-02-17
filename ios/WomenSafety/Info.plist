@@ -91,5 +91,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSContactsUsageDescription</key>
+	<string>Allow WomenSafety to access your contacts</string>
 </dict>
 </plist>

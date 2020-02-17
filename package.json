@@ -21,6 +21,7 @@
     "date-fns": "^2.9.0",
     "expo": "~36.0.0",
     "expo-av": "~8.0.0",
+    "expo-contacts": "^8.0.0",
     "expo-location": "~8.0.0",
     "firebase": "^7.6.2",
     "i18next": "^19.0.3",

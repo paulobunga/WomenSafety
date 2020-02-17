@@ -5,7 +5,7 @@ import { Button } from "react-native-paper";
 import { PlaybackStatus } from "expo-av/build/AV";
 import { Text, ActivityIndicator, StyleSheet, View } from "react-native";
 import { formatTime } from "utils";
-let soundObject;
+let soundObject = new Audio.Sound();
 
 export function ListenRecording() {
   const { sender, data } = useAudioStore();
@@ -39,11 +39,9 @@ export function ListenRecording() {
   };
 
   async function loadAndPlaySound() {
-    soundObject = new Audio.Sound();
-
     await soundObject.loadAsync({ uri: data }, {}, false);
     await soundObject.playAsync();
-
+    await soundObject.setIsLoopingAsync(true);
     soundObject.setProgressUpdateIntervalAsync(1000);
     soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
   }

@@ -12,21 +12,19 @@ export function SubscribeToGeolocation() {
   const coordinates = locationStore.coordinates;
 
   console.log("coordinates ", coordinates);
-  if (!isMapLoaded) {
-    return (
-      <ActivityIndicator
-        animating={true}
-        size="large"
-        style={styles.container}
-        color={colors["indigo-900"]}
-      />
-    );
-  }
 
   return (
     <>
       {coordinates.latitude && (
         <View style={styles.container}>
+          {!isMapLoaded && (
+            <ActivityIndicator
+              animating={true}
+              size="large"
+              style={styles.container}
+              color={colors["indigo-900"]}
+            />
+          )}
           <MapViewWithCoordinates
             setIsMapLoaded={setIsMapLoaded}
             coordinates={coordinates}

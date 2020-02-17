@@ -26,7 +26,8 @@ export async function sendUserLocation(
   favorites.forEach(user_id => {
     firestore.collection("message_history").add({
       message: messageRef,
-      receiver_id: user_id
+      receiver_id: user_id,
+      created_at: firebase.firestore.Timestamp.now()
     });
   });
 }
@@ -44,7 +45,8 @@ export async function sendAudioMessage(senderId: any, audioURI: string) {
   favorites.forEach(user_id => {
     firestore.collection("message_history").add({
       message: messageRef,
-      receiver_id: user_id
+      receiver_id: user_id,
+      created_at: firebase.firestore.Timestamp.now()
     });
   });
 }

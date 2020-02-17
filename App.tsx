@@ -37,7 +37,6 @@ export default function App() {
       console.log("user ", _user);
       try {
         setUser(_user);
-        subscribeMessagesFromFavorites(_user.phoneNumber);
 
         // put only once, when user is new
         // firestore
@@ -64,6 +63,14 @@ export default function App() {
     const subscriber = firebaseAuth.onAuthStateChanged(onAuthStateChanged);
     return subscriber;
   }, []);
+
+  useEffect(() => {
+    let unsubscribe = () => {};
+    if (user.phoneNumber) {
+      unsubscribe = subscribeMessagesFromFavorites(user.phoneNumber);
+    }
+    return unsubscribe;
+  }, [user]);
 
   useEffect(() => {
     fetchFonts().then(() => {

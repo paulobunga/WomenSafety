@@ -3,6 +3,8 @@ import { myUserId } from "../../../config";
 import { sendUserLocation } from "../message";
 import { firestore } from "config/firebase";
 
+import subMinutes from "date-fns/subMinutes";
+
 const [useLocationsStore, locationAPI] = create(() => ({
   sender: {},
   coordinates: {}
@@ -26,16 +28,21 @@ export async function startSendingLocation(lat: number, long: number) {
   sendUserLocation(myUserId, lat, long);
 }
 
+const past5Mins = subMinutes(new Date(), 1);
+
 export const subscribeMessagesFromFavorites = (myNumber: string) => {
   const messageCollection = firestore
     .collection("message_history")
-    .where("receiver_id", "==", myNumber);
+    .where("receiver_id", "==", myNumber)
+    .where("created_at", ">", past5Mins);
 
   const unsubscribe = messageCollection.onSnapshot(
     function(snapshot) {
       navigator;
+
       snapshot.docChanges().forEach(async function(change) {
         if (change.type === "added") {
+          console.log("change ", change);
           const messageRef = change.doc.data().message;
           const message = await messageRef.get();
           const senderId = message.data().sender_id;

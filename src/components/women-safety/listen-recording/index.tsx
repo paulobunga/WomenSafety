@@ -9,6 +9,7 @@ let soundObject;
 
 export function ListenRecording() {
   const { sender, data } = useAudioStore();
+  console.log("inside audio store ", data);
   const [playbackStatus, setPlaybackStatus] = useState<PlaybackStatus>({});
 
   const onPlaybackStatusUpdate = (status: PlaybackStatus) => {
@@ -16,6 +17,10 @@ export function ListenRecording() {
   };
 
   const renderPlayButton = () => {
+    if (!data) {
+      return null;
+    }
+
     if (playbackStatus.isPlaying) {
       return (
         <Button icon="pause" onPress={pauseSound}>

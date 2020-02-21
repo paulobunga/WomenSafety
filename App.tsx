@@ -5,7 +5,11 @@ import * as Font from "expo-font";
 import "./src/utils/localization";
 import DefaulTheme from "./config/theme";
 import { RootStackScreen, LoginStack } from "navigation";
-import { subscribeMessagesFromFavorites, useUserStore } from "packages";
+import {
+  subscribeMessagesFromFavorites,
+  useUserStore,
+  registerAppWithFCM
+} from "packages";
 import { firebaseAuth, firestore } from "config/firebase";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { setUpBackgroundLocationTask } from "utils";
@@ -60,6 +64,7 @@ export default function App() {
   }
 
   useEffect(() => {
+    registerAppWithFCM();
     const subscriber = firebaseAuth.onAuthStateChanged(onAuthStateChanged);
     return subscriber;
   }, []);

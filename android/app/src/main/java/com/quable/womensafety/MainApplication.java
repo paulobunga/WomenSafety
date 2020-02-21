@@ -1,8 +1,14 @@
 package com.quable.womensafety;
 
 import android.app.Application;
+import android.app.KeyguardManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.messaging.ReactNativeFirebaseMessagingPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import io.invertase.firebase.firestore.ReactNativeFirebaseFirestorePackage;
 import io.invertase.firebase.storage.ReactNativeFirebaseStoragePackage;
@@ -41,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeFirebaseMessagingPackage(),
             new MapsPackage(),
             new ReactNativeFirebaseFirestorePackage(),
             new ReactNativeFirebaseStoragePackage(),
@@ -69,5 +76,17 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationChannel notificationChannel = new NotificationChannel("500", "MainChannel", NotificationManager.IMPORTANCE_HIGH);
+      notificationChannel.setShowBadge(true);
+      notificationChannel.setDescription("Notifications");
+      notificationChannel.enableVibration(true);
+      notificationChannel.enableLights(true);
+      notificationChannel.setVibrationPattern(new long[]{400, 200, 400});
+      //notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+      NotificationManager manager = getSystemService(NotificationManager.class);
+      manager.createNotificationChannel(notificationChannel);
+    }
   }
 }

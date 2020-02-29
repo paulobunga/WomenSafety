@@ -34,7 +34,7 @@ export const startWatchingLocation = () => {
       backgroundLocationOptions,
       data => {
         console.log("data ", data);
-        // startSendingLocation(data.coords.latitude, data.coords.longitude);
+        startSendingLocation(data.coords.latitude, data.coords.longitude);
       }
     );
     return remove;

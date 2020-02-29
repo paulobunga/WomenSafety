@@ -11,8 +11,6 @@ export function SubscribeToGeolocation() {
 
   const coordinates = locationStore.coordinates;
 
-  console.log("coordinates ", coordinates);
-
   return (
     <>
       {coordinates.latitude && (

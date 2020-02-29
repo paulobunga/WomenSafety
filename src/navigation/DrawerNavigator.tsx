@@ -62,19 +62,19 @@ function CustomDrawerContent(props: any) {
 }
 
 export function DrawerNavigator({ navigation }) {
-  const [alertMachineState, send] = useService(alertMachineService);
-  const locationStore = useLocationsStore();
-  const audioStore = useAudioStore();
-  const receiveStore = useReceiveStore();
+  const [alertMachineState] = useService(alertMachineService);
 
-  console.log("current state in drawer ", alertMachineState);
+  // console.log("current state machine state ", alertMachineState);
   useEffect(() => {
     if (alertMachineState.matches("alert")) {
       navigation.navigate("AlertSplashScreen");
     }
-    // if (locationStore.coordinates.latitude || audioStore.data) {
-    //   navigation.navigate("ReceivingScreen");
-    // }
+    if (alertMachineState.matches("received")) {
+      navigation.navigate("ReceivingScreen");
+    }
+    if (alertMachineState.matches("idle")) {
+      navigation.navigate("Main");
+    }
   }, [alertMachineState]);
 
   // useEffect(() => {

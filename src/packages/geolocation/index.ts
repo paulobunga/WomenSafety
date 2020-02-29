@@ -5,10 +5,11 @@ import { firestore } from "config/firebase";
 
 import subSeconds from "date-fns/subSeconds";
 import { alertMachineService } from "../alert-machine";
+import { ISender, ICoordinates } from "src/types";
 
 const [useLocationsStore, locationAPI] = create(() => ({
-  sender: {},
-  coordinates: {}
+  sender: {} as ISender,
+  coordinates: {} as ICoordinates
 }));
 
 const [useAudioStore, audioAPI] = create(() => ({
@@ -17,7 +18,6 @@ const [useAudioStore, audioAPI] = create(() => ({
 }));
 
 const setLocationStore = (data: any) => {
-  console.log("setting location store ", data);
   locationAPI.setState(data);
 };
 
@@ -65,6 +65,7 @@ export const actOnMessageReceived = async (messageData: any) => {
   const senderRef = firestore.collection("users").doc(senderId);
   const senderSnapshot = await senderRef.get();
   const sender = senderSnapshot._data;
+  console.log("message received ", messageData);
 
   if (messageData.type === "location") {
     let lat, long;

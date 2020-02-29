@@ -9,7 +9,6 @@ let soundObject = new Audio.Sound();
 
 export function ListenRecording() {
   const { sender, data } = useAudioStore();
-  console.log("inside audio store ", data);
   const [playbackStatus, setPlaybackStatus] = useState<PlaybackStatus>({});
 
   const onPlaybackStatusUpdate = (status: PlaybackStatus) => {

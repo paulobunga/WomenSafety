@@ -6,6 +6,9 @@ import android.util.Log;
 import com.facebook.react.HeadlessJsTaskService;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import org.json.JSONObject;
+
 import io.invertase.firebase.common.ReactNativeFirebaseEventEmitter;
 import io.invertase.firebase.common.SharedUtils;
 
@@ -43,13 +46,6 @@ public class ReactNativeFirebaseMessagingService extends FirebaseMessagingServic
     ReactNativeFirebaseEventEmitter emitter = ReactNativeFirebaseEventEmitter.getSharedInstance();
 
 
-    Intent i = new Intent("womensafety.intent.action.Launch");
-
-//    i.setClassName("com.quable.womensafety", "MainActivity");
-
-//    Intent i = new Intent(getBaseContext(), MainActivity.class);
-    i.putExtra("PersonID", 1);
-    startActivity(i);
 
 
     // ----------------------
@@ -78,6 +74,19 @@ public class ReactNativeFirebaseMessagingService extends FirebaseMessagingServic
     //    App in Background/Quit
     //   ------------------------
     try {
+      Intent i = new Intent("womensafety.intent.action.Launch");
+
+      System.out.println(remoteMessage);
+      JSONObject jsonData;
+      jsonData = new JSONObject(remoteMessage.getData());
+
+      i.putExtra("message", jsonData.toString());
+
+
+      startActivity(i);
+
+
+
       Intent intent = new Intent(getApplicationContext(), ReactNativeFirebaseMessagingHeadlessService.class);
       intent.putExtra("message", remoteMessage);
       ComponentName name = getApplicationContext().startService(intent);

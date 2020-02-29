@@ -31,6 +31,22 @@ public class MainActivity extends ReactActivity {
             protected ReactRootView createRootView() {
                 return new RNGestureHandlerEnabledRootView(MainActivity.this);
             }
+
+            @Nullable
+            @Override
+            protected Bundle getLaunchOptions() {
+                Bundle extras = getIntent().getExtras();
+                Bundle bundle = new Bundle();
+
+                String message;
+                if (extras != null) {
+                    message = extras.getString("message");
+                    System.out.println("person id "+ message);
+                    bundle.putString("message", message);
+                }
+
+                return bundle;
+            }
         };
     }
 

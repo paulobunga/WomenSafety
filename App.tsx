@@ -8,7 +8,8 @@ import { RootStackScreen, LoginStack } from "navigation";
 import {
   subscribeMessagesFromFavorites,
   useUserStore,
-  registerAppWithFCM
+  registerAppWithFCM,
+  actOnMessageReceived
 } from "packages";
 import { firebaseAuth, firestore } from "config/firebase";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
@@ -28,7 +29,7 @@ const fetchFonts = () => {
     "roboto-light": require("./assets/fonts/Roboto/Roboto-Light.ttf")
   });
 };
-export default function App() {
+export default function App(props: any) {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [initializing, setInitializing] = useState(true);
 
@@ -68,6 +69,13 @@ export default function App() {
     const subscriber = firebaseAuth.onAuthStateChanged(onAuthStateChanged);
     return subscriber;
   }, []);
+
+  useEffect(() => {
+    if (props.message) {
+      const parsedMessage = JSON.parse(props.message);
+      actOnMessageReceived(parsedMessage);
+    }
+  }, [props.message]);
 
   useEffect(() => {
     let unsubscribe = () => {};

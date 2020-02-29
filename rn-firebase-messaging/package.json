@@ -1,0 +1,61 @@
+{
+  "_from": "@react-native-firebase/messaging@6.3.3",
+  "_id": "@react-native-firebase/messaging@6.3.3",
+  "_inBundle": false,
+  "_integrity": "sha512-T7s53n3FmtksW9pVD6h0pBWpbQ2yN06LTtBTkI/ceKPwB8RAo+CqrLwvMEuNn2WOmeVBTemr31523VVJ99wLRQ==",
+  "_location": "/@react-native-firebase/messaging",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "@react-native-firebase/messaging@6.3.3",
+    "name": "@react-native-firebase/messaging",
+    "escapedName": "@react-native-firebase%2fmessaging",
+    "scope": "@react-native-firebase",
+    "rawSpec": "6.3.3",
+    "saveSpec": null,
+    "fetchSpec": "6.3.3"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@react-native-firebase/messaging/-/messaging-6.3.3.tgz",
+  "_shasum": "aa04f5064e81493691011aaa23363a9f5c446ac3",
+  "_spec": "@react-native-firebase/messaging@6.3.3",
+  "_where": "/Users/stl-038/Desktop/nishan/WomenSafety",
+  "author": {
+    "name": "Invertase",
+    "email": "oss@invertase.io",
+    "url": "http://invertase.io"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "React Native Firebase - React Native Firebase provides native integration of Firebase Cloud Messaging (FCM) for both Android & iOS. FCM is a cost free service, allowing for server-device and device-device communication. The React Native Firebase Messaging module provides a simple JavaScript API to interact with FCM.",
+  "gitHead": "8f886bde150930d8e418e134757819c2e53e644a",
+  "keywords": [
+    "react",
+    "react-native",
+    "firebase",
+    "messaging"
+  ],
+  "license": "Apache-2.0",
+  "main": "lib/index.js",
+  "name": "@react-native-firebase/messaging",
+  "peerDependencies": {
+    "@react-native-firebase/app": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/invertase/react-native-firebase/tree/master/packages/messaging"
+  },
+  "scripts": {
+    "build": "genversion --semi lib/version.js",
+    "build:clean": "rimraf android/build && rimraf ios/build",
+    "prepare": "yarn run build"
+  },
+  "types": "lib/index.d.ts",
+  "version": "6.3.3"
+}

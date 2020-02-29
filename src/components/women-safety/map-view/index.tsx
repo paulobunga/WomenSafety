@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, Dimensions, View, Linking, Platform } from "react-native";
-import MapView, { Marker, Region } from "react-native-maps";
-import { watchPositionAsync, getPositionAsync } from "utils";
+import React, { useCallback } from "react";
+import { StyleSheet, Dimensions, Linking, Platform } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 
 interface IProps {
   coordinates: { latitude: number; longitude: number };
@@ -38,35 +37,27 @@ export function MapViewWithCoordinates({
   }, [coordinates]);
 
   return (
-    <View style={styles.container}>
-      <MapView
-        region={mapRegion}
-        onMapReady={() => setIsMapLoaded(true)}
-        toolbarEnabled
-        showsUserLocation
-        style={styles.mapStyle}
+    <MapView
+      region={mapRegion}
+      onMapReady={() => setIsMapLoaded(true)}
+      toolbarEnabled
+      showsUserLocation
+      style={styles.mapStyle}
+      onPress={openMapsMemoized}
+    >
+      <Marker
         onPress={openMapsMemoized}
-      >
-        <Marker
-          onPress={openMapsMemoized}
-          coordinate={coordinates}
-          title="Requester - Nishan Bende"
-          description="Help! Nishan is in trouble"
-        />
-      </MapView>
-    </View>
+        coordinate={coordinates}
+        title="Requester - Nishan Bende"
+        description="Help! Nishan is in trouble"
+      />
+    </MapView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: "60%",
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  },
   mapStyle: {
     width: Dimensions.get("window").width,
-    height: "60%"
+    height: "100%"
   }
 });

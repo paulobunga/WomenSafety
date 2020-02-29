@@ -8,8 +8,6 @@ import {
   WatchGeoLocation
 } from "components";
 import { useTranslation } from "react-i18next";
-import { StyleSheet } from "react-native";
-import { colors } from "config/colors";
 
 export const CreateAlertScreen = ({ navigation }) => {
   const { i18n } = useTranslation();

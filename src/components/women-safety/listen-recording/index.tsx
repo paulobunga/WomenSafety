@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAudioStore } from "packages";
 import { Audio } from "expo-av";
 import { Button } from "react-native-paper";
 import { PlaybackStatus } from "expo-av/build/AV";
-import { Text, ActivityIndicator } from "react-native";
+import { Text, ActivityIndicator, StyleSheet, View } from "react-native";
 import { formatTime } from "utils";
-let soundObject;
+let soundObject = new Audio.Sound();
 
 export function ListenRecording() {
   const { sender, data } = useAudioStore();
+  console.log("inside audio store ", data);
   const [playbackStatus, setPlaybackStatus] = useState<PlaybackStatus>({});
 
   const onPlaybackStatusUpdate = (status: PlaybackStatus) => {
@@ -16,6 +17,10 @@ export function ListenRecording() {
   };
 
   const renderPlayButton = () => {
+    if (!data) {
+      return null;
+    }
+
     if (playbackStatus.isPlaying) {
       return (
         <Button icon="pause" onPress={pauseSound}>
@@ -34,11 +39,9 @@ export function ListenRecording() {
   };
 
   async function loadAndPlaySound() {
-    soundObject = new Audio.Sound();
-
     await soundObject.loadAsync({ uri: data }, {}, false);
     await soundObject.playAsync();
-
+    await soundObject.setIsLoopingAsync(true);
     soundObject.setProgressUpdateIntervalAsync(1000);
     soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
   }
@@ -49,16 +52,25 @@ export function ListenRecording() {
 
   return (
     <>
-      <Text>{sender.name}</Text>
-      {playbackStatus.positionMillis ? (
-        <Text>{formatTime(playbackStatus.positionMillis / 1000)}</Text>
-      ) : null}
+      {/* <Text>{sender.name}</Text> */}
+      <View style={styles.container}>
+        {playbackStatus.positionMillis ? (
+          <Text>{formatTime(playbackStatus.positionMillis / 1000)}</Text>
+        ) : null}
 
-      {playbackStatus.durationMillis ? (
-        <Text>/{formatTime(playbackStatus.durationMillis / 1000)}</Text>
-      ) : null}
-
+        {playbackStatus.durationMillis ? (
+          <Text>/{formatTime(playbackStatus.durationMillis / 1000)}</Text>
+        ) : null}
+      </View>
       {renderPlayButton()}
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    flexDirection: "row",
+    marginTop: 20
+  }
+});

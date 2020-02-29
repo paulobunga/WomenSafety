@@ -1,14 +1,12 @@
-import firebase from "./firebase";
-
-const storage = firebase.storage();
+import { storage } from "config/firebase";
 storage.setMaxOperationRetryTime(1000);
 
 export const uploadAudio = async (uri, onProgress, onError, onCompletion) => {
-  const response = await fetch(uri);
-  const blob = await response.blob();
-  var ref = storage.ref().child(new Date().getTime().toString());
-  const uploadTask = ref.put(blob);
+  const uploadTask = storage
+    .ref("audio-messages/" + new Date().getTime())
+    .putFile(uri);
 
+  console.log("upload task ", uploadTask);
   uploadTask.on(
     "state_changed",
     snapshot => {
@@ -17,7 +15,8 @@ export const uploadAudio = async (uri, onProgress, onError, onCompletion) => {
     },
     onError,
     async () => {
-      const downloadURI = await uploadTask.snapshot.ref.getDownloadURL();
+      const downloadURI = await uploadTask._ref.getDownloadURL();
+      console.log("download uri", downloadURI);
       onCompletion(downloadURI);
     }
   );

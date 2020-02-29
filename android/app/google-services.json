@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "292225383598",
+    "firebase_url": "https://women-safety-c13ba.firebaseio.com",
+    "project_id": "women-safety-c13ba",
+    "storage_bucket": "women-safety-c13ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292225383598:android:f5234bad1401eb8ebd013f",
+        "android_client_info": {
+          "package_name": "com.quable.womensafety"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292225383598-rlg0n7c74bllb7qla89icga711u34o1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyaJkdKkOE4FTAxMW7w3oI6ZJwniw0mDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "292225383598-rlg0n7c74bllb7qla89icga711u34o1b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "292225383598-8rpros3lfggtlu7or1fd77hi2cp37du8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.quable.womensafety"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

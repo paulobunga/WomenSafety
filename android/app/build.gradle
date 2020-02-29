@@ -100,7 +100,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.womensafety"
+        applicationId "com.quable.womensafety"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -144,6 +144,10 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 def enableHermes = project.ext.react.get("enableHermes", false);
 
 dependencies {
+    implementation project(':@react-native-firebase_messaging')
+    implementation project(':react-native-maps')
+    implementation project(':@react-native-firebase_firestore')
+    implementation project(':@react-native-firebase_storage')
     implementation project(':@react-native-firebase_auth')
     implementation project(':@react-native-firebase_app')
     implementation project(':react-native-safe-area-context')
@@ -170,3 +174,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+apply plugin: 'com.google.gms.google-services'

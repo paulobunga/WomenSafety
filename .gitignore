@@ -1,5 +1,12 @@
 node_modules/**/*
 android/app/build/*
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.iml
 ios/Pods/*
 .expo/*
 npm-debug.*
@@ -13,5 +20,4 @@ web-build/
 web-report/
 # macOS
 .DS_Store
-
 .env

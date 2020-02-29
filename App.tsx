@@ -5,10 +5,17 @@ import * as Font from "expo-font";
 import "./src/utils/localization";
 import DefaulTheme from "./config/theme";
 import { RootStackScreen, LoginStack } from "navigation";
-import { subscribeMessagesFromFavorites, useUserStore } from "packages";
-import { firebaseAuth } from "config/firebase";
+import {
+  subscribeMessagesFromFavorites,
+  useUserStore,
+  registerAppWithFCM,
+  actOnMessageReceived
+} from "packages";
+import { firebaseAuth, firestore } from "config/firebase";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { setUpBackgroundLocationTask } from "utils";
 
-// setUpBackgroundLocationTask();
+setUpBackgroundLocationTask();
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -22,7 +29,7 @@ const fetchFonts = () => {
     "roboto-light": require("./assets/fonts/Roboto/Roboto-Light.ttf")
   });
 };
-export default function App() {
+export default function App(props: any) {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [initializing, setInitializing] = useState(true);
 
@@ -31,7 +38,24 @@ export default function App() {
 
   function onAuthStateChanged(user) {
     if (user) {
-      setUser(user._user);
+      const _user: FirebaseAuthTypes.User = user._user;
+      console.log("user ", _user);
+      try {
+        setUser(_user);
+
+        // put only once, when user is new
+        // firestore
+        //   .collection("users")
+        //   .doc(_user.uid)
+        //   .set(
+        //     {
+        //       favorites: [],
+        //       phone: _user.phoneNumber,
+        //       name: _user.displayName
+        //     },
+        //     { merge: true }
+        //   );
+      } catch (e) {}
     } else {
       //@ts-ignore
       setUser({});
@@ -41,15 +65,30 @@ export default function App() {
   }
 
   useEffect(() => {
+    registerAppWithFCM();
     const subscriber = firebaseAuth.onAuthStateChanged(onAuthStateChanged);
     return subscriber;
   }, []);
 
   useEffect(() => {
+    if (props.message) {
+      const parsedMessage = JSON.parse(props.message);
+      actOnMessageReceived(parsedMessage);
+    }
+  }, [props.message]);
+
+  useEffect(() => {
+    let unsubscribe = () => {};
+    if (user.phoneNumber) {
+      unsubscribe = subscribeMessagesFromFavorites(user.phoneNumber);
+    }
+    return unsubscribe;
+  }, [user]);
+
+  useEffect(() => {
     fetchFonts().then(() => {
       setFontsLoaded(true);
     });
-    subscribeMessagesFromFavorites();
   }, []);
 
   if (initializing) return null;

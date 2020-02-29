@@ -13,15 +13,14 @@ function WatchGeoLocation() {
     startWatchingLocation();
   };
 
-  return (
-    <Button
-      onPress={onStartWatchingLocation}
-      mode="contained"
-      icon="navigation"
-    >
-      Watch position
-    </Button>
-  );
+  return null;
+  // <Button
+  //   onPress={onStartWatchingLocation}
+  //   mode="contained"
+  //   icon="navigation"
+  // >
+  //   Watch position
+  // </Button>
 }
 
 export { WatchGeoLocation };

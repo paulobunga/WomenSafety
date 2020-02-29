@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Alert } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView
@@ -9,8 +9,14 @@ import { Drawer, Text } from "react-native-paper";
 import { ManageFavorites, CreateAlertScreen } from "screens";
 import { Dimensions } from "react-native";
 import { useTranslatedText } from "components";
-import { useLocationsStore, useAudioStore } from "packages";
+import {
+  useLocationsStore,
+  useAudioStore,
+  useReceiveStore,
+  setEnableReception
+} from "packages";
 import { firebaseAuth } from "config/firebase";
+let showingAlert = false;
 
 const DrawerNav = createDrawerNavigator();
 
@@ -39,7 +45,7 @@ function CustomDrawerContent(props: any) {
           }}
         />
         <Drawer.Item
-          icon="account-heart-outline"
+          icon="account-arrow-right-outline"
           label={"logout"}
           active={currentActiveIndex === 100}
           onPress={() => {
@@ -54,11 +60,34 @@ function CustomDrawerContent(props: any) {
 export function DrawerNavigator({ navigation }) {
   const locationStore = useLocationsStore();
   const audioStore = useAudioStore();
+  const receiveStore = useReceiveStore();
+
   useEffect(() => {
     if (locationStore.coordinates.latitude || audioStore.data) {
       navigation.navigate("ReceivingScreen");
     }
   }, [locationStore, audioStore]);
+
+  // useEffect(() => {
+  //   async function handleAlert() {
+  //     console.log("navigating ", locationStore, audioStore);
+  //     if (locationStore.coordinates.latitude || audioStore.data) {
+  //       if (showingAlert) {
+  //         return;
+  //       }
+  //       showingAlert = true;
+  //       if (!receiveStore.enableReception) {
+  //         try {
+  //           await showReceiveAlert();
+  //           setEnableReception(true);
+  //           showingAlert = false;
+  //         } catch (e) {}
+  //       }
+  //     }
+  //   }
+
+  //   handleAlert();
+  // }, [locationStore, audioStore]);
 
   return (
     <DrawerNav.Navigator
@@ -83,3 +112,21 @@ const styles = StyleSheet.create({
     fontFamily: "roboto-bold"
   }
 });
+
+const showReceiveAlert = () => {
+  return new Promise((resolve: any, reject: any) => {
+    Alert.alert(
+      "Receiving an Alert",
+      "A User is sending an emergency message.\nTap Receive to start receiving",
+      [
+        {
+          text: "Cancel",
+          onPress: reject,
+          style: "cancel"
+        },
+        { text: "Receive", onPress: resolve }
+      ],
+      { cancelable: false }
+    );
+  });
+};

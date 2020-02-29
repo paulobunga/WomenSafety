@@ -4,6 +4,7 @@ import { sendUserLocation } from "../message";
 import { firestore } from "config/firebase";
 
 import subSeconds from "date-fns/subSeconds";
+import { alertMachineService } from "../alert-machine";
 
 const [useLocationsStore, locationAPI] = create(() => ({
   sender: {},
@@ -86,12 +87,16 @@ export const actOnMessageReceived = async (messageData: any) => {
       coordinates,
       sender
     });
+
+    alertMachineService.send("alert");
   } else if (messageData.type === "audio") {
     const data = messageData.data;
     setAudioStore({
       data,
       sender
     });
+
+    alertMachineService.send("alert");
   }
 };
 

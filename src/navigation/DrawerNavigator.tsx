@@ -13,9 +13,13 @@ import {
   useLocationsStore,
   useAudioStore,
   useReceiveStore,
-  setEnableReception
+  setEnableReception,
+  alertMachine,
+  useAlertMachineStore,
+  alertMachineService
 } from "packages";
 import { firebaseAuth } from "config/firebase";
+import { useService } from "@xstate/react";
 let showingAlert = false;
 
 const DrawerNav = createDrawerNavigator();
@@ -58,15 +62,20 @@ function CustomDrawerContent(props: any) {
 }
 
 export function DrawerNavigator({ navigation }) {
+  const [alertMachineState, send] = useService(alertMachineService);
   const locationStore = useLocationsStore();
   const audioStore = useAudioStore();
   const receiveStore = useReceiveStore();
 
+  console.log("current state in drawer ", alertMachineState);
   useEffect(() => {
-    if (locationStore.coordinates.latitude || audioStore.data) {
-      navigation.navigate("ReceivingScreen");
+    if (alertMachineState.matches("alert")) {
+      navigation.navigate("AlertSplashScreen");
     }
-  }, [locationStore, audioStore]);
+    // if (locationStore.coordinates.latitude || audioStore.data) {
+    //   navigation.navigate("ReceivingScreen");
+    // }
+  }, [alertMachineState]);
 
   // useEffect(() => {
   //   async function handleAlert() {

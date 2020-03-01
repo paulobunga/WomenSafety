@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Title } from "react-native-paper";
 import { useLocationsStore, alertMachineService } from "packages";
 import { useService } from "@xstate/react";
+import { Audio } from "expo-av";
 
 export function AlertSplashScreen() {
+  useEffect(() => {
+    const soundObject = new Audio.Sound();
+
+    async function playAlarmSound() {
+      await soundObject.loadAsync(require("assets/sounds/alarm.mp3"));
+      await soundObject.playAsync();
+    }
+
+    async function stopAlarmSound() {
+      soundObject.stopAsync();
+    }
+
+    try {
+      playAlarmSound();
+    } catch (error) {}
+
+    return stopAlarmSound;
+  }, []);
+
   const locationStoreState = useLocationsStore();
   const [alertMachineState, send] = useService(alertMachineService);
 

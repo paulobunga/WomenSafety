@@ -77,27 +77,6 @@ export function DrawerNavigator({ navigation }) {
     }
   }, [alertMachineState]);
 
-  // useEffect(() => {
-  //   async function handleAlert() {
-  //     console.log("navigating ", locationStore, audioStore);
-  //     if (locationStore.coordinates.latitude || audioStore.data) {
-  //       if (showingAlert) {
-  //         return;
-  //       }
-  //       showingAlert = true;
-  //       if (!receiveStore.enableReception) {
-  //         try {
-  //           await showReceiveAlert();
-  //           setEnableReception(true);
-  //           showingAlert = false;
-  //         } catch (e) {}
-  //       }
-  //     }
-  //   }
-
-  //   handleAlert();
-  // }, [locationStore, audioStore]);
-
   return (
     <DrawerNav.Navigator
       drawerPosition="left"

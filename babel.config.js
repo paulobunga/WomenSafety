@@ -13,7 +13,8 @@ module.exports = function(api) {
             containers: "./src/containers",
             packages: "./src/packages",
             screens: "./src/screens",
-            navigation: "./src/navigation"
+            navigation: "./src/navigation",
+            assets: "./src/assets"
           }
         }
       ]

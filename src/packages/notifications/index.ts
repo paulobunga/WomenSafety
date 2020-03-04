@@ -1,6 +1,12 @@
 import messaging from "@react-native-firebase/messaging";
 import firebase, { firestore } from "config/firebase";
+import * as Permissions from "expo-permissions";
 export async function registerAppWithFCM() {
+  let { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+  if (status !== "granted") {
+    return null;
+  }
+
   await messaging().registerForRemoteNotifications();
   const token = await messaging().getToken();
 

@@ -28,17 +28,20 @@ export const backgroundLocationOptions: any = {
   }
 };
 
-export const startWatchingLocation = () => {
-  return locationPermissionMiddleWare(() => {
-    const remove = Location.watchPositionAsync(
-      backgroundLocationOptions,
-      data => {
-        console.log("data ", data);
-        startSendingLocation(data.coords.latitude, data.coords.longitude);
-      }
-    );
-    return remove;
-  });
+export const startWatchingLocation = async () => {
+  let { status } = await Permissions.askAsync(Permissions.LOCATION);
+  if (status !== "granted") {
+    return null;
+  }
+
+  const subscriptionPromise = await Location.watchPositionAsync(
+    backgroundLocationOptions,
+    data => {
+      console.log("data ", data);
+      startSendingLocation(data.coords.latitude, data.coords.longitude);
+    }
+  );
+  return subscriptionPromise;
   //   Location.startLocationUpdatesAsync(
   //     BACKGROUND_LOCATION_TASK,
   //     backgroundLocationOptions

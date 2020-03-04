@@ -23,8 +23,11 @@ const initialState = {
   progress: null
 };
 
+let locationSubscriber;
+
 function VoiceRecorder() {
   const [state, setState] = useState(initialState);
+  const [isWatchingLocation, setisWatchingLocation] = useState(false);
 
   const [recordingStatus, setRecordingStatus] = useState<Audio.RecordingStatus>(
     {
@@ -91,9 +94,26 @@ function VoiceRecorder() {
   };
 
   const onUploadRecording = async () => {
-    startWatchingLocation();
+    // Clear if previous observer exists!
+
+    if (locationSubscriber) {
+      locationSubscriber.remove();
+    }
+
+    locationSubscriber = await startWatchingLocation();
+
+    setisWatchingLocation(true);
+
     await recording.stopAndUnloadAsync();
     tryUpload();
+  };
+
+  const onCancelWatchingPosition = () => {
+    setisWatchingLocation(false);
+    if (locationSubscriber) {
+      console.log("location subscr", locationSubscriber);
+      locationSubscriber.remove();
+    }
   };
 
   const onCancelRecording = async () => {
@@ -115,6 +135,11 @@ function VoiceRecorder() {
   return (
     <>
       <View style={styles.buttonContainer}>
+        {isWatchingLocation ? (
+          <Button onPress={onCancelWatchingPosition}>
+            Stop watching location
+          </Button>
+        ) : null}
         {recordingStatus.isRecording ? (
           <Button
             mode="text"
@@ -138,6 +163,7 @@ function VoiceRecorder() {
           <Button
             mode="text"
             icon="phone"
+            disabled={isWatchingLocation}
             onPress={onStartRecording}
             uppercase
             color={colors["red-vivid-600"]}

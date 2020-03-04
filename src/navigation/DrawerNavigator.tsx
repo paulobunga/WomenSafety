@@ -9,17 +9,10 @@ import { Drawer, Text } from "react-native-paper";
 import { ManageFavorites, CreateAlertScreen } from "screens";
 import { Dimensions } from "react-native";
 import { useTranslatedText } from "components";
-import {
-  useLocationsStore,
-  useAudioStore,
-  useReceiveStore,
-  setEnableReception,
-  alertMachine,
-  useAlertMachineStore,
-  alertMachineService
-} from "packages";
+import { alertMachineService } from "packages";
 import { firebaseAuth } from "config/firebase";
 import { useService } from "@xstate/react";
+import { NavigationProp } from "@react-navigation/native";
 let showingAlert = false;
 
 const DrawerNav = createDrawerNavigator();
@@ -69,9 +62,12 @@ export function DrawerNavigator({ navigation }) {
     if (alertMachineState.matches("alert")) {
       navigation.navigate("AlertSplashScreen");
     }
+
     if (alertMachineState.matches("received")) {
+      navigation.pop();
       navigation.navigate("ReceivingScreen");
     }
+
     if (alertMachineState.matches("idle")) {
       navigation.navigate("Main");
     }

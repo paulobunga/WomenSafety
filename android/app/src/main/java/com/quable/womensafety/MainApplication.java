@@ -5,7 +5,10 @@ import android.app.KeyguardManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
 
 import com.facebook.react.ReactApplication;
 import io.invertase.firebase.messaging.ReactNativeFirebaseMessagingPackage;
@@ -88,5 +91,18 @@ public class MainApplication extends Application implements ReactApplication {
       NotificationManager manager = getSystemService(NotificationManager.class);
       manager.createNotificationChannel(notificationChannel);
     }
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      String packageName = this.getPackageName();
+      PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+      if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+        Intent intent = new Intent();
+        intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setData(Uri.parse("package:" + packageName));
+        this.startActivity(intent);
+      }
+    }
+
   }
 }

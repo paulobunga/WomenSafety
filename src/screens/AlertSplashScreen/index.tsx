@@ -7,15 +7,15 @@ import { Audio } from "expo-av";
 
 export function AlertSplashScreen() {
   useEffect(() => {
-    const soundObject = new Audio.Sound();
+    // const soundObject = new Audio.Sound();
 
     async function playAlarmSound() {
-      await soundObject.loadAsync(require("assets/sounds/alarm.mp3"));
-      await soundObject.playAsync();
+      // await soundObject.loadAsync(require("assets/sounds/alarm.mp3"));
+      // await soundObject.playAsync();
     }
 
     async function stopAlarmSound() {
-      soundObject.stopAsync();
+      // soundObject.stopAsync();
     }
 
     try {

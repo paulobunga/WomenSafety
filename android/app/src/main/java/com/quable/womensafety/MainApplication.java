@@ -80,6 +80,10 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
 
+    System.out.println("starting the activity "+Build.VERSION.SDK_INT);
+
+    System.out.println("starting the activity 2"+Build.VERSION_CODES.O);
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationChannel notificationChannel = new NotificationChannel("500", "MainChannel", NotificationManager.IMPORTANCE_HIGH);
       notificationChannel.setShowBadge(true);

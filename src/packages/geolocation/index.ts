@@ -1,5 +1,4 @@
 import create from "zustand";
-import { myUserId } from "../../../config";
 import { sendUserLocation } from "../message";
 import { firestore } from "config/firebase";
 
@@ -25,8 +24,12 @@ const setAudioStore = (data: any) => {
   audioAPI.setState(data);
 };
 
-export async function startSendingLocation(lat: number, long: number) {
-  sendUserLocation(myUserId, lat, long);
+export async function startSendingLocation(
+  userId: string,
+  lat: number,
+  long: number
+) {
+  sendUserLocation(userId, lat, long);
 }
 
 export const subscribeMessagesFromFavorites = (myNumber: string) => {

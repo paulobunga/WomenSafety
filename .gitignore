@@ -21,3 +21,5 @@ web-report/
 # macOS
 .DS_Store
 .env
+app-release.apk
+output.json

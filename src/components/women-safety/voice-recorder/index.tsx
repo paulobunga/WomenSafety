@@ -12,8 +12,8 @@ import {
   RECORDING_OPTION_IOS_AUDIO_QUALITY_MAX
 } from "expo-av/build/Audio";
 import { sendAudioMessage } from "../../../packages/message";
-import { myUserId } from "config";
 import { Snackbar } from "react-native-paper";
+import { useUserStore } from "packages";
 
 let recording;
 
@@ -26,6 +26,8 @@ const initialState = {
 let locationSubscriber;
 
 function VoiceRecorder() {
+  const user = useUserStore(state => state.user);
+
   const [state, setState] = useState(initialState);
   const [isWatchingLocation, setisWatchingLocation] = useState(false);
 
@@ -78,7 +80,7 @@ function VoiceRecorder() {
           });
         },
         async downloadUri => {
-          sendAudioMessage(myUserId, downloadUri);
+          sendAudioMessage(user.uid, downloadUri);
           setState({
             ...state,
             success: true
@@ -100,7 +102,7 @@ function VoiceRecorder() {
       locationSubscriber.remove();
     }
 
-    locationSubscriber = await startWatchingLocation();
+    locationSubscriber = await startWatchingLocation(user.uid);
 
     setisWatchingLocation(true);
 

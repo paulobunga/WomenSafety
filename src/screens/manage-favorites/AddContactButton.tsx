@@ -2,12 +2,11 @@ import * as React from "react";
 import { StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
 
-const AddContactButton = () => (
-    <FAB
-        style={styles.fab}
-        icon="plus"
-        onPress={() => console.log("Pressed")}
-    />
+interface IProps {
+    onPress: () => null;
+}
+const AddContactButton = ({ onPress }) => (
+    <FAB style={styles.fab} icon="plus" onPress={onPress} />
 );
 
 const styles = StyleSheet.create({

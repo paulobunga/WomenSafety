@@ -12,7 +12,6 @@ export function WomenStack() {
         name="AlertSplashScreen"
         component={AlertSplashScreen}
       />
-      <RootStack.Screen name="ManageFavorites" component={ManageFavorites} />
       <RootStack.Screen name="ReceivingScreen" component={ReceivingScreen} />
     </RootStack.Navigator>
   );

@@ -6,12 +6,13 @@ import {
 } from "@react-navigation/drawer";
 import { colors } from "config/colors";
 import { Drawer } from "react-native-paper";
-import { CreateAlertScreen, AddedFavorites } from "screens";
+import { CreateAlertScreen } from "screens";
 import { Dimensions } from "react-native";
 import { useTranslatedText } from "components";
 import { alertMachineService } from "packages";
 import { firebaseAuth } from "config/firebase";
 import { useService } from "@xstate/react";
+import { FavoritesStack } from "./favorites-stack";
 
 const DrawerNav = createDrawerNavigator();
 
@@ -36,7 +37,7 @@ function CustomDrawerContent(props: any) {
           label={translatedFavorites}
           active={currentActiveIndex === 1}
           onPress={() => {
-            props.navigation.navigate("addedFavorites");
+            props.navigation.navigate("favorites");
           }}
         />
         <Drawer.Item
@@ -77,7 +78,7 @@ export function DrawerNavigator({ navigation }) {
       drawerContent={props => <CustomDrawerContent {...props} />}
     >
       <DrawerNav.Screen name="alerts" component={CreateAlertScreen} />
-      <DrawerNav.Screen name="addedFavorites" component={AddedFavorites} />
+      <DrawerNav.Screen name="favorites" component={FavoritesStack} />
     </DrawerNav.Navigator>
   );
 }

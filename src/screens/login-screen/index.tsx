@@ -84,6 +84,7 @@ const PhoneNumber = ({ onSubmit }: { onSubmit: any }) => {
           <ErrorText message={"Please enter a valid phone number"} />
         ) : null}
         {error ? <ErrorText message={error} /> : null}
+        {loading ? <ActivityIndicator /> : null}
       </View>
     </View>
   );

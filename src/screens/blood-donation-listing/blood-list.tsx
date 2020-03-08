@@ -43,7 +43,7 @@ export function BloodList() {
 
   const [state, setState] = useState({
     documentData: [],
-    limit: 4,
+    limit: 8,
     loading: false,
     refreshing: false
   });

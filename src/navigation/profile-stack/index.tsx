@@ -6,7 +6,12 @@ const RootStack = createStackNavigator();
 export function ProfileStack() {
   return (
     <RootStack.Navigator headerMode="none">
-      <RootStack.Screen name="Profile" component={ChildListing} />
+      <RootStack.Screen
+        name="Profile"
+        component={() => {
+          return null;
+        }}
+      />
     </RootStack.Navigator>
   );
 }

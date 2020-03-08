@@ -53,7 +53,7 @@ function CustomDrawerContent(props: any) {
   );
 }
 
-export function DrawerNavigator({ navigation }) {
+export function WomenDrawerNavigator({ navigation }) {
   const [alertMachineState] = useService(alertMachineService);
 
   // console.log("current state machine state ", alertMachineState);

@@ -5,6 +5,7 @@ interface IBloodRequest {
   type: string;
   address: string;
   contact: string;
+  user_id: string;
 }
 
 async function onSubmitBloodRequest(req: IBloodRequest) {

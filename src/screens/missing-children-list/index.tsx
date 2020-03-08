@@ -8,15 +8,15 @@ import {
   View
 } from "react-native";
 import { firestore } from "config/firebase";
-import { Card, Text } from "react-native-paper";
+import { Card, Title, Text } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
-import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { callNumber, formatSecondsToDate } from "utils";
+import { IChild } from "src/types";
+import { formatSecondsToDate, callNumber } from "utils";
 
 const { height, width } = Dimensions.get("window");
 
-export function BloodList() {
+export function MissingChildrenList() {
   let lastVisible = useRef(null);
   const isFocused = useIsFocused();
 
@@ -41,7 +41,7 @@ export function BloodList() {
       });
       console.log("Retrieving Data");
       let initialQuery = await firestore
-        .collection("blood")
+        .collection("child")
         .orderBy("createdAt", "desc")
         .limit(state.limit);
       let documentSnapshots = await initialQuery.get();
@@ -72,7 +72,7 @@ export function BloodList() {
         });
 
         let additionalQuery = await firestore
-          .collection("blood")
+          .collection("child")
           .orderBy("createdAt", "desc")
           .startAfter(lastVisible.current)
           .limit(state.limit);
@@ -114,30 +114,7 @@ export function BloodList() {
         <FlatList
           data={state.documentData}
           onRefresh={retrieveData}
-          renderItem={({ item }: any) => (
-            <Card style={{ backgroundColor: "white", marginBottom: 10 }}>
-              <Card.Title title={item.type} />
-              <Card.Content>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.label}>Phone: </Text>
-                  <TouchableOpacity
-                    onPress={() => callNumber(item.contact)}
-                    style={{ flexDirection: "row", alignItems: "center" }}
-                  >
-                    <Text>{item.contact}</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.label}>Address: </Text>
-                  <Text>{item.address}</Text>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.label}>Posted on: </Text>
-                  <Text>{formatSecondsToDate(item.createdAt.seconds)} </Text>
-                </View>
-              </Card.Content>
-            </Card>
-          )}
+          renderItem={ChildItem}
           keyExtractor={(item, index) => String(index)}
           ListFooterComponent={renderFooter}
           onEndReached={retrieveMore}
@@ -154,13 +131,46 @@ export function BloodList() {
   return <SafeAreaView style={styles.container}>{renderList()}</SafeAreaView>;
 }
 
+function ChildItem({ item }: { item: IChild }) {
+  console.log("item ", item);
+  return (
+    <Card style={{ backgroundColor: "white", marginBottom: 10 }}>
+      <Card.Cover source={{ uri: item.image }} />
+
+      <Card.Content>
+        <Title>
+          {item.name} (Age: {item.age}
+          {"yrs"})
+        </Title>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.label}>Phone: </Text>
+          <TouchableOpacity
+            onPress={() => callNumber(item.contact)}
+            style={{ flexDirection: "row", alignItems: "center" }}
+          >
+            <Text>{item.contact}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.label}>Address: </Text>
+          <Text> {item.address} </Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.label}>Posted on: </Text>
+          <Text> {formatSecondsToDate(item.createdAt.seconds)} </Text>
+        </View>
+      </Card.Content>
+    </Card>
+  );
+}
+
 const styles = StyleSheet.create({
+  label: {
+    fontWeight: "bold"
+  },
   container: {
     height: height,
     width: width,
     paddingBottom: 120
-  },
-  label: {
-    fontWeight: "bold"
   }
 });

@@ -15,6 +15,7 @@ export function BottomTabNavigator() {
       activeColor="white"
       barStyle={{ backgroundColor: colors["cyan-vivid-800"] }}
       labeled={false}
+      sceneAnimationEnabled={false}
     >
       <Tab.Screen
         name="Women"
@@ -54,7 +55,7 @@ export function BottomTabNavigator() {
           )
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Profile"
         component={ProfileStack}
         options={{
@@ -63,7 +64,7 @@ export function BottomTabNavigator() {
             <MaterialCommunityIcons name="account" color={color} size={25} />
           )
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 }

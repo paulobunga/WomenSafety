@@ -2,6 +2,8 @@
 import * as Location from "expo-location";
 import { startSendingLocation } from "packages";
 import * as Permissions from "expo-permissions";
+import { format } from "date-fns";
+import { Platform, Linking, Alert } from "react-native";
 export const BACKGROUND_LOCATION_TASK = "background-location-task";
 
 export const setUpBackgroundLocationTask = () => {
@@ -98,3 +100,27 @@ export function formatTime(time) {
     return appendZero(min) + ":" + appendZero(sec);
   }
 }
+
+export const formatSecondsToDate = (dateSeconds: number) => {
+  if (dateSeconds) {
+    return format(new Date(dateSeconds * 1000), "do MMM yyyy KK:mm aaaa");
+  }
+};
+
+export const callNumber = phone => {
+  let phoneNumber = phone;
+  if (Platform.OS !== "android") {
+    phoneNumber = `telprompt:${phone}`;
+  } else {
+    phoneNumber = `tel:${phone}`;
+  }
+  Linking.canOpenURL(phoneNumber)
+    .then(supported => {
+      if (!supported) {
+        Alert.alert("Phone number is not available");
+      } else {
+        return Linking.openURL(phoneNumber);
+      }
+    })
+    .catch(err => console.log(err));
+};

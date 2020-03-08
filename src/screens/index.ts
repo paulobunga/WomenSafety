@@ -8,3 +8,4 @@ export * from "./AlertSplashScreen";
 export * from "./blood-donation-listing";
 export * from "./child-listing";
 export * from "./add-blood-request";
+export * from "./add-missing-children";

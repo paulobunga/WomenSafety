@@ -56,4 +56,6 @@ target 'WomenSafety' do
 
   pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
 end

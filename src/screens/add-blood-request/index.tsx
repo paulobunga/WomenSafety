@@ -3,10 +3,12 @@ import { AppBar } from "components";
 import { TextInput, Button } from "react-native-paper";
 import { StyleSheet, View, Picker } from "react-native";
 import { useForm } from "react-hook-form";
-import { bloodService } from "packages";
+import { bloodService, useUserStore } from "packages";
 import { useMutation } from "react-query";
 
 export function AddBloodRequest({ navigation }) {
+  let { uid } = useUserStore(state => state.user);
+
   const { register, handleSubmit, setValue, errors } = useForm({
     defaultValues: {
       address: null,
@@ -17,18 +19,14 @@ export function AddBloodRequest({ navigation }) {
   const [type, setType] = useState("O+");
 
   const [mutate, { status }] = useMutation(bloodService.onSubmitBloodRequest, {
-    onSuccess: () => {},
+    onSuccess: () => {
+      navigation.navigate("BloodDonationListing");
+    },
     onError: () => {}
   });
 
-  useEffect(() => {
-    if (status === "success") {
-      navigation.navigate("BloodDonationListing");
-    }
-  }, [status]);
-
-  const onSubmit = ({ address, contact }) => {
-    mutate({ address, contact, type });
+  const onSubmit = (formValues: any) => {
+    mutate({ ...formValues, type, userId: uid });
   };
 
   useEffect(() => {

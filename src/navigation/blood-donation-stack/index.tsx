@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { BloodDonationListing } from "screens";
+import { BloodDonationListing, AddBloodRequest } from "screens";
 const RootStack = createStackNavigator();
 
 export function BloodDonationStack() {
@@ -10,6 +10,7 @@ export function BloodDonationStack() {
         name="BloodDonationListing"
         component={BloodDonationListing}
       />
+      <RootStack.Screen name="AddBloodRequest" component={AddBloodRequest} />
     </RootStack.Navigator>
   );
 }

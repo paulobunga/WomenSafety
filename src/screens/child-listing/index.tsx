@@ -1,6 +1,14 @@
 import React from "react";
-import { Text } from "react-native";
+import { AddFloatingButton } from "components";
+import { Appbar } from "react-native-paper";
 
-export function ChildListing() {
-  return <Text>Hey there</Text>;
+export function ChildListing({ navigation }) {
+  return (
+    <>
+      <Appbar.Header>
+        <Appbar.Content title={"Missing Children"} />
+      </Appbar.Header>
+      <AddFloatingButton onPress={() => {}}></AddFloatingButton>
+    </>
+  );
 }

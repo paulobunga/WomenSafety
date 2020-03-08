@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as Font from "expo-font";
 import "./src/utils/localization";
 import DefaulTheme from "./config/theme";
-import { RootStackScreen, LoginStack } from "navigation";
+import { RootStackScreen, LoginStack, BottomTabNavigator } from "navigation";
 import {
   subscribeMessagesFromFavorites,
   useUserStore,
@@ -85,7 +85,7 @@ export default function App(props: any) {
     <PaperProvider theme={DefaulTheme}>
       {user.providerData ? (
         <NavigationContainer>
-          <RootStackScreen />
+          <BottomTabNavigator />
         </NavigationContainer>
       ) : (
         <NavigationContainer>

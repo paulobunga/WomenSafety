@@ -5,23 +5,13 @@ import {
   DrawerContentScrollView
 } from "@react-navigation/drawer";
 import { colors } from "config/colors";
-import { Drawer, Text } from "react-native-paper";
+import { Drawer } from "react-native-paper";
 import { CreateAlertScreen, AddedFavorites } from "screens";
 import { Dimensions } from "react-native";
 import { useTranslatedText } from "components";
-import {
-  useLocationsStore,
-  useAudioStore,
-  useReceiveStore,
-  setEnableReception,
-  alertMachine,
-  useAlertMachineStore,
-  alertMachineService
-} from "packages";
+import { alertMachineService } from "packages";
 import { firebaseAuth } from "config/firebase";
 import { useService } from "@xstate/react";
-import { NavigationProp } from "@react-navigation/native";
-let showingAlert = false;
 
 const DrawerNav = createDrawerNavigator();
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AppBar, ErrorText } from "components";
+import { AppBar, ErrorText, useTranslatedText } from "components";
 import { TextInput, Button } from "react-native-paper";
 import { StyleSheet, View, Image } from "react-native";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,11 @@ export function AddMissingChildren({ navigation }) {
   let { uid } = useUserStore(state => state.user);
   const [image, setImage] = useState(null);
   const { register, handleSubmit, setValue, errors } = useForm();
+  const childInfoForm = useTranslatedText("childInfoForm");
+  const name = useTranslatedText("name");
+  const age = useTranslatedText("age");
+  const address = useTranslatedText("address");
+  const phone = useTranslatedText("phone");
 
   const [mutate, { status }] = useMutation(
     childService.onSubmitMissingChildren,
@@ -57,43 +62,47 @@ export function AddMissingChildren({ navigation }) {
 
   return (
     <>
-      <AppBar title="Add Child information" isModal navigation={navigation} />
+      <AppBar title={childInfoForm} isModal navigation={navigation} />
 
       <KeyboardAwareScrollView>
         <View style={styles.container}>
           <View style={{ width: "80%" }}>
             <TextInput
+              mode="outlined"
               style={styles.input}
-              label="name"
+              label={name}
               multiline
               error={errors.name ? true : false}
               onChangeText={text => setValue("name", text)}
             />
             <TextInput
               style={styles.input}
-              label="age"
+              mode="outlined"
+              label={age}
               keyboardType="phone-pad"
               error={errors.age ? true : false}
               onChangeText={text => setValue("age", text)}
             />
             <TextInput
+              mode="outlined"
               style={styles.input}
-              label="contact"
+              label={phone}
               keyboardType="phone-pad"
               error={errors.age ? true : false}
               onChangeText={text => setValue("contact", text)}
             />
 
             <TextInput
+              mode="outlined"
               style={styles.input}
-              label="address"
+              label={address}
               multiline
               error={errors.address ? true : false}
               onChangeText={text => setValue("address", text)}
             />
 
-            <TouchableOpacity onPress={pickImage}>
-              <MaterialCommunityIcons name="image" size={25} />
+            <TouchableOpacity onPress={pickImage} style={{ marginBottom: 10 }}>
+              <MaterialCommunityIcons name="camera-image" size={25} />
               {errors.image && (
                 <ErrorText message="Select an image"></ErrorText>
               )}
@@ -128,6 +137,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   input: {
-    marginBottom: 20
+    marginBottom: 20,
+    backgroundColor: "white"
   }
 });

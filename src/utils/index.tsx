@@ -3,7 +3,7 @@ import * as Location from "expo-location";
 import { startSendingLocation } from "packages";
 import * as Permissions from "expo-permissions";
 import { format } from "date-fns";
-import { Platform, Linking, Alert } from "react-native";
+import { Platform, Linking, Alert, Share } from "react-native";
 export const BACKGROUND_LOCATION_TASK = "background-location-task";
 
 export const setUpBackgroundLocationTask = () => {
@@ -123,4 +123,15 @@ export const callNumber = phone => {
       }
     })
     .catch(err => console.log(err));
+};
+
+export const shareInformation = () => {
+  const shareOptions = {
+    title: "Title",
+    message: "Message to share", // Note that according to the documentation at least one of "message" or "url" fields is required
+    url: "www.example.com",
+    subject: "Subject"
+  };
+
+  Share.share(shareOptions);
 };

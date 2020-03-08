@@ -5,14 +5,27 @@ import {
   FlatList,
   SafeAreaView,
   StyleSheet,
-  View
+  View,
+  Share
 } from "react-native";
 import { firestore } from "config/firebase";
-import { Card, Title, Text } from "react-native-paper";
+import { Card, Title, Text, Button } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { IChild } from "src/types";
 import { formatSecondsToDate, callNumber } from "utils";
+import { useTranslatedText } from "components";
+
+const shareMessage = (item: any) => {
+  const shareOptions = {
+    title: `Blood is required (${item.type})`,
+    message: `Contact person - ${item.contact}`,
+    subject: `Blood Required`,
+    url: item.image
+  };
+
+  Share.share(shareOptions);
+};
 
 const { height, width } = Dimensions.get("window");
 
@@ -114,7 +127,7 @@ export function MissingChildrenList() {
         <FlatList
           data={state.documentData}
           onRefresh={retrieveData}
-          renderItem={ChildItem}
+          renderItem={({ item }: any) => <ChildItem item={item} />}
           keyExtractor={(item, index) => String(index)}
           ListFooterComponent={renderFooter}
           onEndReached={retrieveMore}
@@ -133,17 +146,22 @@ export function MissingChildrenList() {
 
 function ChildItem({ item }: { item: IChild }) {
   console.log("item ", item);
+  const age = useTranslatedText("age");
+  const phone = useTranslatedText("phone");
+  const address = useTranslatedText("address");
+  const postedOn = useTranslatedText("postedOn");
+
   return (
     <Card style={{ backgroundColor: "white", marginBottom: 10 }}>
       <Card.Cover source={{ uri: item.image }} />
 
       <Card.Content>
         <Title>
-          {item.name} (Age: {item.age}
+          {item.name} ({age}: {item.age}
           {"yrs"})
         </Title>
         <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>Phone: </Text>
+          <Text style={styles.label}>{phone}: </Text>
           <TouchableOpacity
             onPress={() => callNumber(item.contact)}
             style={{ flexDirection: "row", alignItems: "center" }}
@@ -152,14 +170,23 @@ function ChildItem({ item }: { item: IChild }) {
           </TouchableOpacity>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>Address: </Text>
+          <Text style={styles.label}>{address}: </Text>
           <Text> {item.address} </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>Posted on: </Text>
+          <Text style={styles.label}>{postedOn}: </Text>
           <Text> {formatSecondsToDate(item.createdAt.seconds)} </Text>
         </View>
       </Card.Content>
+      {/* <Card.Actions>
+        <Button
+          onPress={() => {
+            shareMessage(item);
+          }}
+        >
+          Share
+        </Button>
+      </Card.Actions> */}
     </Card>
   );
 }

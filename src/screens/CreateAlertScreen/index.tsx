@@ -1,23 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Button, ActivityIndicator } from "react-native-paper";
+import React from "react";
 import {
   VoiceRecorder,
-  TranslatedText,
   AppBar,
-  SubscribeToGeolocation,
-  WatchGeoLocation
+  WatchGeoLocation,
+  useTranslatedText
 } from "components";
-import { useTranslation } from "react-i18next";
 
 export const CreateAlertScreen = ({ navigation }) => {
-  const { i18n } = useTranslation();
-  const changeLanguage = () => {
-    i18n.changeLanguage("gu");
-  };
+  const alertsLabel = useTranslatedText("alerts");
 
   return (
     <>
-      <AppBar navigation={navigation} title="Alerts" />
+      <AppBar navigation={navigation} title={alertsLabel} />
 
       {/* <TranslatedText labelFor="title" /> */}
       <VoiceRecorder />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AppBar } from "components";
+import { AppBar, useTranslatedText } from "components";
 import { TextInput, Button } from "react-native-paper";
 import { StyleSheet, View, Picker } from "react-native";
 import { useForm } from "react-hook-form";
@@ -8,6 +8,9 @@ import { useMutation } from "react-query";
 
 export function AddBloodRequest({ navigation }) {
   let { uid } = useUserStore(state => state.user);
+  const bloodRequestForm = useTranslatedText("bloodRequestForm");
+  const phone = useTranslatedText("phone");
+  const address = useTranslatedText("address");
 
   const { register, handleSubmit, setValue, errors } = useForm({
     defaultValues: {
@@ -36,19 +39,21 @@ export function AddBloodRequest({ navigation }) {
 
   return (
     <>
-      <AppBar title="Add blood request" isModal navigation={navigation} />
+      <AppBar title={bloodRequestForm} isModal navigation={navigation} />
       <View style={styles.container}>
         <View style={{ width: "80%" }}>
           <TextInput
             style={styles.input}
-            label="Address"
+            mode="outlined"
+            label={address}
             multiline
             error={errors.address ? true : false}
             onChangeText={text => setValue("address", text)}
           />
           <TextInput
             style={styles.input}
-            label="Contact"
+            label={phone}
+            mode="outlined"
             keyboardType="phone-pad"
             error={errors.contact ? true : false}
             onChangeText={text => setValue("contact", text)}
@@ -89,6 +94,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   input: {
+    backgroundColor: "white",
     marginBottom: 20
   }
 });

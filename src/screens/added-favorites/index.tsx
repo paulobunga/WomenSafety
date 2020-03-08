@@ -1,4 +1,4 @@
-import { AppBar } from "components";
+import { AppBar, useTranslatedText } from "components";
 import React, { useEffect, useState } from "react";
 import { View, FlatList } from "react-native";
 import { List } from "react-native-paper";
@@ -9,6 +9,8 @@ let unsubscribeFromContacts;
 
 export function AddedFavoritesScreen({ navigation }) {
   const { uid } = useUserStore(state => state.user);
+  const yourFavoritesText = useTranslatedText("yourFavorites");
+
   const [fetchedContacts, setFetchedContacts] = useState([]);
   const _renderItem = ({ item, index }) => {
     const title = `Emergency Contact : ${index + 1}`;
@@ -44,7 +46,7 @@ export function AddedFavoritesScreen({ navigation }) {
 
   return (
     <>
-      <AppBar navigation={navigation} title="Your Favorites" />
+      <AppBar navigation={navigation} title={yourFavoritesText} />
       <View>
         <FlatList
           data={fetchedContacts}

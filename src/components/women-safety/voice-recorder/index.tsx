@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Audio } from "expo-av";
 import { Button } from "react-native-paper";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
@@ -14,6 +14,7 @@ import {
 import { sendAudioMessage } from "../../../packages/message";
 import { Snackbar } from "react-native-paper";
 import { useUserStore } from "packages";
+import { useTranslatedText } from "components";
 
 let recording;
 
@@ -27,6 +28,9 @@ let locationSubscriber;
 
 function VoiceRecorder() {
   const user = useUserStore(state => state.user);
+  const recordText = useTranslatedText("record");
+  const sendText = useTranslatedText("send");
+  const cancelText = useTranslatedText("cancel");
 
   const [state, setState] = useState(initialState);
   const [isWatchingLocation, setisWatchingLocation] = useState(false);
@@ -159,7 +163,7 @@ function VoiceRecorder() {
               borderRadius: 35
             }}
           >
-            Send
+            {sendText}
           </Button>
         ) : (
           <Button
@@ -179,7 +183,7 @@ function VoiceRecorder() {
               borderRadius: 35
             }}
           >
-            Record
+            {recordText}
           </Button>
         )}
 
@@ -202,7 +206,7 @@ function VoiceRecorder() {
               {formatTime(Math.floor(recordingStatus.durationMillis / 1000))}
             </Text>
             <Button onPress={onCancelRecording} icon="cancel">
-              Cancel
+              {cancelText}
             </Button>
           </>
         ) : null}

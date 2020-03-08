@@ -5,14 +5,25 @@ import {
   FlatList,
   SafeAreaView,
   StyleSheet,
-  View
+  View,
+  Share
 } from "react-native";
 import { firestore } from "config/firebase";
-import { Card, Text } from "react-native-paper";
+import { Card, Text, Button } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
-import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { callNumber, formatSecondsToDate } from "utils";
+import { useTranslatedText } from "components";
+
+const shareMessage = (item: any) => {
+  const shareOptions = {
+    title: `Blood is required (${item.type})`,
+    message: `Contact person - ${item.contact}`,
+    subject: `Blood Required`
+  };
+
+  Share.share(shareOptions);
+};
 
 const { height, width } = Dimensions.get("window");
 
@@ -97,47 +108,20 @@ export function BloodList() {
   };
 
   const renderFooter = () => {
-    try {
-      // Check If Loading
-      if (state.refreshing) {
-        return <ActivityIndicator />;
-      } else {
-        return null;
-      }
-    } catch (error) {
-      console.log(error);
+    if (state.refreshing) {
+      return <ActivityIndicator />;
+    } else {
+      return null;
     }
   };
+
   const renderList = () => {
     if (state.documentData.length > 0) {
       return (
         <FlatList
           data={state.documentData}
           onRefresh={retrieveData}
-          renderItem={({ item }: any) => (
-            <Card style={{ backgroundColor: "white", marginBottom: 10 }}>
-              <Card.Title title={item.type} />
-              <Card.Content>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.label}>Phone: </Text>
-                  <TouchableOpacity
-                    onPress={() => callNumber(item.contact)}
-                    style={{ flexDirection: "row", alignItems: "center" }}
-                  >
-                    <Text>{item.contact}</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.label}>Address: </Text>
-                  <Text>{item.address}</Text>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.label}>Posted on: </Text>
-                  <Text>{formatSecondsToDate(item.createdAt.seconds)} </Text>
-                </View>
-              </Card.Content>
-            </Card>
-          )}
+          renderItem={({ item }: any) => <BloodListItem item={item} />}
           keyExtractor={(item, index) => String(index)}
           ListFooterComponent={renderFooter}
           onEndReached={retrieveMore}
@@ -164,3 +148,43 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   }
 });
+
+const BloodListItem = ({ item }: any) => {
+  const phone = useTranslatedText("phone");
+  const address = useTranslatedText("address");
+  const postedOn = useTranslatedText("postedOn");
+
+  return (
+    <Card style={{ backgroundColor: "white", marginBottom: 10 }}>
+      <Card.Title title={item.type} />
+      <Card.Content>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.label}>{phone}: </Text>
+          <TouchableOpacity
+            onPress={() => callNumber(item.contact)}
+            style={{ flexDirection: "row", alignItems: "center" }}
+          >
+            <Text>{item.contact}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.label}>{address}: </Text>
+          <Text>{item.address}</Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.label}>{postedOn}: </Text>
+          <Text>{formatSecondsToDate(item.createdAt.seconds)} </Text>
+        </View>
+      </Card.Content>
+      {/* <Card.Actions>
+        <Button
+          onPress={() => {
+            shareMessage(item);
+          }}
+        >
+          Share
+        </Button>
+      </Card.Actions> */}
+    </Card>
+  );
+};

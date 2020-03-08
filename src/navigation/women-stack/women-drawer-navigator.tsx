@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Alert } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Alert, AsyncStorage } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView
@@ -13,6 +13,7 @@ import { alertMachineService } from "packages";
 import { firebaseAuth } from "config/firebase";
 import { useService } from "@xstate/react";
 import { FavoritesStack } from "./favorites-stack";
+import { useTranslation } from "react-i18next";
 
 const DrawerNav = createDrawerNavigator();
 
@@ -20,6 +21,9 @@ function CustomDrawerContent(props: any) {
   const currentActiveIndex = props.state.index;
   const translatedAlerts = useTranslatedText("alerts");
   const translatedFavorites = useTranslatedText("favorites");
+  const logoutText = useTranslatedText("logout");
+
+  const { i18n } = useTranslation();
 
   return (
     <DrawerContentScrollView {...props}>
@@ -42,10 +46,29 @@ function CustomDrawerContent(props: any) {
         />
         <Drawer.Item
           icon="account-arrow-right-outline"
-          label={"Logout"}
+          label={logoutText}
           active={currentActiveIndex === 100}
           onPress={() => {
             firebaseAuth.signOut();
+          }}
+        />
+
+        <Drawer.Item
+          label={"English"}
+          active={i18n.language === "en"}
+          onPress={() => {
+            i18n.changeLanguage("en");
+            AsyncStorage.setItem("defaultLang", "en");
+            props.navigation.closeDrawer();
+          }}
+        />
+        <Drawer.Item
+          label={"ગુજરાતી"}
+          active={i18n.language === "gu"}
+          onPress={() => {
+            i18n.changeLanguage("gu");
+            AsyncStorage.setItem("defaultLang", "gu");
+            props.navigation.closeDrawer();
           }}
         />
       </Drawer.Section>

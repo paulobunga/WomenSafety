@@ -8,7 +8,21 @@ i18n.use(initReactI18next).init({
         title: "Welcome",
         alerts: "Alerts",
         favorites: "Favorites",
-        record: "Record"
+        record: "Record",
+        cancel: "cancel",
+        send: "send",
+        phone: "Phone",
+        address: "Address",
+        postedOn: "Posted On",
+        name: "name",
+        bloodRequestForm: "Blood request form",
+        bloodRequests: "Blood Requests",
+        missingChildren: "Missing Children",
+        age: "age",
+        childInfoForm: "Child information form",
+        logout: "Logout",
+        yourFavorites: "Your favorites",
+        addFavorites: "Add Favorites"
       }
     },
     gu: {
@@ -16,7 +30,21 @@ i18n.use(initReactI18next).init({
         title: "સ્વાગત છે",
         alerts: "સંપર્ક",
         favorites: "મિત્રો",
-        record: "રેકોર્ડ"
+        record: "રેકોર્ડ",
+        cancel: "રદ કરો",
+        send: "મોકલો",
+        phone: "ફોન",
+        address: "સરનામું",
+        postedOn: "તારીખ",
+        name: "નામ",
+        bloodRequestForm: "રક્ત વિનંતી ફોર્મ",
+        bloodRequests: "રક્ત વિનંતીઓ",
+        missingChildren: "લાપતા બાળકો",
+        age: "ઉંમર",
+        childInfoForm: "બાળક માહિતી ફોર્મ",
+        logout: "લૉગ આઉટ",
+        yourFavorites: "તમારા મિત્રો",
+        addFavorites: "મિત્રો ઉમેરો"
       }
     },
     hi: {

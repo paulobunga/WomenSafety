@@ -16,6 +16,8 @@ import { firebaseAuth, firestore } from "config/firebase";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { setUpBackgroundLocationTask } from "utils";
 import { useService } from "@xstate/react";
+import { AsyncStorage } from "react-native";
+import { useTranslation } from "react-i18next";
 
 setUpBackgroundLocationTask();
 
@@ -32,7 +34,11 @@ const fetchFonts = () => {
   });
 };
 export default function App(props: any) {
+  const { i18n } = useTranslation();
+
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [defaultLangLoaded, setDefaultLangLoaded] = useState(false);
+
   const user = useUserStore(state => state.user);
   const setUser = useUserStore(state => state.setUser);
 
@@ -56,6 +62,18 @@ export default function App(props: any) {
     fetchFonts().then(() => {
       setFontsLoaded(true);
     });
+
+    AsyncStorage.getItem("defaultLang")
+      .then(res => {
+        if (res) {
+          i18n.changeLanguage(res);
+        }
+        setDefaultLangLoaded(true);
+      })
+      .catch(e => {
+        setDefaultLangLoaded(true);
+      });
+
     return subscriber;
   }, []);
 
@@ -76,7 +94,7 @@ export default function App(props: any) {
     return unsubscribe;
   }, [user]);
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || !defaultLangLoaded) {
     return null;
   }
 

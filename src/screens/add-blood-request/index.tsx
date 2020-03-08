@@ -51,6 +51,7 @@ export function AddBloodRequest({ navigation }) {
           <TextInput
             style={styles.input}
             label="Contact"
+            keyboardType="phone-pad"
             error={errors.contact ? true : false}
             onChangeText={text => setValue("contact", text)}
           />

@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as Font from "expo-font";
 import "./src/utils/localization";
 import DefaulTheme from "./config/theme";
-import { RootStackScreen, LoginStack, BottomTabNavigator } from "navigation";
+import { LoginStack, BottomTabNavigator } from "navigation";
 import {
   subscribeMessagesFromFavorites,
   useUserStore,

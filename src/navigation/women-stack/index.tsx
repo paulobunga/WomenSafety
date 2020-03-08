@@ -4,7 +4,7 @@ import { DrawerNavigator } from "./DrawerNavigator";
 import { ReceivingScreen, AlertSplashScreen, ManageFavorites } from "screens";
 const RootStack = createStackNavigator();
 
-export function RootStackScreen() {
+export function WomenStack() {
   return (
     <RootStack.Navigator mode="modal" headerMode="none">
       <RootStack.Screen name="Main" component={DrawerNavigator} />

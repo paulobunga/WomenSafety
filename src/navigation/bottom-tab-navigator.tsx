@@ -1,8 +1,8 @@
 import React from "react";
-import { RootStackScreen } from "./root-stack-navigator";
 import { BloodDonationStack } from "./blood-donation-stack";
 import { ChildStack } from "./child-stack";
 import { ProfileStack } from "./profile-stack";
+import { WomenStack } from "./women-stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { colors } from "config/colors";
@@ -18,7 +18,7 @@ export function BottomTabNavigator() {
     >
       <Tab.Screen
         name="Women"
-        component={RootStackScreen}
+        component={WomenStack}
         options={{
           tabBarLabel: "Women",
           tabBarIcon: ({ color, size }) => (

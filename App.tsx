@@ -16,8 +16,9 @@ import { firebaseAuth, firestore } from "config/firebase";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { setUpBackgroundLocationTask } from "utils";
 import { useService } from "@xstate/react";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, StatusBar } from "react-native";
 import { useTranslation } from "react-i18next";
+import { colors } from "config/colors";
 
 setUpBackgroundLocationTask();
 
@@ -101,6 +102,13 @@ export default function App(props: any) {
   console.log("user astate ", user);
   return (
     <PaperProvider theme={DefaulTheme}>
+      <StatusBar
+        barStyle="dark-content"
+        hidden={false}
+        backgroundColor={colors["cyan-vivid-900"]}
+        translucent={false}
+        networkActivityIndicatorVisible={true}
+      />
       {user.providerData ? (
         <NavigationContainer>
           <BottomTabNavigator />

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
+import { colors } from "config/colors";
 
 interface IProps {
   onPress: () => null;

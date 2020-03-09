@@ -15,6 +15,14 @@ async function onSubmitBloodRequest(req: IBloodRequest) {
   });
 }
 
+async function onRemoveBloodRequest(req: { id: any }) {
+  return db
+    .collection("blood")
+    .doc(req.id)
+    .delete();
+}
+
 export const bloodService = {
-  onSubmitBloodRequest
+  onSubmitBloodRequest,
+  onRemoveBloodRequest
 };

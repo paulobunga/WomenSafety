@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAudioStore } from "packages";
 import { Audio } from "expo-av";
 import { Button } from "react-native-paper";
 import { PlaybackStatus } from "expo-av/build/AV";
 import { Text, ActivityIndicator, StyleSheet, View } from "react-native";
 import { formatTime } from "utils";
-let soundObject = new Audio.Sound();
+let soundObject;
 
 export function ListenRecording() {
   const { sender, data } = useAudioStore();
@@ -31,16 +31,24 @@ export function ListenRecording() {
     }
 
     return (
-      <Button icon="play" onPress={loadAndPlaySound}>
+      <Button icon="play" onPress={playSound}>
         Play
       </Button>
     );
   };
 
-  async function loadAndPlaySound() {
-    await soundObject.loadAsync({ uri: data }, {}, false);
+  useEffect(() => {
+    soundObject = new Audio.Sound();
+    soundObject.loadAsync({ uri: data }, {}, false);
+    return () => {
+      soundObject.stopAsync();
+      soundObject = null;
+    };
+  }, [data]);
+
+  async function playSound() {
+    await soundObject.setPositionAsync(0);
     await soundObject.playAsync();
-    await soundObject.setIsLoopingAsync(true);
     soundObject.setProgressUpdateIntervalAsync(1000);
     soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
   }
@@ -51,7 +59,9 @@ export function ListenRecording() {
 
   return (
     <>
-      {/* <Text>{sender.name}</Text> */}
+      <View style={styles.text}>
+        <Text>{sender.phone}</Text>
+      </View>
       <View style={styles.container}>
         {playbackStatus.positionMillis ? (
           <Text>{formatTime(playbackStatus.positionMillis / 1000)}</Text>
@@ -71,5 +81,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     marginTop: 20
+  },
+  text: {
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+    marginTop: 10
   }
 });

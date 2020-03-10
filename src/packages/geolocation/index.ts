@@ -74,17 +74,14 @@ export const actOnMessageReceived = async (messageData: any) => {
   const senderSnapshot = await senderRef.get();
   const sender = senderSnapshot._data;
 
-  const currentSender = getSender();
-
   if (alertMachineService.state.matches("idle")) {
     senderAPI.setState({ sender });
     alertMachineService.send("alert");
   }
 
-  if (
-    alertMachineService.state.matches("received") &&
-    currentSender.phone !== sender.phone
-  ) {
+  const currentSender = getSender();
+
+  if (currentSender.phone !== sender.phone) {
     return;
   }
 

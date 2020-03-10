@@ -1,28 +1,24 @@
-import { useUserStore } from "../user";
 import { firestore } from "config/firebase";
 import { useMemo } from "react";
 import { useQueryWithPagination } from "./useQueryWithPagination";
 
 const limit = 8;
+const myChildMissingRequestQuery = "childMissingRequests";
 
-const bloodRequestQuery = "myBloodRequests";
-
-const fetchMyBloodRequests = async (cursor, uid) => {
-  let documents;
+const fetchMissingChildRequests = async cursor => {
   try {
+    let documents;
     if (cursor) {
       documents = await firestore
-        .collection("blood")
+        .collection("child")
         .orderBy("created_at", "desc")
         .startAfter(cursor)
-        .limit(limit)
-        .where("user_id", "==", uid);
+        .limit(limit);
     } else {
       documents = await firestore
-        .collection("blood")
+        .collection("child")
         .orderBy("created_at", "desc")
-        .limit(limit)
-        .where("user_id", "==", uid);
+        .limit(limit);
     }
 
     let documentSnapshots = await documents.get();
@@ -36,7 +32,6 @@ const fetchMyBloodRequests = async (cursor, uid) => {
       data: documentData,
       next: documentSnapshots.docs[documentSnapshots.docs.length - 1]
     };
-
     return res;
   } catch (e) {
     console.log(e);
@@ -44,11 +39,10 @@ const fetchMyBloodRequests = async (cursor, uid) => {
   }
 };
 
-export function useMyBloodRequests() {
-  const { uid } = useUserStore(state => state.user);
-
-  const info = useQueryWithPagination(bloodRequestQuery, cursor =>
-    fetchMyBloodRequests(cursor, uid)
+export function useMissingChildrenRequests() {
+  const info = useQueryWithPagination(
+    myChildMissingRequestQuery,
+    fetchMissingChildRequests
   );
 
   const data = useMemo(() => {

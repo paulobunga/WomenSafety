@@ -6,7 +6,8 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Share
+  Share,
+  Alert
 } from "react-native";
 import { Card, Text, Button, Title } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -17,10 +18,12 @@ import {
   SomethingWentWrong,
   CenteredText
 } from "components";
-import { useMissingChildrenRequests } from "packages";
+import { childService, useMyMissingChildRequests } from "packages";
+import { useMutation } from "react-query";
 import { IChild } from "src/types";
 import { useIsFocused } from "@react-navigation/native";
 
+let queryRefetch;
 const shareMessage = (item: any) => {
   const shareOptions = {
     title: `Blood is required (${item.type})`,
@@ -33,22 +36,24 @@ const shareMessage = (item: any) => {
 
 const { height, width } = Dimensions.get("window");
 
-export function MissingChildrenList() {
-  const isFocused = useIsFocused();
-
+export function MyMissingChildrenRequests() {
   const {
     status,
     data,
     isFetchingMore,
     loadMore,
     refetch
-  } = useMissingChildrenRequests();
+  } = useMyMissingChildRequests();
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
       refetch();
     }
   }, [isFocused]);
+
+  queryRefetch = refetch;
 
   const renderFooter = () => {
     if (isFetchingMore) {
@@ -89,15 +94,6 @@ export function MissingChildrenList() {
     return null;
   };
 
-  if (status === "error" && data.length === 0) {
-    return (
-      <View>
-        <Text>Something went wrong!</Text>
-        <Button onPress={refetch}>Retry</Button>
-      </View>
-    );
-  }
-
   return <SafeAreaView style={styles.container}>{renderList()}</SafeAreaView>;
 }
 
@@ -113,7 +109,6 @@ const styles = StyleSheet.create({
 });
 
 function ChildItem({ item }: { item: IChild }) {
-  console.log("item child", item);
   const age = useTranslatedText("age");
   const phone = useTranslatedText("phone");
   const address = useTranslatedText("address");
@@ -146,6 +141,44 @@ function ChildItem({ item }: { item: IChild }) {
           <Text> {formatSecondsToDate(item.created_at.seconds)} </Text>
         </View>
       </Card.Content>
+      <Card.Actions>
+        <MarkAsfound item={item} />
+      </Card.Actions>
     </Card>
+  );
+}
+
+function MarkAsfound({ item }: any) {
+  const [mutate, { status }] = useMutation(
+    childService.onRemoveChildMissingRequest,
+    {
+      onSuccess: () => {
+        if (queryRefetch) {
+          queryRefetch();
+        }
+      },
+      onError: () => {}
+    }
+  );
+
+  const showAlert = () => {
+    Alert.alert(
+      "Are you sure?",
+      "Marking as found will remove this request from listing",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Confirm", onPress: () => mutate({ id: item.id }) }
+      ]
+    );
+  };
+
+  return (
+    <Button icon="check" onPress={showAlert}>
+      Mark as found
+    </Button>
   );
 }

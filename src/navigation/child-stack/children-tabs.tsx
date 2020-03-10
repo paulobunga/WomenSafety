@@ -1,11 +1,13 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { MyBloodRequests, BloodList } from "screens";
+import { MyMissingChildrenRequests, MissingChildrenList } from "screens";
 import { colors } from "config/colors";
-import { AddFloatingButton } from "components";
+import { AddFloatingButton, useTranslatedText } from "components";
 const Tab = createMaterialTopTabNavigator();
 
-export function BloodDonationTabs({ navigation }) {
+export function ChildrenTabs({ navigation }) {
+  const missingChildren = useTranslatedText("missingChildren");
+
   return (
     <>
       <Tab.Navigator
@@ -21,12 +23,15 @@ export function BloodDonationTabs({ navigation }) {
           }
         }}
       >
-        <Tab.Screen name="Blood Requests" component={BloodList} />
-        <Tab.Screen name="Your Requests" component={MyBloodRequests} />
+        <Tab.Screen name={missingChildren} component={MissingChildrenList} />
+        <Tab.Screen
+          name="Your Requests"
+          component={MyMissingChildrenRequests}
+        />
       </Tab.Navigator>
       <AddFloatingButton
         onPress={() => {
-          navigation.navigate("AddBloodRequest");
+          navigation.navigate("AddMissingChildren");
         }}
       ></AddFloatingButton>
     </>

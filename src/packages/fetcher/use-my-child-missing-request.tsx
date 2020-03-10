@@ -1,56 +1,52 @@
 import { useUserStore } from "../user";
 import { firestore } from "config/firebase";
-import { queryCache, useInfiniteQuery } from "react-query";
 import { useMemo } from "react";
+import { useQueryWithPagination } from "./useQueryWithPagination";
 
 const limit = 8;
 const myChildMissingRequestQuery = "myChildMissingRequests";
 
-export const refetchMyChildMissingRequest = () => {
-  queryCache.refetchQueries(myChildMissingRequestQuery);
-};
+const fetchMyChildRequests = async (cursor, uid) => {
+  try {
+    let documents;
+    if (cursor) {
+      documents = await firestore
+        .collection("child")
+        .orderBy("created_at", "desc")
+        .startAfter(cursor)
+        .limit(limit)
+        .where("user_id", "==", uid);
+    } else {
+      documents = await firestore
+        .collection("child")
+        .orderBy("created_at", "desc")
+        .limit(limit)
+        .where("user_id", "==", uid);
+    }
 
-const fetchMyChildRequests = async (key, cursor, uid) => {
-  let documents;
-  if (cursor) {
-    documents = await firestore
-      .collection("child")
-      .orderBy("createdAt", "desc")
-      .startAfter(cursor)
-      .limit(limit)
-      .where("userId", "==", uid);
-  } else {
-    documents = await firestore
-      .collection("child")
-      .orderBy("createdAt", "desc")
-      .limit(limit)
-      .where("userId", "==", uid);
+    let documentSnapshots = await documents.get();
+
+    let documentData = documentSnapshots.docs.map(document => ({
+      ...document.data(),
+      id: document.id
+    }));
+
+    let res = {
+      data: documentData,
+      next: documentSnapshots.docs[documentSnapshots.docs.length - 1]
+    };
+    return res;
+  } catch (e) {
+    console.log(e);
+    throw e;
   }
-
-  let documentSnapshots = await documents.get();
-
-  let documentData = documentSnapshots.docs.map(document => ({
-    ...document.data(),
-    id: document.id
-  }));
-
-  let res = {
-    data: documentData,
-    next: documentSnapshots.docs[documentSnapshots.docs.length - 1]
-  };
-
-  return res;
 };
 
 export function useMyMissingChildRequests() {
   const { uid } = useUserStore(state => state.user);
 
-  const info = useInfiniteQuery(
-    "myChildMissingRequestQuery",
-    (key, cursor) => fetchMyChildRequests(key, cursor, uid),
-    {
-      getFetchMore: lastGroup => lastGroup.next
-    }
+  const info = useQueryWithPagination(myChildMissingRequestQuery, cursor =>
+    fetchMyChildRequests(cursor, uid)
   );
 
   const data = useMemo(() => {
@@ -65,7 +61,7 @@ export function useMyMissingChildRequests() {
   }, [info.data]);
 
   const loadMore = () => {
-    if (info.canFetchMore) {
+    if (info.data[info.data.length - 1].next) {
       info.fetchMore(info.data[info.data.length - 1].next);
     }
   };

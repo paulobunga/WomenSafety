@@ -1,8 +1,8 @@
 import { firestore, default as firebase } from "config/firebase";
 const usersRef = firestore.collection("users");
 
-async function getUserFavorites(userId: any) {
-  const documentSnapshot = await usersRef.doc(userId).get();
+async function getUserFavorites(user_id: any) {
+  const documentSnapshot = await usersRef.doc(user_id).get();
   const favorites = documentSnapshot.data().favorites;
   return favorites;
 }

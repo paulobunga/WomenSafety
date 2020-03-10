@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -12,13 +12,15 @@ import {
 import { Card, Text, Button } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { callNumber, formatSecondsToDate } from "utils";
-import { useTranslatedText } from "components";
 import {
-  useMyBloodRequests,
-  bloodService,
-  refetchMyBloodRequestsQuery
-} from "packages";
+  useTranslatedText,
+  Loading,
+  SomethingWentWrong,
+  CenteredText
+} from "components";
+import { useMyBloodRequests, bloodService } from "packages";
 import { useMutation } from "react-query";
+import { useIsFocused } from "@react-navigation/native";
 
 const shareMessage = (item: any) => {
   const shareOptions = {
@@ -31,18 +33,20 @@ const shareMessage = (item: any) => {
 };
 
 const { height, width } = Dimensions.get("window");
-
+let queryRefetch;
 export function MyBloodRequests() {
-  const {
-    status,
-    data,
-    isFetchingMore,
-    loadMore,
-    refetch
-  } = useMyBloodRequests();
+  const isFocused = useIsFocused();
+  const { status, data, loadMore, refetch } = useMyBloodRequests();
+  queryRefetch = refetch;
+
+  useEffect(() => {
+    if (isFocused) {
+      refetch();
+    }
+  }, [isFocused]);
 
   const renderFooter = () => {
-    if (isFetchingMore) {
+    if (status === "loadingMore") {
       return <ActivityIndicator />;
     } else {
       return null;
@@ -50,7 +54,18 @@ export function MyBloodRequests() {
   };
 
   const renderList = () => {
-    if (data.length > 0) {
+    if (data.length === 0) {
+      if (status === "error") {
+        return <SomethingWentWrong onRetry={refetch} />;
+      }
+      if (status === "loading") {
+        return <Loading />;
+      }
+
+      if (status === "success") {
+        return <CenteredText>No data found</CenteredText>;
+      }
+    } else {
       return (
         <FlatList
           data={data}
@@ -63,9 +78,8 @@ export function MyBloodRequests() {
           refreshing={status === "loading"}
         />
       );
-    } else if (status === "loading") {
-      return <ActivityIndicator />;
     }
+
     return null;
   };
 
@@ -107,20 +121,22 @@ const BloodListItem = ({ item }: any) => {
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.label}>{postedOn}: </Text>
-          <Text>{formatSecondsToDate(item.createdAt.seconds)} </Text>
+          <Text>{formatSecondsToDate(item.created_at.seconds)} </Text>
         </View>
       </Card.Content>
       <Card.Actions>
-        <MarkAsDone item={item} />
+        <MarkAsfound item={item} />
       </Card.Actions>
     </Card>
   );
 };
 
-function MarkAsDone({ item }: any) {
+function MarkAsfound({ item }: any) {
   const [mutate, { status }] = useMutation(bloodService.onRemoveBloodRequest, {
     onSuccess: () => {
-      refetchMyBloodRequestsQuery();
+      if (queryRefetch) {
+        queryRefetch();
+      }
     },
     onError: () => {}
   });
@@ -128,7 +144,7 @@ function MarkAsDone({ item }: any) {
   const showAlert = () => {
     Alert.alert(
       "Are you sure?",
-      "Marking as done will remove this request from listing",
+      "Marking as found will remove this request from listing",
       [
         {
           text: "Cancel",
@@ -142,7 +158,7 @@ function MarkAsDone({ item }: any) {
 
   return (
     <Button icon="check" onPress={showAlert}>
-      Mark as done
+      Mark as found
     </Button>
   );
 }

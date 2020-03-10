@@ -21,7 +21,7 @@ async function onSubmitMissingChildren(req: IChild) {
           await db.collection("child").add({
             ...req,
             image: downloadURI,
-            createdAt: firestore.Timestamp.now()
+            created_at: firestore.Timestamp.now()
           });
           resolve();
         } catch (e) {
@@ -32,6 +32,14 @@ async function onSubmitMissingChildren(req: IChild) {
   });
 }
 
+async function onRemoveChildMissingRequest(req: { id: any }) {
+  return db
+    .collection("child")
+    .doc(req.id)
+    .delete();
+}
+
 export const childService = {
-  onSubmitMissingChildren
+  onSubmitMissingChildren,
+  onRemoveChildMissingRequest
 };

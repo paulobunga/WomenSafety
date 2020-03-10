@@ -25,11 +25,11 @@ const setAudioStore = (data: any) => {
 };
 
 export async function startSendingLocation(
-  userId: string,
+  user_id: string,
   lat: number,
   long: number
 ) {
-  sendUserLocation(userId, lat, long);
+  sendUserLocation(user_id, lat, long);
 }
 
 export const subscribeMessagesFromFavorites = (myNumber: string) => {

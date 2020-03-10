@@ -111,7 +111,7 @@ export function AddMissingChildren({ navigation }) {
             {image ? (
               <Image
                 source={{ uri: "file://" + image }}
-                style={{ height: 100, width: 100 }}
+                style={{ height: 100, width: 100, marginBottom: 10 }}
               />
             ) : null}
 

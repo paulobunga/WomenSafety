@@ -30,7 +30,7 @@ export const backgroundLocationOptions: any = {
   }
 };
 
-export const startWatchingLocation = async (userId: string) => {
+export const startWatchingLocation = async (user_id: string) => {
   let { status } = await Permissions.askAsync(Permissions.LOCATION);
   if (status !== "granted") {
     return null;
@@ -40,7 +40,11 @@ export const startWatchingLocation = async (userId: string) => {
     backgroundLocationOptions,
     data => {
       console.log("data ", data);
-      startSendingLocation(userId, data.coords.latitude, data.coords.longitude);
+      startSendingLocation(
+        user_id,
+        data.coords.latitude,
+        data.coords.longitude
+      );
     }
   );
   return subscriptionPromise;

@@ -1,13 +1,12 @@
-import { useUserStore } from "../user";
 import { firestore } from "config/firebase";
-import { useMemo } from "react";
 import { useQueryWithPagination } from "./useQueryWithPagination";
+import { useMemo } from "react";
 
 const limit = 8;
 
-const bloodRequestQuery = "myBloodRequests";
+const bloodRequestQuery = "bloodRequests";
 
-const fetchMyBloodRequests = async (cursor, uid) => {
+const fetchBloodRequests = async cursor => {
   let documents;
   try {
     if (cursor) {
@@ -15,14 +14,12 @@ const fetchMyBloodRequests = async (cursor, uid) => {
         .collection("blood")
         .orderBy("created_at", "desc")
         .startAfter(cursor)
-        .limit(limit)
-        .where("user_id", "==", uid);
+        .limit(limit);
     } else {
       documents = await firestore
         .collection("blood")
         .orderBy("created_at", "desc")
-        .limit(limit)
-        .where("user_id", "==", uid);
+        .limit(limit);
     }
 
     let documentSnapshots = await documents.get();
@@ -44,12 +41,14 @@ const fetchMyBloodRequests = async (cursor, uid) => {
   }
 };
 
-export function useMyBloodRequests() {
-  const { uid } = useUserStore(state => state.user);
+export function useBloodRequests() {
+  const info = useQueryWithPagination(bloodRequestQuery, fetchBloodRequests);
 
-  const info = useQueryWithPagination(bloodRequestQuery, cursor =>
-    fetchMyBloodRequests(cursor, uid)
-  );
+  const loadMore = () => {
+    if (info.data[info.data.length - 1].next) {
+      info.fetchMore(info.data[info.data.length - 1].next);
+    }
+  };
 
   const data = useMemo(() => {
     let data = [];
@@ -61,12 +60,6 @@ export function useMyBloodRequests() {
 
     return data;
   }, [info.data]);
-
-  const loadMore = () => {
-    if (info.data[info.data.length - 1].next) {
-      info.fetchMore(info.data[info.data.length - 1].next);
-    }
-  };
 
   return {
     ...info,

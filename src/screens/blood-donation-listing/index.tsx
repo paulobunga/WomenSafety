@@ -1,116 +1,39 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   ActivityIndicator,
   Dimensions,
   FlatList,
   SafeAreaView,
   StyleSheet,
-  View,
-  Share
+  View
 } from "react-native";
-import { firestore } from "config/firebase";
-import { Card, Text, Button } from "react-native-paper";
-import { useIsFocused } from "@react-navigation/native";
+import { Card, Text } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { callNumber, formatSecondsToDate } from "utils";
-import { useTranslatedText } from "components";
-import { useMyBloodRequests } from "packages";
-
-const shareMessage = (item: any) => {
-  const shareOptions = {
-    title: `Blood is required (${item.type})`,
-    message: `Contact person - ${item.contact}`,
-    subject: `Blood Required`
-  };
-
-  Share.share(shareOptions);
-};
+import {
+  useTranslatedText,
+  Loading,
+  SomethingWentWrong,
+  CenteredText
+} from "components";
+import { useBloodRequests } from "packages";
+import { useIsFocused } from "@react-navigation/native";
 
 const { height, width } = Dimensions.get("window");
 
 export function BloodList() {
-  let lastVisible = useRef(null);
   const isFocused = useIsFocused();
-  const data = useMyBloodRequests();
 
-  const [state, setState] = useState({
-    documentData: [],
-    limit: 8,
-    loading: false,
-    refreshing: false
-  });
+  const { status, data, loadMore, refetch } = useBloodRequests();
 
   useEffect(() => {
     if (isFocused) {
-      retrieveData();
+      refetch();
     }
   }, [isFocused]);
 
-  const retrieveData = async () => {
-    try {
-      setState({
-        ...state,
-        loading: true
-      });
-      console.log("Retrieving Data");
-      let initialQuery = await firestore
-        .collection("blood")
-        .orderBy("createdAt", "desc")
-        .limit(state.limit);
-      let documentSnapshots = await initialQuery.get();
-      lastVisible.current =
-        documentSnapshots.docs[documentSnapshots.docs.length - 1];
-
-      let documentData = documentSnapshots.docs.map(document =>
-        document.data()
-      );
-      setState({
-        ...state,
-        documentData: documentData,
-        loading: false
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const retrieveMore = async () => {
-    console.log("Retrieving more");
-
-    try {
-      if (lastVisible.current) {
-        setState({
-          ...state,
-          refreshing: true
-        });
-
-        let additionalQuery = await firestore
-          .collection("blood")
-          .orderBy("createdAt", "desc")
-          .startAfter(lastVisible.current)
-          .limit(state.limit);
-
-        let documentSnapshots = await additionalQuery.get();
-        lastVisible.current =
-          documentSnapshots.docs[documentSnapshots.docs.length - 1];
-
-        let documentData = documentSnapshots.docs.map(document =>
-          document.data()
-        );
-
-        setState({
-          ...state,
-          documentData: [...state.documentData, ...documentData],
-          refreshing: false
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const renderFooter = () => {
-    if (state.refreshing) {
+    if (status === "loadingMore") {
       return <ActivityIndicator />;
     } else {
       return null;
@@ -118,22 +41,32 @@ export function BloodList() {
   };
 
   const renderList = () => {
-    if (state.documentData.length > 0) {
+    if (data.length === 0) {
+      if (status === "error") {
+        return <SomethingWentWrong onRetry={refetch} />;
+      }
+      if (status === "loading") {
+        return <Loading />;
+      }
+
+      if (status === "success") {
+        return <CenteredText>No data found</CenteredText>;
+      }
+    } else {
       return (
         <FlatList
-          data={state.documentData}
-          onRefresh={retrieveData}
+          data={data}
+          onRefresh={refetch}
           renderItem={({ item }: any) => <BloodListItem item={item} />}
-          keyExtractor={(item, index) => String(index)}
+          keyExtractor={(item: any) => item.id}
           ListFooterComponent={renderFooter}
-          onEndReached={retrieveMore}
-          onEndReachedThreshold={0.3}
-          refreshing={state.loading}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.5}
+          refreshing={status === "loading"}
         />
       );
-    } else if (state.loading) {
-      return <ActivityIndicator />;
     }
+
     return null;
   };
 
@@ -175,18 +108,9 @@ const BloodListItem = ({ item }: any) => {
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.label}>{postedOn}: </Text>
-          <Text>{formatSecondsToDate(item.createdAt.seconds)} </Text>
+          <Text>{formatSecondsToDate(item.created_at.seconds)} </Text>
         </View>
       </Card.Content>
-      {/* <Card.Actions>
-        <Button
-          onPress={() => {
-            shareMessage(item);
-          }}
-        >
-          Share
-        </Button>
-      </Card.Actions> */}
     </Card>
   );
 };

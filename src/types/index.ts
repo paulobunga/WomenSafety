@@ -13,6 +13,6 @@ export interface IChild {
   address: string;
   contact: string;
   image: string;
-  createdAt: any;
+  created_at: any;
   age: number;
 }

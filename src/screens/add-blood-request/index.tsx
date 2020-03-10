@@ -3,11 +3,7 @@ import { AppBar, useTranslatedText } from "components";
 import { TextInput, Button } from "react-native-paper";
 import { StyleSheet, View, Picker } from "react-native";
 import { useForm } from "react-hook-form";
-import {
-  bloodService,
-  useUserStore,
-  refetchMyBloodRequestsQuery
-} from "packages";
+import { bloodService, useUserStore } from "packages";
 import { useMutation } from "react-query";
 
 export function AddBloodRequest({ navigation }) {
@@ -28,13 +24,12 @@ export function AddBloodRequest({ navigation }) {
   const [mutate, { status }] = useMutation(bloodService.onSubmitBloodRequest, {
     onSuccess: () => {
       navigation.navigate("BloodDonationListing");
-      refetchMyBloodRequestsQuery();
     },
     onError: () => {}
   });
 
   const onSubmit = (formValues: any) => {
-    mutate({ ...formValues, type, userId: uid });
+    mutate({ ...formValues, type, user_id: uid });
   };
 
   useEffect(() => {
@@ -72,6 +67,7 @@ export function AddBloodRequest({ navigation }) {
           >
             <Picker.Item label="O (+)" value="O+" />
             <Picker.Item label="O (-)" value="O-" />
+            <Picker.Item label="A (+)" value="A+" />
             <Picker.Item label="A (-)" value="A-" />
             <Picker.Item label="AB (+)" value="AB+" />
             <Picker.Item label="AB (-)" value="AB-" />

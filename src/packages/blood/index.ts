@@ -11,7 +11,7 @@ interface IBloodRequest {
 async function onSubmitBloodRequest(req: IBloodRequest) {
   return db.collection("blood").add({
     ...req,
-    createdAt: firestore.Timestamp.now()
+    created_at: firestore.Timestamp.now()
   });
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Alert, AsyncStorage } from "react-native";
 import {
   createDrawerNavigator,
@@ -9,8 +9,7 @@ import { Drawer } from "react-native-paper";
 import { CreateAlertScreen } from "screens";
 import { Dimensions } from "react-native";
 import { useTranslatedText } from "components";
-import { alertMachineService } from "packages";
-import { firebaseAuth } from "config/firebase";
+import { alertMachineService, logout } from "packages";
 import { useService } from "@xstate/react";
 import { FavoritesStack } from "./favorites-stack";
 import { useTranslation } from "react-i18next";
@@ -48,9 +47,7 @@ function CustomDrawerContent(props: any) {
           icon="account-arrow-right-outline"
           label={logoutText}
           active={currentActiveIndex === 100}
-          onPress={() => {
-            firebaseAuth.signOut();
-          }}
+          onPress={logout}
         />
 
         <Drawer.Item

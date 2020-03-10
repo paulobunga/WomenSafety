@@ -12,7 +12,7 @@ const [useLocationsStore, locationAPI] = create(() => ({
 }));
 
 const [useAudioStore, audioAPI] = create(() => ({
-  sender: null,
+  sender: {} as ISender,
   data: null
 }));
 
@@ -22,6 +22,14 @@ const setLocationStore = (data: any) => {
 
 const setAudioStore = (data: any) => {
   audioAPI.setState(data);
+};
+
+export const getLocationSender = () => {
+  return locationAPI.getState().sender;
+};
+
+export const getAudioSender = () => {
+  return audioAPI.getState().sender;
 };
 
 export async function startSendingLocation(
@@ -87,20 +95,46 @@ export const actOnMessageReceived = async (messageData: any) => {
       latitude: lat,
       longitude: long
     };
-    setLocationStore({
-      coordinates,
-      sender
-    });
 
-    alertMachineService.send("alert");
+    const currentSender = getLocationSender();
+
+    if (alertMachineService.state.matches("idle")) {
+      setLocationStore({
+        coordinates,
+        sender
+      });
+      alertMachineService.send("alert");
+    }
+    if (
+      alertMachineService.state.matches("received") &&
+      sender.phone === currentSender.phone
+    ) {
+      setLocationStore({
+        coordinates,
+        sender
+      });
+    }
   } else if (messageData.type === "audio") {
     const data = messageData.data;
-    setAudioStore({
-      data,
-      sender
-    });
 
-    alertMachineService.send("alert");
+    const currentAudioSender = getAudioSender();
+
+    if (alertMachineService.state.matches("idle")) {
+      setAudioStore({
+        data,
+        sender
+      });
+      alertMachineService.send("alert");
+    }
+    if (
+      alertMachineService.state.matches("received") &&
+      sender.phone === currentAudioSender.phone
+    ) {
+      setAudioStore({
+        data,
+        sender
+      });
+    }
   }
 };
 

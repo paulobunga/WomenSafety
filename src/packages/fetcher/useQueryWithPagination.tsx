@@ -41,10 +41,6 @@ const reducer = (state, action) => {
 
 type Ifetcher = (cursor?: any) => Promise<any>;
 
-interface Iparams {
-  getFetchMore: any;
-}
-
 export function useQueryWithPagination(key: string, fetcher: Ifetcher) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -61,8 +57,6 @@ export function useQueryWithPagination(key: string, fetcher: Ifetcher) {
       dispatch({ type: actions.error, payload: error });
     }
   }
-
-  console.log("rerender state ", state);
 
   useEffect(() => {
     refetch();

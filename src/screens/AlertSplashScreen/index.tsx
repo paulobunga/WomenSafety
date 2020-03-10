@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Title } from "react-native-paper";
-import { useLocationsStore, alertMachineService } from "packages";
+import { alertMachineService, useSenderStore } from "packages";
 import { useService } from "@xstate/react";
 import { Audio } from "expo-av";
 
@@ -25,15 +25,14 @@ export function AlertSplashScreen() {
     return stopAlarmSound;
   }, []);
 
-  const locationStoreState = useLocationsStore();
+  const sender = useSenderStore(state => state.sender);
   const [alertMachineState, send] = useService(alertMachineService);
 
-  console.log("location store state ", locationStoreState);
   return (
     <View>
       <Button>Receiving alert</Button>
       <View style={styles.title}>
-        <Title>Requestor - {locationStoreState.sender.phone}</Title>
+        <Title>Requestor - {sender.phone}</Title>
       </View>
       <Button
         onPress={() => {

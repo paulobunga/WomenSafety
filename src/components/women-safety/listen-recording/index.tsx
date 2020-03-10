@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAudioStore } from "packages";
+import { useAudioStore, useSenderStore } from "packages";
 import { Audio } from "expo-av";
 import { Button } from "react-native-paper";
 import { PlaybackStatus } from "expo-av/build/AV";
@@ -8,7 +8,9 @@ import { formatTime } from "utils";
 let soundObject;
 
 export function ListenRecording() {
-  const { sender, data } = useAudioStore();
+  const sender = useSenderStore(state => state.sender);
+  const data = useAudioStore(state => state.data);
+
   const [playbackStatus, setPlaybackStatus] = useState<PlaybackStatus>({});
 
   const onPlaybackStatusUpdate = (status: PlaybackStatus) => {

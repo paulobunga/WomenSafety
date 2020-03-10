@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { StyleSheet, Dimensions, Linking, Platform } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { useLocationsStore } from "packages";
+import { useSenderStore } from "packages";
 
 interface IProps {
   coordinates: { latitude: number; longitude: number };
@@ -27,7 +27,7 @@ export function MapViewWithCoordinates({
   coordinates,
   setIsMapLoaded
 }: IProps) {
-  const requestor = useLocationsStore();
+  const sender = useSenderStore(state => state.sender);
 
   const mapRegion = {
     ...coordinates,
@@ -51,8 +51,8 @@ export function MapViewWithCoordinates({
       <Marker
         onPress={openMapsMemoized}
         coordinate={coordinates}
-        title="Requestor"
-        description="Help! Requestor is in trouble"
+        title={`${sender.phone}`}
+        description={`Help! ${sender.phone} is in trouble`}
       />
     </MapView>
   );

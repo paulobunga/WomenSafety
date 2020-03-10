@@ -1,18 +1,19 @@
 import create from "zustand";
 import { sendUserLocation } from "../message";
 import { firestore } from "config/firebase";
-
 import subSeconds from "date-fns/subSeconds";
 import { alertMachineService } from "../alert-machine";
 import { ISender, ICoordinates } from "src/types";
 
 const [useLocationsStore, locationAPI] = create(() => ({
-  sender: {} as ISender,
   coordinates: {} as ICoordinates
 }));
 
+const [useSenderStore, senderAPI] = create(() => ({
+  sender: {} as ISender
+}));
+
 const [useAudioStore, audioAPI] = create(() => ({
-  sender: {} as ISender,
   data: null
 }));
 
@@ -24,12 +25,8 @@ const setAudioStore = (data: any) => {
   audioAPI.setState(data);
 };
 
-export const getLocationSender = () => {
-  return locationAPI.getState().sender;
-};
-
-export const getAudioSender = () => {
-  return audioAPI.getState().sender;
+export const getSender = () => {
+  return senderAPI.getState().sender;
 };
 
 export async function startSendingLocation(
@@ -76,7 +73,20 @@ export const actOnMessageReceived = async (messageData: any) => {
   const senderRef = firestore.collection("users").doc(senderId);
   const senderSnapshot = await senderRef.get();
   const sender = senderSnapshot._data;
-  console.log("message received ", messageData);
+
+  const currentSender = getSender();
+
+  if (alertMachineService.state.matches("idle")) {
+    senderAPI.setState({ sender });
+    alertMachineService.send("alert");
+  }
+
+  if (
+    alertMachineService.state.matches("received") &&
+    currentSender.phone !== sender.phone
+  ) {
+    return;
+  }
 
   if (messageData.type === "location") {
     let lat, long;
@@ -96,46 +106,18 @@ export const actOnMessageReceived = async (messageData: any) => {
       longitude: long
     };
 
-    const currentSender = getLocationSender();
-
-    if (alertMachineService.state.matches("idle")) {
-      setLocationStore({
-        coordinates,
-        sender
-      });
-      alertMachineService.send("alert");
-    }
-    if (
-      alertMachineService.state.matches("received") &&
-      sender.phone === currentSender.phone
-    ) {
-      setLocationStore({
-        coordinates,
-        sender
-      });
-    }
+    setLocationStore({
+      coordinates,
+      sender
+    });
   } else if (messageData.type === "audio") {
     const data = messageData.data;
 
-    const currentAudioSender = getAudioSender();
-
-    if (alertMachineService.state.matches("idle")) {
-      setAudioStore({
-        data,
-        sender
-      });
-      alertMachineService.send("alert");
-    }
-    if (
-      alertMachineService.state.matches("received") &&
-      sender.phone === currentAudioSender.phone
-    ) {
-      setAudioStore({
-        data,
-        sender
-      });
-    }
+    setAudioStore({
+      data,
+      sender
+    });
   }
 };
 
-export { useLocationsStore, useAudioStore };
+export { useLocationsStore, useAudioStore, useSenderStore };

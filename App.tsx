@@ -10,12 +10,11 @@ import {
   useUserStore,
   registerAppWithFCM,
   actOnMessageReceived,
-  alertMachineService
+  registerVolunteerBackgroundService
 } from "packages";
 import { firebaseAuth, firestore } from "config/firebase";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { setUpBackgroundLocationTask } from "utils";
-import { useService } from "@xstate/react";
 import { AsyncStorage, StatusBar } from "react-native";
 import { useTranslation } from "react-i18next";
 import { colors } from "config/colors";
@@ -91,6 +90,7 @@ export default function App(props: any) {
     let unsubscribe = () => {};
     if (user.phoneNumber) {
       unsubscribe = subscribeMessagesFromFavorites(user.phoneNumber);
+      registerVolunteerBackgroundService();
     }
     return unsubscribe;
   }, [user]);

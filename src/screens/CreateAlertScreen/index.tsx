@@ -5,6 +5,7 @@ import {
   WatchGeoLocation,
   useTranslatedText
 } from "components";
+import { WatchVolunteerLocation } from "../volunteers";
 
 export const CreateAlertScreen = ({ navigation }) => {
   const alertsLabel = useTranslatedText("alerts");
@@ -12,6 +13,7 @@ export const CreateAlertScreen = ({ navigation }) => {
   return (
     <>
       <AppBar navigation={navigation} title={alertsLabel} />
+      <WatchVolunteerLocation />
 
       {/* <TranslatedText labelFor="title" /> */}
       <VoiceRecorder />

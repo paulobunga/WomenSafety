@@ -7,6 +7,14 @@ const [useUserStore, api] = create(set => ({
   setUser: (user: FirebaseAuthTypes.User) => set({ user })
 }));
 
+export const getUserId = () => {
+  return api.getState().user.uid;
+};
+
+export const getUserPhoneNumber = () => {
+  return api.getState().user.phoneNumber;
+};
+
 export const logout = async () => {
   const uid = api.getState().user.uid;
 

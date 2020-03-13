@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.PowerManager;
 
 import com.facebook.react.ReactApplication;
+import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
 import com.imagepicker.ImagePickerPackage;
 import io.invertase.firebase.messaging.ReactNativeFirebaseMessagingPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -51,6 +52,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new BackgroundGeolocationPackage(),
             new ImagePickerPackage(),
             new ReactNativeFirebaseMessagingPackage(),
             new MapsPackage(),

@@ -6,3 +6,4 @@ export * from "./alert-machine";
 export * from "./blood";
 export * from "./child";
 export * from "./fetcher";
+export * from "./volunteer";

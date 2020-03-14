@@ -112,7 +112,6 @@ export const registerVolunteerBackgroundService = () => {
   });
 
   BackgroundGeolocation.on("start", () => {
-    volunteerLocationWatchMachineService.send("WATCH");
     console.log("[INFO] BackgroundGeolocation service has been started");
   });
 
@@ -183,6 +182,8 @@ export const registerVolunteerBackgroundService = () => {
 
     if (status.isRunning) {
       volunteerLocationWatchMachineService.send("WATCH");
+    } else {
+      volunteerLocationWatchMachineService.send("STOP_WATCHING");
     }
     // you don't need to check status before start (this is just the example)
   });

@@ -39,7 +39,7 @@ export const startWatchingLocation = async (user_id: string) => {
   const subscriptionPromise = await Location.watchPositionAsync(
     backgroundLocationOptions,
     data => {
-      console.log("data ", data);
+      console.log("watching position for emergency ", data);
       startSendingLocation(
         user_id,
         data.coords.latitude,

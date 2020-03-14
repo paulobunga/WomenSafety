@@ -6,7 +6,7 @@ import {
 } from "@react-navigation/drawer";
 import { colors } from "config/colors";
 import { Drawer } from "react-native-paper";
-import { CreateAlertScreen } from "screens";
+import { CreateAlertScreen, WatchVolunteerLocation } from "screens";
 import { Dimensions } from "react-native";
 import { useTranslatedText } from "components";
 import { alertMachineService, logout } from "packages";
@@ -68,6 +68,7 @@ function CustomDrawerContent(props: any) {
             props.navigation.closeDrawer();
           }}
         />
+        <WatchVolunteerLocation />
       </Drawer.Section>
     </DrawerContentScrollView>
   );

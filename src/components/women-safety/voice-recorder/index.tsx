@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Audio } from "expo-av";
 import { Button } from "react-native-paper";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
@@ -28,6 +28,8 @@ const initialState = {
 let locationSubscriber;
 
 function VoiceRecorder() {
+  const lastAudiodownloadURI = useRef(null);
+
   const senderPhoneNumber = useUserStore(state => state.user.phoneNumber);
   const recordText = useTranslatedText("record");
   const sendText = useTranslatedText("send");
@@ -85,7 +87,11 @@ function VoiceRecorder() {
           });
         },
         async downloadUri => {
+          lastAudiodownloadURI.current = downloadUri;
+
           sendAudioMessage(senderPhoneNumber, downloadUri);
+          startSendingLocationInfo();
+
           setState({
             ...state,
             success: true
@@ -100,17 +106,19 @@ function VoiceRecorder() {
     }
   };
 
-  const onUploadRecording = async () => {
-    // Clear if previous observer exists!
-
+  const startSendingLocationInfo = async () => {
     if (locationSubscriber) {
       locationSubscriber.remove();
     }
-
-    locationSubscriber = await startWatchingLocation(senderPhoneNumber);
-
     setisWatchingLocation(true);
+    locationSubscriber = await startWatchingLocation(
+      senderPhoneNumber,
+      lastAudiodownloadURI.current
+    );
+  };
 
+  const onUploadRecording = async () => {
+    startSendingLocationInfo();
     await recording.stopAndUnloadAsync();
     tryUpload();
   };

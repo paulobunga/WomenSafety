@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAudioStore, useSenderStore } from "packages";
+import { useAlertMessageStore } from "packages";
 import { Audio } from "expo-av";
 import { Button } from "react-native-paper";
 import { PlaybackStatus } from "expo-av/build/AV";
@@ -8,8 +8,8 @@ import { formatTime } from "utils";
 let soundObject;
 
 export function ListenRecording() {
-  const sender = useSenderStore(state => state.sender);
-  const data = useAudioStore(state => state.data);
+  const sender = useAlertMessageStore(state => state.sender);
+  const audioURI = useAlertMessageStore(state => state.audio_data.audio_uri);
 
   const [playbackStatus, setPlaybackStatus] = useState<PlaybackStatus>({});
 
@@ -18,7 +18,7 @@ export function ListenRecording() {
   };
 
   const renderPlayButton = () => {
-    if (!data) {
+    if (!audioURI) {
       return null;
     }
 
@@ -41,12 +41,12 @@ export function ListenRecording() {
 
   useEffect(() => {
     soundObject = new Audio.Sound();
-    soundObject.loadAsync({ uri: data }, {}, false);
+    soundObject.loadAsync({ uri: audioURI }, {}, false);
     return () => {
       soundObject.stopAsync();
       soundObject = null;
     };
-  }, [data]);
+  }, [audioURI]);
 
   async function playSound() {
     await soundObject.setPositionAsync(0);

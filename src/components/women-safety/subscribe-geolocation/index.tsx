@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocationsStore } from "packages";
+import { useAlertMessageStore } from "packages";
 import { MapViewWithCoordinates } from "../map-view";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { colors } from "config/colors";
@@ -7,7 +7,7 @@ import { colors } from "config/colors";
 export function SubscribeToGeolocation() {
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
-  const locationStore = useLocationsStore();
+  const locationStore = useAlertMessageStore(state => state.location_data);
 
   const coordinates = locationStore.coordinates;
 

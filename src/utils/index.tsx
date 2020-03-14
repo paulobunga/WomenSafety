@@ -1,9 +1,11 @@
 // import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
-import { startSendingLocation } from "packages";
 import * as Permissions from "expo-permissions";
 import { format } from "date-fns";
 import { Platform, Linking, Alert, Share } from "react-native";
+import { IAlertMessage } from "src/types";
+import { firebase } from "@react-native-firebase/storage";
+import { firestore } from "config/firebase";
 export const BACKGROUND_LOCATION_TASK = "background-location-task";
 
 export const setUpBackgroundLocationTask = () => {
@@ -30,7 +32,10 @@ export const backgroundLocationOptions: any = {
   }
 };
 
-export const startWatchingLocation = async (user_id: string) => {
+export const startWatchingLocation = async (
+  user_id: string,
+  audioURI: string
+) => {
   let { status } = await Permissions.askAsync(Permissions.LOCATION);
   if (status !== "granted") {
     return null;
@@ -38,13 +43,24 @@ export const startWatchingLocation = async (user_id: string) => {
 
   const subscriptionPromise = await Location.watchPositionAsync(
     backgroundLocationOptions,
-    data => {
+    async data => {
       console.log("watching position for emergency ", data);
-      startSendingLocation(
-        user_id,
+      const geoPoint = new firebase.firestore.GeoPoint(
         data.coords.latitude,
         data.coords.longitude
       );
+
+      const message: IAlertMessage = {
+        type: "alert",
+        location_data: {
+          coordinates: geoPoint
+        },
+        audio_data: {
+          audio_uri: audioURI
+        },
+        sender_id: user_id
+      };
+      await firestore.collection("messages").add(message);
     }
   );
   return subscriptionPromise;
@@ -66,9 +82,7 @@ const locationPermissionMiddleWare = async next => {
 export const getPositionAsync = (): any => {
   return locationPermissionMiddleWare(async () => {
     const location = await Location.getCurrentPositionAsync({
-      timeInterval: 2000,
-      accuracy: Location.Accuracy.BestForNavigation,
-      enableHighAccuracy: true
+      accuracy: Location.Accuracy.BestForNavigation
     });
     return location;
   });

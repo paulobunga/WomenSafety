@@ -9,9 +9,7 @@ function WatchGeoLocation() {
     Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
   };
 
-  const onStartWatchingLocation = async () => {
-    startWatchingLocation();
-  };
+  const onStartWatchingLocation = async () => {};
 
   return null;
   // <Button

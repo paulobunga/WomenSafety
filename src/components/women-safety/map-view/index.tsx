@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { StyleSheet, Dimensions, Linking, Platform } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { useSenderStore } from "packages";
+import { useAlertMessageStore } from "packages";
 
 interface IProps {
   coordinates: { latitude: number; longitude: number };
@@ -27,7 +27,7 @@ export function MapViewWithCoordinates({
   coordinates,
   setIsMapLoaded
 }: IProps) {
-  const sender = useSenderStore(state => state.sender);
+  const sender = useAlertMessageStore(state => state.sender);
 
   const mapRegion = {
     ...coordinates,

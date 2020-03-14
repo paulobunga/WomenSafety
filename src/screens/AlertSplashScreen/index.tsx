@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Title } from "react-native-paper";
-import { alertMachineService, useSenderStore } from "packages";
+import { alertMachineService, useAlertMessageStore } from "packages";
 import { useService } from "@xstate/react";
 import { Audio } from "expo-av";
 
@@ -27,7 +27,7 @@ export function AlertSplashScreen() {
     return stopAlarmSound;
   }, []);
 
-  const sender = useSenderStore(state => state.sender);
+  const sender = useAlertMessageStore(state => state.sender);
   const [alertMachineState, send] = useService(alertMachineService);
 
   return (

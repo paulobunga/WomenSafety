@@ -36,3 +36,14 @@ export interface IBackToSafetyMessage {
   type: "backToSafety";
   message: string;
 }
+
+export interface IAlertMessage {
+  type: "alert";
+  location_data: {
+    coordinates: FirebaseFirestoreTypes.GeoPoint;
+  };
+  audio_data: {
+    audio_uri: string;
+  };
+  sender_id: string;
+}

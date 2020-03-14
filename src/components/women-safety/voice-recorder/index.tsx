@@ -3,7 +3,7 @@ import { Audio } from "expo-av";
 import { Button } from "react-native-paper";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
 import { colors } from "config/colors";
-import { formatTime, startWatchingLocation } from "utils";
+import { formatTime, startWatchingLocation, API_URL } from "utils";
 import { uploadAudio } from "config/storage";
 import {
   RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
@@ -13,8 +13,9 @@ import {
 } from "expo-av/build/Audio";
 import { sendAudioMessage } from "../../../packages/message";
 import { Snackbar } from "react-native-paper";
-import { useUserStore } from "packages";
+import { useUserStore, getUserPhoneNumber } from "packages";
 import { useTranslatedText } from "components";
+import axios from "axios";
 
 let recording;
 
@@ -27,7 +28,7 @@ const initialState = {
 let locationSubscriber;
 
 function VoiceRecorder() {
-  const user = useUserStore(state => state.user);
+  const senderPhoneNumber = useUserStore(state => state.user.phoneNumber);
   const recordText = useTranslatedText("record");
   const sendText = useTranslatedText("send");
   const cancelText = useTranslatedText("cancel");
@@ -84,7 +85,7 @@ function VoiceRecorder() {
           });
         },
         async downloadUri => {
-          sendAudioMessage(user.uid, downloadUri);
+          sendAudioMessage(senderPhoneNumber, downloadUri);
           setState({
             ...state,
             success: true
@@ -106,7 +107,7 @@ function VoiceRecorder() {
       locationSubscriber.remove();
     }
 
-    locationSubscriber = await startWatchingLocation(user.uid);
+    locationSubscriber = await startWatchingLocation(senderPhoneNumber);
 
     setisWatchingLocation(true);
 
@@ -114,11 +115,22 @@ function VoiceRecorder() {
     tryUpload();
   };
 
-  const onCancelWatchingPosition = () => {
-    setisWatchingLocation(false);
-    if (locationSubscriber) {
-      console.log("location subscr", locationSubscriber);
-      locationSubscriber.remove();
+  const onCancelWatchingPosition = async () => {
+    try {
+      await axios.post(API_URL + "/back-to-safety", {
+        sender_id: getUserPhoneNumber()
+      });
+    } catch (error) {
+      console.log(
+        "Error while calling back to safety notification service ",
+        error
+      );
+    } finally {
+      setisWatchingLocation(false);
+      if (locationSubscriber) {
+        console.log("location subscr", locationSubscriber);
+        locationSubscriber.remove();
+      }
     }
   };
 
@@ -142,9 +154,7 @@ function VoiceRecorder() {
     <>
       <View style={styles.buttonContainer}>
         {isWatchingLocation ? (
-          <Button onPress={onCancelWatchingPosition}>
-            Stop watching location
-          </Button>
+          <Button onPress={onCancelWatchingPosition}>Back to safety</Button>
         ) : null}
         {recordingStatus.isRecording ? (
           <Button

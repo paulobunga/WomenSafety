@@ -139,3 +139,6 @@ export const shareInformation = () => {
 
   Share.share(shareOptions);
 };
+
+export const API_URL =
+  "https://us-central1-women-safety-c13ba.cloudfunctions.net/api";

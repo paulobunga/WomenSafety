@@ -118,21 +118,22 @@ export default function App(props: any) {
   );
 }
 
-const createUserIfNotExists = (_user: any) => {
+const createUserIfNotExists = (_user: FirebaseAuthTypes.User) => {
   firestore
     .collection("users")
-    .doc(_user.uid)
+    .doc(_user.phoneNumber)
     .get()
     .then(docSnapshot => {
       if (docSnapshot.exists === false) {
         firestore
           .collection("users")
-          .doc(_user.uid)
+          .doc(_user.phoneNumber)
           .set(
             {
               favorites: [],
               phone: _user.phoneNumber,
-              name: _user.displayName
+              name: _user.displayName,
+              uid: _user.uid
             },
             { merge: true }
           );

@@ -23,6 +23,8 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONObject;
 
+import java.util.Map;
+
 import io.invertase.firebase.common.ReactNativeFirebaseEventEmitter;
 import io.invertase.firebase.common.SharedUtils;
 
@@ -43,7 +45,6 @@ public class ReactNativeFirebaseMessagingService extends FirebaseMessagingServic
 
   @Override
   public void onMessageSent(String messageId) {
-    Log.d(TAG, "Idhar aaraha he");
     ReactNativeFirebaseEventEmitter emitter = ReactNativeFirebaseEventEmitter.getSharedInstance();
     emitter.sendEvent(ReactNativeFirebaseMessagingSerializer.messageSentToEvent(messageId));
   }
@@ -56,7 +57,63 @@ public class ReactNativeFirebaseMessagingService extends FirebaseMessagingServic
 
   @Override
   public void onMessageReceived(RemoteMessage remoteMessage) {
+
     Log.d(TAG, "onMessageReceived");
+
+    Intent i = new Intent("womensafety.intent.action.Launch");
+
+    System.out.println(remoteMessage);
+    JSONObject jsonData;
+    jsonData = new JSONObject(remoteMessage.getData());
+    Log.d("starting it up man ",jsonData.toString());
+
+
+    i.putExtra("message", jsonData.toString());
+
+    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_ONE_SHOT);
+
+
+    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+
+    NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+      int importance = NotificationManager.IMPORTANCE_HIGH;
+      NotificationChannel mChannel = new NotificationChannel("501", "AlertChannel", importance);
+      mChannel.setDescription("Alert notification");
+      mChannel.enableLights(true);
+      mChannel.setLightColor(Color.RED);
+      mChannel.enableVibration(true);
+      mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+      mNotifyManager.createNotificationChannel(mChannel);
+    }
+
+
+    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "501");
+
+    if(remoteMessage.getNotification() != null){
+
+      mBuilder.setContentTitle(remoteMessage.getNotification().getTitle())
+        .setContentText(remoteMessage.getNotification().getBody())
+        .setSmallIcon(R.drawable.redbox_top_border_background)
+        .setAutoCancel(true)
+        .setSound(defaultSoundUri)
+
+        .setColor(Color.parseColor("#FFD600"))
+        .setContentIntent(pendingIntent)
+        .setChannelId("501")
+        .setCategory(NotificationCompat.CATEGORY_CALL)
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+      mNotifyManager.notify(1, mBuilder.build());
+
+    }
+
+
+
     ReactNativeFirebaseEventEmitter emitter = ReactNativeFirebaseEventEmitter.getSharedInstance();
 
 
@@ -88,37 +145,6 @@ public class ReactNativeFirebaseMessagingService extends FirebaseMessagingServic
     //    App in Background/Quit
     //   ------------------------
     try {
-      Intent i = new Intent("womensafety.intent.action.Launch");
-
-      System.out.println(remoteMessage);
-      JSONObject jsonData;
-      jsonData = new JSONObject(remoteMessage.getData());
-      Log.d("starting it up man ",jsonData.toString());
-
-
-      i.putExtra("message", jsonData.toString());
-
-      i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-      PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_ONE_SHOT);
-
-      Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-
-      NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-        int importance = NotificationManager.IMPORTANCE_HIGH;
-        NotificationChannel mChannel = new NotificationChannel("501", "AlertChannel", importance);
-        mChannel.setDescription("Alert notification");
-        mChannel.enableLights(true);
-        mChannel.setLightColor(Color.RED);
-        mChannel.enableVibration(true);
-        mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-        mNotifyManager.createNotificationChannel(mChannel);
-      }
-
-      NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "501");
-
       wakeUpScreen();
 
       mBuilder.setContentTitle("Someone's in trouble")

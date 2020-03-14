@@ -25,7 +25,7 @@ const addGCMToken = (token: string) => {
   if (currentUser) {
     firestore
       .collection("users")
-      .doc(currentUser.uid)
+      .doc(currentUser.phoneNumber)
       .set(
         {
           gcm_token: token

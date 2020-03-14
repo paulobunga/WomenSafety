@@ -31,3 +31,8 @@ export interface ILocationMessage {
   location: FirebaseFirestoreTypes.GeoPoint;
   sender_id: string;
 }
+
+export interface IBackToSafetyMessage {
+  type: "backToSafety";
+  message: string;
+}

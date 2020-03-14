@@ -1,10 +1,9 @@
 import BackgroundGeolocation from "@mauron85/react-native-background-geolocation";
-import { getUserId, getUserPhoneNumber } from "../user";
+import { getUserPhoneNumber } from "../user";
 import { Alert } from "react-native";
 import { Machine, interpret } from "xstate";
 import { firestore } from "config/firebase";
-const API_URL =
-  "https://us-central1-women-safety-c13ba.cloudfunctions.net/api/geolocation";
+import { API_URL } from "utils";
 
 const volunteerLocationWatchMachine = Machine({
   id: "volunteerLocationUpdate",
@@ -97,7 +96,7 @@ export const registerVolunteerBackgroundService = () => {
     fastestInterval: 60 * 1000,
     activitiesInterval: 10 * 1000,
     stopOnStillActivity: false,
-    url: API_URL,
+    url: API_URL + "/volunteers/location",
     httpHeaders: {},
     // customize post properties
     postTemplate: {

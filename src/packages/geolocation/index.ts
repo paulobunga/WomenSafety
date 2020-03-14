@@ -60,8 +60,6 @@ export const subscribeMessagesFromFavorites = (myNumber: string) => {
           const messageRef = change.doc.data().message;
           const message = await messageRef.get();
           const messageData = message.data();
-
-          actOnMessageReceived(messageData);
         }
       });
     },
@@ -77,9 +75,10 @@ export const actOnMessageReceived = async (
   messageData: IAudioMessage | ILocationMessage
 ) => {
   const senderId = messageData.sender_id;
-  const senderRef = firestore.collection("users").doc(senderId);
-  const senderSnapshot = await senderRef.get();
-  const sender = senderSnapshot.data() as ISender;
+  const sender = {
+    phone: senderId,
+    name: ""
+  };
 
   if (alertMachineService.state.matches("idle")) {
     senderAPI.setState({ sender });

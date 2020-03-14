@@ -36,15 +36,15 @@ const volunteerLocationWatchMachine = Machine({
 export const enableVolunteering = async () => {
   try {
     volunteerLocationWatchMachineService.send("WATCH");
-    const uid = getUserId();
-    const phoneNumber = getUserPhoneNumber();
+    const phone = getUserPhoneNumber();
 
     await firestore
       .collection("volunteers")
-      .doc(uid)
-      .update({
-        isVolunteering: true,
-        phoneNumber
+      .doc(phone)
+      .set({
+        d: {
+          isVolunteering: true
+        }
       });
   } catch (e) {
     volunteerLocationWatchMachineService.send("STOP_WATCHING");
@@ -58,12 +58,14 @@ export const enableVolunteering = async () => {
 export const disableVolunteering = async () => {
   try {
     volunteerLocationWatchMachineService.send("STOP_WATCHING");
-    const uid = getUserId();
+    const phone = getUserPhoneNumber();
     await firestore
       .collection("volunteers")
-      .doc(uid)
-      .update({
-        isVolunteering: false
+      .doc(phone)
+      .set({
+        d: {
+          isVolunteering: false
+        }
       });
   } catch (e) {
     volunteerLocationWatchMachineService.send("WATCH");
@@ -81,7 +83,7 @@ export let volunteerLocationWatchMachineService = interpret(
 volunteerLocationWatchMachineService.start();
 
 export const registerVolunteerBackgroundService = () => {
-  const userId = getUserId();
+  const phone = getUserPhoneNumber();
 
   BackgroundGeolocation.configure({
     desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
@@ -101,7 +103,7 @@ export const registerVolunteerBackgroundService = () => {
     postTemplate: {
       latitude: "@latitude",
       longitude: "@longitude",
-      userId
+      phone
     }
   });
 

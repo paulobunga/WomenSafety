@@ -95,9 +95,9 @@ export const actOnMessageReceived = async (
     let lat, long;
 
     if (typeof messageData.location === "string") {
-      let { _latitude, _longitude } = JSON.parse(messageData.location);
-      lat = _latitude;
-      long = _longitude;
+      let { latitude, longitude } = JSON.parse(messageData.location);
+      lat = latitude;
+      long = longitude;
     }
 
     const coordinates = {

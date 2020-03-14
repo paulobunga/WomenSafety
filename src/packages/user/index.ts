@@ -1,6 +1,7 @@
 import create from "zustand";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { firebaseAuth, firestore as db } from "config/firebase";
+import { disableVolunteering } from "../volunteer";
 
 const [useUserStore, api] = create(set => ({
   user: {} as FirebaseAuthTypes.User,
@@ -24,6 +25,7 @@ export const logout = async () => {
       .collection("users")
       .doc(phoneNumber)
       .update({ gcm_token: null });
+    disableVolunteering();
     firebaseAuth.signOut();
   } catch (e) {
     console.log("error ", e);

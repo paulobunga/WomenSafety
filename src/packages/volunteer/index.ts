@@ -81,7 +81,20 @@ export let volunteerLocationWatchMachineService = interpret(
 
 volunteerLocationWatchMachineService.start();
 
-export const registerVolunteerBackgroundService = () => {
+export const registerVolunteerBackgroundService = async () => {
+  const initialRes = await firestore
+    .collection("volunteers")
+    .doc(getUserPhoneNumber())
+    .get();
+  const volunteerData = initialRes.data();
+  console.log("volunteer darta ", volunteerData);
+  if (volunteerData.d.isVolunteering) {
+    console.log("yes man setting to true");
+    volunteerLocationWatchMachineService.send("WATCH");
+  } else {
+    volunteerLocationWatchMachineService.send("STOP_WATCHING");
+  }
+
   const phone = getUserPhoneNumber();
 
   BackgroundGeolocation.configure({
@@ -179,11 +192,6 @@ export const registerVolunteerBackgroundService = () => {
       "[INFO] BackgroundGeolocation auth status: " + status.authorization
     );
 
-    if (status.isRunning) {
-      volunteerLocationWatchMachineService.send("WATCH");
-    } else {
-      volunteerLocationWatchMachineService.send("STOP_WATCHING");
-    }
     // you don't need to check status before start (this is just the example)
   });
 

@@ -2,10 +2,13 @@ package com.quable.womensafety;
 
 import android.app.Application;
 import android.app.KeyguardManager;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
@@ -83,15 +86,19 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    Uri sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+getApplicationContext().getPackageName()+"/" + R.raw.alarm);
+    AudioAttributes attributes = new AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+            .build();
+
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationChannel notificationChannel = new NotificationChannel("500", "MainChannel", NotificationManager.IMPORTANCE_HIGH);
       notificationChannel.setShowBadge(true);
-      notificationChannel.setDescription("Notifications");
+      notificationChannel.setDescription("Alert Notifications");
       notificationChannel.enableVibration(true);
       notificationChannel.enableLights(true);
-      notificationChannel.setVibrationPattern(new long[]{400, 200, 400});
-      //notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+      notificationChannel.setSound(sound, attributes);
       NotificationManager manager = getSystemService(NotificationManager.class);
       manager.createNotificationChannel(notificationChannel);
     }

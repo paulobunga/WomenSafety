@@ -79,6 +79,7 @@ export default function App(props: any) {
   useEffect(() => {
     // Handle initial state when app comes from background or killed
     if (props.message) {
+      console.log("initial props ", props);
       const parsedMessage = JSON.parse(props.message);
       actOnMessageReceived(parsedMessage);
     }

@@ -5,10 +5,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.PowerManager;
@@ -59,13 +62,13 @@ public class ReactNativeFirebaseMessagingService extends FirebaseMessagingServic
   public void onMessageReceived(RemoteMessage remoteMessage) {
 
     Log.d(TAG, "onMessageReceived");
-
     Intent i = new Intent("womensafety.intent.action.Launch");
 
-    System.out.println(remoteMessage);
+
+
     JSONObject jsonData;
     jsonData = new JSONObject(remoteMessage.getData());
-    Log.d("starting it up man ",jsonData.toString());
+    Log.d("starting it up ",jsonData.toString());
 
 
     i.putExtra("message", jsonData.toString());
@@ -79,39 +82,8 @@ public class ReactNativeFirebaseMessagingService extends FirebaseMessagingServic
 
     NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-      int importance = NotificationManager.IMPORTANCE_HIGH;
-      NotificationChannel mChannel = new NotificationChannel("501", "AlertChannel", importance);
-      mChannel.setDescription("Alert notification");
-      mChannel.enableLights(true);
-      mChannel.setLightColor(Color.RED);
-      mChannel.enableVibration(true);
-      mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-      mNotifyManager.createNotificationChannel(mChannel);
-    }
 
-
-    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "501");
-
-    if(remoteMessage.getNotification() != null){
-
-      mBuilder.setContentTitle(remoteMessage.getNotification().getTitle())
-        .setContentText(remoteMessage.getNotification().getBody())
-        .setSmallIcon(R.drawable.redbox_top_border_background)
-        .setAutoCancel(true)
-        .setSound(defaultSoundUri)
-
-        .setColor(Color.parseColor("#FFD600"))
-        .setContentIntent(pendingIntent)
-        .setChannelId("501")
-        .setCategory(NotificationCompat.CATEGORY_CALL)
-        .setPriority(NotificationCompat.PRIORITY_HIGH)
-        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-
-      mNotifyManager.notify(1, mBuilder.build());
-
-    }
-
+    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "500");
 
 
     ReactNativeFirebaseEventEmitter emitter = ReactNativeFirebaseEventEmitter.getSharedInstance();
@@ -125,6 +97,20 @@ public class ReactNativeFirebaseMessagingService extends FirebaseMessagingServic
     // with no data
     if (remoteMessage.getNotification() != null && remoteMessage.getData().size() == 0) {
       // TODO broadcast intent when notifications module ready
+
+      mBuilder.setContentTitle(remoteMessage.getNotification().getTitle())
+        .setContentText(remoteMessage.getNotification().getBody())
+        .setSmallIcon(R.drawable.redbox_top_border_background)
+        .setAutoCancel(true)
+        .setColor(Color.parseColor("#FFD600"))
+        .setContentIntent(pendingIntent)
+        .setChannelId("500")
+        .setCategory(NotificationCompat.CATEGORY_CALL)
+        .setPriority(NotificationCompat.PRIORITY_MAX)
+        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+      mNotifyManager.notify(1, mBuilder.build());
+
       return;
     }
 
@@ -137,6 +123,7 @@ public class ReactNativeFirebaseMessagingService extends FirebaseMessagingServic
     //   ------------------------
     if (SharedUtils.isAppInForeground(getApplicationContext())) {
       emitter.sendEvent(ReactNativeFirebaseMessagingSerializer.remoteMessageToEvent(remoteMessage));
+
       return;
     }
 
@@ -146,18 +133,19 @@ public class ReactNativeFirebaseMessagingService extends FirebaseMessagingServic
     //   ------------------------
     try {
       wakeUpScreen();
+//      startActivity(i);
+
+
 
       mBuilder.setContentTitle("Someone's in trouble")
         .setContentText("Emergency")
         .setSmallIcon(R.drawable.redbox_top_border_background)
         .setAutoCancel(true)
-        .setSound(defaultSoundUri)
-
         .setColor(Color.parseColor("#FFD600"))
         .setContentIntent(pendingIntent)
-        .setChannelId("501")
+        .setChannelId("500")
         .setCategory(NotificationCompat.CATEGORY_CALL)
-        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setPriority(NotificationCompat.PRIORITY_MAX)
         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
       mNotifyManager.notify(1, mBuilder.build());

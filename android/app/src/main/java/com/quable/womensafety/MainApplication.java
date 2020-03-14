@@ -84,10 +84,6 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
 
-    System.out.println("starting the activity "+Build.VERSION.SDK_INT);
-
-    System.out.println("starting the activity 2"+Build.VERSION_CODES.O);
-
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationChannel notificationChannel = new NotificationChannel("500", "MainChannel", NotificationManager.IMPORTANCE_HIGH);
       notificationChannel.setShowBadge(true);
@@ -98,18 +94,6 @@ public class MainApplication extends Application implements ReactApplication {
       //notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
       NotificationManager manager = getSystemService(NotificationManager.class);
       manager.createNotificationChannel(notificationChannel);
-    }
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      String packageName = this.getPackageName();
-      PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-      if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-        Intent intent = new Intent();
-        intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setData(Uri.parse("package:" + packageName));
-        this.startActivity(intent);
-      }
     }
 
   }

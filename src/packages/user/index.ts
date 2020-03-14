@@ -10,18 +10,19 @@ const [useUserStore, api] = create(set => ({
 export const getUserId = () => {
   return api.getState().user.uid;
 };
-
+{
+}
 export const getUserPhoneNumber = () => {
   return api.getState().user.phoneNumber;
 };
 
 export const logout = async () => {
-  const uid = api.getState().user.uid;
+  const phoneNumber = getUserPhoneNumber();
 
   try {
     await db
       .collection("users")
-      .doc(uid)
+      .doc(phoneNumber)
       .update({ gcm_token: null });
     firebaseAuth.signOut();
   } catch (e) {

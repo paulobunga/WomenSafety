@@ -11,7 +11,7 @@ import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
 export function AddMissingChildren({ navigation }) {
-  let { uid } = useUserStore(state => state.user);
+  let { phoneNumber } = useUserStore(state => state.user);
   const [image, setImage] = useState(null);
   const { register, handleSubmit, setValue, errors } = useForm();
   const childInfoForm = useTranslatedText("childInfoForm");
@@ -49,7 +49,7 @@ export function AddMissingChildren({ navigation }) {
   };
 
   const onSubmit = (formValues: any) => {
-    mutate({ ...formValues, user_id: uid });
+    mutate({ ...formValues, user_id: phoneNumber });
   };
 
   useEffect(() => {

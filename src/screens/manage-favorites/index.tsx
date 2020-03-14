@@ -11,7 +11,7 @@ export function ManageFavorites({ navigation, route }) {
   const favoriteContacts = route.params.contacts;
   const addFavoritesText = useTranslatedText("addFavorites");
 
-  const { uid } = useUserStore(state => state.user);
+  const { phoneNumber } = useUserStore(state => state.user);
   const [retrievedContacts, setRetrievedContacts] = useState([]);
   const [selectedContacts, setSelectedContacts] = useState(new Map());
 
@@ -33,7 +33,7 @@ export function ManageFavorites({ navigation, route }) {
       contact => `+91${contact}`
     );
     try {
-      await firestore.doc(`users/${uid}`).update({
+      await firestore.doc(`users/${phoneNumber}`).update({
         favorites: firestoreImpl.FieldValue.arrayUnion(
           ...extensionAddedContacts
         )

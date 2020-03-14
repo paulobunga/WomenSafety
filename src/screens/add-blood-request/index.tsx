@@ -7,7 +7,7 @@ import { bloodService, useUserStore } from "packages";
 import { useMutation } from "react-query";
 
 export function AddBloodRequest({ navigation }) {
-  let { uid } = useUserStore(state => state.user);
+  let { phoneNumber } = useUserStore(state => state.user);
   const bloodRequestForm = useTranslatedText("bloodRequestForm");
   const phone = useTranslatedText("phone");
   const address = useTranslatedText("address");
@@ -29,7 +29,7 @@ export function AddBloodRequest({ navigation }) {
   });
 
   const onSubmit = (formValues: any) => {
-    mutate({ ...formValues, type, user_id: uid });
+    mutate({ ...formValues, type, user_id: phoneNumber });
   };
 
   useEffect(() => {

@@ -45,10 +45,10 @@ const fetchMyBloodRequests = async (cursor, uid) => {
 };
 
 export function useMyBloodRequests() {
-  const { uid } = useUserStore(state => state.user);
+  const { phoneNumber } = useUserStore(state => state.user);
 
   const info = useQueryWithPagination(bloodRequestQuery, cursor =>
-    fetchMyBloodRequests(cursor, uid)
+    fetchMyBloodRequests(cursor, phoneNumber)
   );
 
   const data = useMemo(() => {

@@ -8,7 +8,7 @@ import { useUserStore } from "packages";
 let unsubscribeFromContacts;
 
 export function AddedFavoritesScreen({ navigation }) {
-  const { uid } = useUserStore(state => state.user);
+  const { phoneNumber } = useUserStore(state => state.user);
   const yourFavoritesText = useTranslatedText("yourFavorites");
 
   const [fetchedContacts, setFetchedContacts] = useState([]);
@@ -26,7 +26,7 @@ export function AddedFavoritesScreen({ navigation }) {
     async function fetchContacts() {
       try {
         unsubscribeFromContacts = await firestore
-          .doc(`users/${uid}`)
+          .doc(`users/${phoneNumber}`)
           .onSnapshot(snapshot => {
             const favorites = snapshot.data().favorites;
             setFetchedContacts(favorites);
@@ -35,14 +35,14 @@ export function AddedFavoritesScreen({ navigation }) {
         console.log(e);
       }
     }
-    if (uid) fetchContacts();
+    if (phoneNumber) fetchContacts();
 
     return () => {
       if (unsubscribeFromContacts) {
         return unsubscribeFromContacts();
       }
     };
-  }, [uid]);
+  }, [phoneNumber]);
 
   return (
     <>

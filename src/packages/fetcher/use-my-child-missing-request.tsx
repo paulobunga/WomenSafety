@@ -43,10 +43,10 @@ const fetchMyChildRequests = async (cursor, uid) => {
 };
 
 export function useMyMissingChildRequests() {
-  const { uid } = useUserStore(state => state.user);
+  const { phoneNumber } = useUserStore(state => state.user);
 
   const info = useQueryWithPagination(myChildMissingRequestQuery, cursor =>
-    fetchMyChildRequests(cursor, uid)
+    fetchMyChildRequests(cursor, phoneNumber)
   );
 
   const data = useMemo(() => {

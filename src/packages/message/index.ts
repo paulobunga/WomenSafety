@@ -1,11 +1,6 @@
 import { firestore, default as firebase } from "config/firebase";
-const usersRef = firestore.collection("users");
-
-async function getUserFavorites(user_id: any) {
-  const documentSnapshot = await usersRef.doc(user_id).get();
-  const favorites = documentSnapshot.data().favorites;
-  return favorites;
-}
+import { getPositionAsync } from "utils";
+import { IAudioMessage, ILocationMessage } from "src/types";
 
 export async function sendUserLocation(
   senderId: any,
@@ -13,9 +8,9 @@ export async function sendUserLocation(
   long: number
 ) {
   const geoPoint = new firebase.firestore.GeoPoint(lat, long);
-  const message = {
+  const message: ILocationMessage = {
     type: "location",
-    data: geoPoint,
+    location: geoPoint,
     sender_id: senderId
   };
 
@@ -23,11 +18,19 @@ export async function sendUserLocation(
 }
 
 export async function sendAudioMessage(senderId: any, audioURI: string) {
-  const message = {
+  const currentLocation = await getPositionAsync();
+
+  const message: IAudioMessage = {
     type: "audio",
-    data: audioURI,
+    audio_uri: audioURI,
     sender_id: senderId
   };
+
+  if (currentLocation.coords) {
+    const { latitude, longitude } = currentLocation.coords;
+    const geoPoint = new firebase.firestore.GeoPoint(latitude, longitude);
+    message.location = geoPoint;
+  }
 
   const messageRef = await firestore.collection("messages").add(message);
 }

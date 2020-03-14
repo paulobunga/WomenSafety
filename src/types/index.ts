@@ -20,6 +20,14 @@ export interface IChild {
 }
 
 export interface IAudioMessage {
-  location: FirebaseFirestoreTypes.GeoPoint;
+  type: "audio";
+  location?: FirebaseFirestoreTypes.GeoPoint;
   audio_uri: string;
+  sender_id: string;
+}
+
+export interface ILocationMessage {
+  type: "location";
+  location: FirebaseFirestoreTypes.GeoPoint;
+  sender_id: string;
 }

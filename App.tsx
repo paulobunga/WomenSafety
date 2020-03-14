@@ -6,7 +6,6 @@ import "./src/utils/localization";
 import DefaulTheme from "./config/theme";
 import { LoginStack, BottomTabNavigator } from "navigation";
 import {
-  subscribeMessagesFromFavorites,
   useUserStore,
   registerAppWithFCM,
   actOnMessageReceived,
@@ -87,12 +86,9 @@ export default function App(props: any) {
 
   useEffect(() => {
     // Subscribe to user's favorites if the user is registered
-    let unsubscribe = () => {};
     if (user.phoneNumber) {
-      unsubscribe = subscribeMessagesFromFavorites(user.phoneNumber);
       registerVolunteerBackgroundService();
     }
-    return unsubscribe;
   }, [user]);
 
   if (!fontsLoaded || !defaultLangLoaded) {

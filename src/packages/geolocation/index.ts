@@ -3,7 +3,12 @@ import { sendUserLocation } from "../message";
 import { firestore } from "config/firebase";
 import subSeconds from "date-fns/subSeconds";
 import { alertMachineService } from "../alert-machine";
-import { ISender, ICoordinates } from "src/types";
+import {
+  ISender,
+  ICoordinates,
+  IAudioMessage,
+  ILocationMessage
+} from "src/types";
 
 const [useLocationsStore, locationAPI] = create(() => ({
   coordinates: {} as ICoordinates
@@ -68,11 +73,13 @@ export const subscribeMessagesFromFavorites = (myNumber: string) => {
   return unsubscribe;
 };
 
-export const actOnMessageReceived = async (messageData: any) => {
+export const actOnMessageReceived = async (
+  messageData: IAudioMessage | ILocationMessage
+) => {
   const senderId = messageData.sender_id;
   const senderRef = firestore.collection("users").doc(senderId);
   const senderSnapshot = await senderRef.get();
-  const sender = senderSnapshot._data;
+  const sender = senderSnapshot.data() as ISender;
 
   if (alertMachineService.state.matches("idle")) {
     senderAPI.setState({ sender });
@@ -85,15 +92,11 @@ export const actOnMessageReceived = async (messageData: any) => {
     return;
   }
 
-  if (messageData.type === "location") {
+  if (messageData.location) {
     let lat, long;
 
-    if (typeof messageData.data === "string") {
-      let { _latitude, _longitude } = JSON.parse(messageData.data);
-      lat = _latitude;
-      long = _longitude;
-    } else {
-      let { _latitude, _longitude } = messageData.data;
+    if (typeof messageData.location === "string") {
+      let { _latitude, _longitude } = JSON.parse(messageData.location);
       lat = _latitude;
       long = _longitude;
     }
@@ -107,8 +110,10 @@ export const actOnMessageReceived = async (messageData: any) => {
       coordinates,
       sender
     });
-  } else if (messageData.type === "audio") {
-    const data = messageData.data;
+  }
+
+  if (messageData.type === "audio") {
+    const data = messageData.audio_uri;
 
     setAudioStore({
       data,

@@ -9,6 +9,7 @@ export function ErrorText({ message }: { message: string }) {
 
 const styles = StyleSheet.create({
   textStyle: {
-    color: colors["red-vivid-800"]
+    color: colors["red-vivid-800"],
+    textAlign: 'center'
   }
 });

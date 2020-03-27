@@ -7,7 +7,7 @@ const RootStack = createStackNavigator();
 export function WomenStack() {
   return (
     <RootStack.Navigator mode="modal" headerMode="none">
-      <RootStack.Screen name="Main" component={WomenDrawerNavigator} />
+      <RootStack.Screen name="Main" component={WomenDrawerNavigator} options={{headerShown: false}}/>
       <RootStack.Screen
         name="AlertSplashScreen"
         component={AlertSplashScreen}

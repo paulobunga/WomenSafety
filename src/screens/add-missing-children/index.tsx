@@ -9,6 +9,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import ImagePicker from "react-native-image-picker";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { colors } from "config/colors";
 
 export function AddMissingChildren({ navigation }) {
   let { phoneNumber } = useUserStore(state => state.user);
@@ -134,7 +135,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 20,
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: colors["background"]
   },
   input: {
     marginBottom: 20,

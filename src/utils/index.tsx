@@ -121,7 +121,7 @@ export function formatTime(time) {
 
 export const formatSecondsToDate = (dateSeconds: number) => {
   if (dateSeconds) {
-    return format(new Date(dateSeconds * 1000), "do MMM yyyy KK:mm aaaa");
+    return format(new Date(dateSeconds * 1000), "do MMM yyyy");
   }
 };
 

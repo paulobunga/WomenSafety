@@ -7,17 +7,18 @@ import {
   StyleSheet,
   View
 } from "react-native";
-import { Card, Text } from "react-native-paper";
+import { Card, Text, Title } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { callNumber, formatSecondsToDate } from "utils";
 import {
   useTranslatedText,
   Loading,
   SomethingWentWrong,
-  CenteredText
+  CenteredText,
 } from "components";
 import { useBloodRequests } from "packages";
 import { useIsFocused } from "@react-navigation/native";
+import { colors } from "config/colors";
 
 const { height, width } = Dimensions.get("window");
 
@@ -77,10 +78,15 @@ const styles = StyleSheet.create({
   container: {
     height: height,
     width: width,
-    paddingBottom: 120
+    paddingBottom: 120,
+    backgroundColor: colors["background"]
   },
   label: {
     fontWeight: "bold"
+  },
+  text: {
+    color: colors["red"],
+    flexDirection: "row"
   }
 });
 
@@ -90,11 +96,14 @@ const BloodListItem = ({ item }: any) => {
   const postedOn = useTranslatedText("postedOn");
 
   return (
-    <Card style={{ backgroundColor: "white", marginBottom: 10 }}>
-      <Card.Title title={item.type} />
+    <Card style={{ backgroundColor: "white", margin: 15, marginBottom: 5, elevation:10 }}>
+      
       <Card.Content>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>{phone}: </Text>
+      <Title style={styles.text}>
+          {item.type}
+      </Title>
+        <View style={styles.text}>
+          <Text style={[styles.label,styles.text]}>{phone}: </Text>
           <TouchableOpacity
             onPress={() => callNumber(item.contact)}
             style={{ flexDirection: "row", alignItems: "center" }}
@@ -102,12 +111,12 @@ const BloodListItem = ({ item }: any) => {
             <Text>{item.contact}</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>{address}: </Text>
+        <View style={styles.text}>
+          <Text style={[styles.label,styles.text]}>{address}: </Text>
           <Text>{item.address}</Text>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>{postedOn}: </Text>
+        <View style={styles.text}>
+          <Text style={[styles.label,styles.text]}>{postedOn}: </Text>
           <Text>{formatSecondsToDate(item.created_at.seconds)} </Text>
         </View>
       </Card.Content>

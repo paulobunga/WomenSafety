@@ -102,7 +102,7 @@ export default function App(props: any) {
       <StatusBar
         barStyle="dark-content"
         hidden={false}
-        backgroundColor={colors["cyan-vivid-900"]}
+        backgroundColor={colors["background"]}
         translucent={false}
         networkActivityIndicatorVisible={true}
       />

@@ -13,15 +13,17 @@ export function ChildrenTabs({ navigation }) {
       <Tab.Navigator
         tabBarOptions={{
           style: {
-            backgroundColor: colors["cyan-vivid-900"]
+            backgroundColor: colors["background"],
           },
-          activeTintColor: "white",
+          activeTintColor: colors["red"],
           upperCaseLabel: false,
           activeColor: "white",
           indicatorStyle: {
-            backgroundColor: "white"
+            backgroundColor: "white",
+            fontWeight: "bold"
           }
         }}
+        style={{fontWeight: "bold"}}
       >
         <Tab.Screen name={missingChildren} component={MissingChildrenList} />
         <Tab.Screen

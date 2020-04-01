@@ -11,9 +11,9 @@ export function BloodDonationTabs({ navigation }) {
       <Tab.Navigator
         tabBarOptions={{
           style: {
-            backgroundColor: colors["cyan-vivid-900"]
+            backgroundColor: colors["background"]
           },
-          activeTintColor: "white",
+          activeTintColor: colors["red"],
           upperCaseLabel: false,
           activeColor: "white",
           indicatorStyle: {

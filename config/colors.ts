@@ -22,5 +22,7 @@ export const colors = {
     "font-default": '#757575',
     "font-darker": '#292929',
     "font-primary": '#D5214E',
-    "white": '#FFFFFF'
+    "white": '#FFFFFF',
+    "red": '#DF0051',
+    "bottom-color": '#FAEDE7',
 };

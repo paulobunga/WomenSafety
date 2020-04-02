@@ -46,7 +46,8 @@ const CustomTheme: Theme = {
       .alpha(0.5)
       .rgb()
       .string(),
-    notification: colors["pink-vivid-500"]
+    notification: colors["pink-vivid-500"],
+    lightPrimary: colors['lightPrimary']
   },
   animation: {
     scale: 1.0

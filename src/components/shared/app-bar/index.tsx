@@ -1,7 +1,6 @@
 import React from "react";
 import { Appbar } from "react-native-paper";
-import { colors } from "config/colors";
-import { StyleSheet } from "react-native";
+import theme from "config/theme";
 
 interface IProps {
   navigation: any;
@@ -25,26 +24,17 @@ export function AppBar({
   };
 
   return (
-    <Appbar.Header style={styles.container}>
-      {isModal ? (
-        <Appbar.Action onPress={navigation.goBack} icon="arrow-left" />
-      ) : (
-        <Appbar.Action onPress={openDrawer} icon="menu" />
-      )}
-      <Appbar.Content title={title} />
-      {isSelectingContacts && (
-        <Appbar.Action icon="check" onPress={onSelectingContacts} />
-      )}
+    <Appbar.Header dark={false} style={{ backgroundColor: 'transparent', elevation: 0 }}>
+      {
+        isModal
+          ? (<Appbar.Action onPress={navigation.goBack} icon="arrow-left" color={theme.colors.primary} size={32} />)
+          : (<Appbar.Action onPress={openDrawer} icon="menu" color={theme.colors.primary} size={32} />)
+      }
+      <Appbar.Content title={title} titleStyle={{ color: theme.colors.primary, fontFamily: theme.fonts.medium.fontFamily }} />
+      {
+        isSelectingContacts && (<Appbar.Action icon="check" onPress={onSelectingContacts} color={theme.colors.primary} size={32} />)
+      }
       {children}
     </Appbar.Header>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors["background"],
-    color: colors["red"]
-  },
-  title: {
-    color: colors["red"]
-  }
-});

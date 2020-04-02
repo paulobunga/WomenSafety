@@ -23,7 +23,7 @@ export function ChildrenTabs({ navigation }) {
             fontWeight: "bold"
           }
         }}
-        style={{fontWeight: "bold"}}
+        style={{ fontWeight: "bold" }}
       >
         <Tab.Screen name={missingChildren} component={MissingChildrenList} />
         <Tab.Screen

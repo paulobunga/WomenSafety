@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Audio } from "expo-av";
-import { Button } from "react-native-paper";
-import { Text, View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import { colors } from "config/colors";
 import { formatTime, startWatchingLocation, API_URL } from "utils";
 import { uploadAudio } from "config/storage";
@@ -12,10 +11,10 @@ import {
   RECORDING_OPTION_IOS_AUDIO_QUALITY_MAX
 } from "expo-av/build/Audio";
 import { sendAudioMessage } from "../../../packages/message";
-import { Snackbar } from "react-native-paper";
+import { Button, Text, Snackbar } from "react-native-paper";
 import { useUserStore, getUserPhoneNumber } from "packages";
 import { useTranslatedText } from "components";
-import axios from "axios";
+import axios from "axios";;
 
 let recording;
 
@@ -31,9 +30,10 @@ function VoiceRecorder() {
   const lastAudiodownloadURI = useRef(null);
 
   const senderPhoneNumber = useUserStore(state => state.user.phoneNumber);
-  const recordText = useTranslatedText("record");
+  const recordText = useTranslatedText("Record");
   const sendText = useTranslatedText("send");
   const cancelText = useTranslatedText("cancel");
+  const introductionText = useTranslatedText("I am in danger, I need your help.");
 
   const [state, setState] = useState(initialState);
   const [isWatchingLocation, setisWatchingLocation] = useState(false);
@@ -186,24 +186,29 @@ function VoiceRecorder() {
         ) : (
           <Button
             mode="text"
-            icon="phone"
             disabled={isWatchingLocation}
             onPress={onStartRecording}
-            uppercase
+            uppercase={false}
             color={colors["red-vivid-600"]}
             labelStyle={{
-              color: colors["cyan-vivid-100"]
+              color: colors["primary"],
+              fontSize: 24
             }}
             contentStyle={{
-              backgroundColor: colors["red-vivid-800"],
-              paddingHorizontal: 80,
-              paddingVertical: 8,
-              borderRadius: 35
+              backgroundColor: colors["white"],
+              elevation: 10,
+              borderRadius: 140,
+              height: 280,
+              width: 280,
+              margin: 40
             }}
           >
             {recordText}
           </Button>
         )}
+
+          <Text>{introductionText}</Text>
+          <Text  >How to:</Text>
 
         {state.error ? (
           <>

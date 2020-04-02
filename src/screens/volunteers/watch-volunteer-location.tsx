@@ -37,9 +37,8 @@ const styles = StyleSheet.create({
   surface: {
     padding: 8,
     height: 80,
-    backgroundColor: colors["cool-grey-050"],
+    backgroundColor: colors["background"],
     alignItems: "center",
-    justifyContent: "center",
-    elevation: 4
+    justifyContent: "center"
   }
 });

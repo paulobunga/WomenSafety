@@ -17,6 +17,7 @@ export const colors = {
     "green-vivid-200": "#91E697",
     "green-vivid-800": "#07600E",
     "primary": '#D5214E',
+    "lightPrimary": 'rgba(213, 33, 78, .2)',
     "secondary": '#292929',
     "background": '#FFFBF7',
     "font-default": '#757575',

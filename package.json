@@ -52,6 +52,7 @@
     "react-native-web": "~0.11.7",
     "react-navigation-material-bottom-tabs": "^2.2.2",
     "react-query": "^1.0.22",
+    "styled-components": "^5.0.0",
     "xstate": "^4.7.8",
     "zustand": "^2.2.2"
   },

@@ -10,7 +10,7 @@ export function ChildrenTabs({ navigation }) {
 
   return (
     <>
-    <HeaderBar title={missingChildren} navigation={navigation} />
+    <HeaderBar title={missingChildren} />
       <Tab.Navigator
         tabBarOptions={{
           style: {

@@ -8,7 +8,7 @@ const Tab = createMaterialTopTabNavigator();
 export function BloodDonationTabs({ navigation }) {
   return (
     <>
-    <HeaderBar title={'Blood Donation'} navigation={navigation} />
+    <HeaderBar title={'Blood Donation'} />
       <Tab.Navigator
         tabBarOptions={{
           style: {

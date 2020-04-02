@@ -3,13 +3,11 @@ import { Appbar } from "react-native-paper";
 import theme from "config/theme";
 
 interface IProps {
-  navigation: any;
   children?: any;
   title: string;
 }
 
 export function HeaderBar({
-  navigation,
   children,
   title,
 }: IProps) {

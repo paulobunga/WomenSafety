@@ -70,9 +70,9 @@ export function MissingChildrenList() {
       }
 
       if (status === "success") {
-        <View style={{backgroundColor: colors["background"]}}>
-        return <CenteredText>No data found</CenteredText>;
-        </View>
+        <View style={{ backgroundColor: colors["background"] }}>
+          return <CenteredText>No data found</CenteredText>;
+        </View>;
       }
     } else {
       return (
@@ -120,8 +120,8 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     height: 90,
     width: 90,
-    borderRadius: 50,
-  },
+    borderRadius: 50
+  }
 });
 
 function ChildItem({ item }: { item: IChild }) {
@@ -132,37 +132,62 @@ function ChildItem({ item }: { item: IChild }) {
   const postedOn = useTranslatedText("postedOn");
 
   return (
-    <Card style={{ backgroundColor: "white", margin: 15, elevation: 10 }}>
-      <Card.Content>
-        <View>
-      <Card.Cover source={{ uri: item.image }} style={styles.cardCoverContainer} />
-        <Title style={{fontWeight: "bold", color: colors["red"], paddingLeft: 25}}>
-          {item.name}
-        </Title>
-        <View style={{ flexDirection: "row",paddingLeft: 20 }}>
-        <Text style={styles.label}>{age}: </Text>
-          <Text> {item.age}{" yrs"} </Text>
-          </View>
-          <View style={{flexDirection:'column',position: 'absolute',paddingLeft:120, paddingVertical: 30}}>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>{phone}: </Text>
-          <TouchableOpacity
-            onPress={() => callNumber(item.contact)}
-            style={{ flexDirection: "row", alignItems: "center" }}
+    <Card style={{ backgroundColor: "white", margin: 15, marginBottom: 5, elevation: 10 }}>
+      <Card.Content style={{
+              flexDirection: "row",
+            }}>
+              <View style={{ flexDirection: "column", alignItems: 'center' }}>
+              <Card.Cover
+            source={{ uri: item.image }}
+            style={styles.cardCoverContainer}
+          />
+          <Title
+            style={{
+              fontWeight: "bold",
+              color: colors["red"],
+            }}
           >
-            <Text>{item.contact}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>{address}: </Text>
-          <Text> {item.address} </Text>
-        </View>
-        <View style={{ flexDirection: "row", alignItems:'center', paddingBottom: 50 }}>
-          <Text numberOfLines={2} style={styles.label}>{postedOn}: </Text>
-          <Text numberOfLines={2} ellipsizeMode={'tail'}> {formatSecondsToDate(item.created_at.seconds)} </Text>
-        </View>
-        </View>
-        </View>
+            {item.name}
+          </Title>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.label}>{age}: </Text>
+            <Text>
+              {" "}
+              {item.age}
+              {" yrs"}{" "}
+            </Text>
+          </View>
+          </View>
+          <View style={{ flexDirection: "column", paddingLeft: 30,paddingTop: 20, justifyContent: 'space-around', alignItems: 'flex-start' }}>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.label}>{phone}: </Text>
+              <TouchableOpacity
+                onPress={() => callNumber(item.contact)}
+                style={{ flexDirection: "row", alignItems: "center" }}
+              >
+                <Text>{item.contact}</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.label}>{address}: </Text>
+              <Text> {item.address} </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingBottom: 50
+              }}
+            >
+              <Text numberOfLines={2} style={styles.label}>
+                {postedOn}:{" "}
+              </Text>
+              <Text numberOfLines={2} ellipsizeMode={"tail"}>
+                {" "}
+                {formatSecondsToDate(item.created_at.seconds)}{" "}
+              </Text>
+            </View>
+          </View>
       </Card.Content>
     </Card>
   );

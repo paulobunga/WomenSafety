@@ -1,6 +1,7 @@
 import React from "react";
 import { Appbar } from "react-native-paper";
 import { colors } from "config/colors";
+import { StyleSheet } from "react-native";
 
 interface IProps {
   navigation: any;
@@ -24,7 +25,7 @@ export function AppBar({
   };
 
   return (
-    <Appbar.Header>
+    <Appbar.Header style={styles.container}>
       {isModal ? (
         <Appbar.Action onPress={navigation.goBack} icon="arrow-left" />
       ) : (
@@ -38,3 +39,12 @@ export function AppBar({
     </Appbar.Header>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors["background"],
+    color: colors["red"]
+  },
+  title: {
+    color: colors["red"]
+  }
+});

@@ -22,6 +22,7 @@ import { childService, useMyMissingChildRequests } from "packages";
 import { useMutation } from "react-query";
 import { IChild } from "src/types";
 import { useIsFocused } from "@react-navigation/native";
+import { colors } from "config/colors";
 
 let queryRefetch;
 const shareMessage = (item: any) => {
@@ -101,10 +102,18 @@ const styles = StyleSheet.create({
   container: {
     height: height,
     width: width,
-    paddingBottom: 120
+    paddingBottom: 120,
+    backgroundColor: colors["background"]
   },
   label: {
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: colors["red"]
+  },
+  cardCoverContainer: {
+    marginLeft: 8,
+    height: 90,
+    width: 90,
+    borderRadius: 50
   }
 });
 
@@ -115,30 +124,71 @@ function ChildItem({ item }: { item: IChild }) {
   const postedOn = useTranslatedText("postedOn");
 
   return (
-    <Card style={{ backgroundColor: "white", marginBottom: 10 }}>
-      <Card.Cover source={{ uri: item.image }} />
-
-      <Card.Content>
-        <Title>
-          {item.name} ({age}: {item.age}
-          {"yrs"})
-        </Title>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>{phone}: </Text>
-          <TouchableOpacity
-            onPress={() => callNumber(item.contact)}
-            style={{ flexDirection: "row", alignItems: "center" }}
+    <Card style={{ backgroundColor: "white",  margin: 15, marginBottom: 5, elevation: 10 }}>
+      <Card.Content
+        style={{
+          flexDirection: "row"
+        }}
+      >
+        <View style={{ flexDirection: "column", alignItems: "center" }}>
+          <Card.Cover
+            source={{ uri: item.image }}
+            style={styles.cardCoverContainer}
+          />
+          <Title
+            style={{
+              fontWeight: "bold",
+              color: colors["red"]
+            }}
           >
-            <Text>{item.contact}</Text>
-          </TouchableOpacity>
+            {item.name}
+          </Title>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.label}>{age}: </Text>
+            <Text>
+              {" "}
+              {item.age}
+              {" yrs"}{" "}
+            </Text>
+          </View>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>{address}: </Text>
-          <Text> {item.address} </Text>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.label}>{postedOn}: </Text>
-          <Text> {formatSecondsToDate(item.created_at.seconds)} </Text>
+        <View
+          style={{
+            flexDirection: "column",
+            paddingLeft: 30,
+            paddingTop: 20,
+            justifyContent: "space-around",
+            alignItems: "flex-start"
+          }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.label}>{phone}: </Text>
+            <TouchableOpacity
+              onPress={() => callNumber(item.contact)}
+              style={{ flexDirection: "row", alignItems: "center" }}
+            >
+              <Text>{item.contact}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.label}>{address}: </Text>
+            <Text> {item.address} </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              paddingBottom: 50
+            }}
+          >
+            <Text numberOfLines={2} style={styles.label}>
+              {postedOn}:{" "}
+            </Text>
+            <Text numberOfLines={2} ellipsizeMode={"tail"}>
+              {" "}
+              {formatSecondsToDate(item.created_at.seconds)}{" "}
+            </Text>
+          </View>
         </View>
       </Card.Content>
       <Card.Actions>

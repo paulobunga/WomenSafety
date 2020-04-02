@@ -112,7 +112,7 @@ const BloodListItem = ({ item }: any) => {
           </TouchableOpacity>
         </View>
         <View style={styles.text}>
-          <Text style={[styles.label,styles.text]}>{address}: </Text>
+          <Text style={styles.text}>{address}: </Text>
           <Text>{item.address}</Text>
         </View>
         <View style={styles.text}>

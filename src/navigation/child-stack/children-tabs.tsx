@@ -2,7 +2,7 @@ import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { MyMissingChildrenRequests, MissingChildrenList } from "screens";
 import { colors } from "config/colors";
-import { AddFloatingButton, useTranslatedText } from "components";
+import { AddFloatingButton, useTranslatedText,HeaderBar } from "components";
 const Tab = createMaterialTopTabNavigator();
 
 export function ChildrenTabs({ navigation }) {
@@ -10,6 +10,7 @@ export function ChildrenTabs({ navigation }) {
 
   return (
     <>
+    <HeaderBar title={missingChildren} navigation={navigation} />
       <Tab.Navigator
         tabBarOptions={{
           style: {

@@ -2,12 +2,13 @@ import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { MyBloodRequests, BloodList } from "screens";
 import { colors } from "config/colors";
-import { AddFloatingButton } from "components";
+import { AddFloatingButton, HeaderBar } from "components";
 const Tab = createMaterialTopTabNavigator();
 
 export function BloodDonationTabs({ navigation }) {
   return (
     <>
+    <HeaderBar title={'Blood Donation'} navigation={navigation} />
       <Tab.Navigator
         tabBarOptions={{
           style: {

@@ -1,7 +1,6 @@
 export * from "./translated-text";
 export * from "./android-safe-area-view";
 export * from "./app-bar";
-export * from "./header-bar";
 export * from "./error";
 export * from "./add-floating-button";
 export * from "./loading";

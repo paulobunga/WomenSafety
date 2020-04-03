@@ -103,9 +103,9 @@ export function AddMissingChildren({ navigation }) {
               onChangeText={text => setValue("address", text)}
             />
 
-            <TouchableOpacity onPress={pickImage} style={styles.touchableOpacity}>
+            <TouchableOpacity onPress={pickImage} style={[styles.touchableOpacity,{paddingLeft:35}]}>
               <MaterialCommunityIcons name="camera-image" size={25} />
-              { !errors.image ? ( <Text style={styles.imgText}>Upload Image</Text>) :
+              { !errors.image ? ( <Text style={[styles.imgText,{paddingLeft: 10}]}>Upload Image</Text>) :
                 (<ErrorText  message="Select an image"></ErrorText>
               )}
             </TouchableOpacity>
@@ -118,11 +118,12 @@ export function AddMissingChildren({ navigation }) {
             ) : null}
 
             <Button
-              style={styles.touchableOpacity}
+              style={[styles.touchableOpacity, styles.text]}
               mode="contained"
               disabled={status === "loading"}
               loading={status === "loading"}
               onPress={handleSubmit(onSubmit)}
+              uppercase={false}
             >
               <Text style={styles.imgText}>Submit</Text>
             </Button>
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20, 
     flexDirection: 'row', 
-    justifyContent: 'space-evenly',
+    justifyContent: 'flex-start',
     alignItems:'center',
     borderRadius: 50,
     height: 50,
@@ -160,8 +161,12 @@ const styles = StyleSheet.create({
     elevation: 10, 
     marginHorizontal: 40
   },
+  text: {
+    justifyContent: 'center',
+  },
   imgText: {
     color: colors["red"], 
-    fontSize: 17
+    fontSize: 17,
+    fontWeight: 'bold',
   }
 });

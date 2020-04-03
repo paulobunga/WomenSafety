@@ -1,7 +1,8 @@
 import React from "react";
 import { Appbar } from "react-native-paper";
 import theme from "config/theme";
-
+import { colors } from "config/colors";
+import {Text} from 'react-native';
 interface IProps {
   navigation: any;
   children?: any;
@@ -24,13 +25,13 @@ export function AppBar({
   };
 
   return (
-    <Appbar.Header dark={false} style={{ backgroundColor: 'transparent', elevation: 0 }}>
+    <Appbar.Header dark={false} style={{ backgroundColor: colors["background"], elevation: 0 }}>
       {
         isModal
           ? (<Appbar.Action onPress={navigation.goBack} icon="arrow-left" color={theme.colors.primary} size={32} />)
           : (<Appbar.Action onPress={openDrawer} icon="menu" color={theme.colors.primary} size={32} />)
       }
-      <Appbar.Content title={title} titleStyle={{ color: theme.colors.primary, fontFamily: theme.fonts.medium.fontFamily }} />
+      <Appbar.Content title={<Text> {title} </Text>} titleStyle={{ color: theme.colors.primary, fontFamily: theme.fonts.medium.fontFamily }} style={{ alignItems: 'center', paddingRight: 80 }} />
       {
         isSelectingContacts && (<Appbar.Action icon="check" onPress={onSelectingContacts} color={theme.colors.primary} size={32} />)
       }

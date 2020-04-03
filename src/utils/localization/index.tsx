@@ -18,9 +18,11 @@ i18n.use(initReactI18next).init({
         bloodRequestForm: "Blood request form",
         bloodRequests: "Blood Requests",
         missingChildren: "Missing Children",
+        bloodDonation: "Blood Donation",
         age: "age",
         childInfoForm: "Child information form",
         logout: "Logout",
+        emergency: "Emergency",
         yourFavorites: "Your favorites",
         addFavorites: "Add Favorites"
       }

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { AppBar, useTranslatedText } from "components";
 import { TextInput, Button } from "react-native-paper";
-import { StyleSheet, View, Picker } from "react-native";
+import { StyleSheet, View, Picker,Text } from "react-native";
 import { useForm } from "react-hook-form";
 import { bloodService, useUserStore } from "packages";
 import { useMutation } from "react-query";
+import { colors } from "config/colors";
 
 export function AddBloodRequest({ navigation }) {
   let { phoneNumber } = useUserStore(state => state.user);
@@ -41,10 +42,10 @@ export function AddBloodRequest({ navigation }) {
     <>
       <AppBar title={bloodRequestForm} isModal navigation={navigation} />
       <View style={styles.container}>
-        <View style={{ width: "80%" }}>
+        <View style={{ width: "80%",marginTop: 20,  }}>
           <TextInput
             style={styles.input}
-            mode="outlined"
+            mode="flat"
             label={address}
             multiline
             error={errors.address ? true : false}
@@ -53,7 +54,7 @@ export function AddBloodRequest({ navigation }) {
           <TextInput
             style={styles.input}
             label={phone}
-            mode="outlined"
+            mode="flat"
             keyboardType="phone-pad"
             error={errors.contact ? true : false}
             onChangeText={text => setValue("contact", text)}
@@ -75,12 +76,14 @@ export function AddBloodRequest({ navigation }) {
             <Picker.Item label="B (-)" value="B-" />
           </Picker>
           <Button
+            style={styles.touchableOpacity}
             mode="contained"
             disabled={status === "loading"}
             loading={status === "loading"}
             onPress={handleSubmit(onSubmit)}
+            uppercase={false}
           >
-            Submit
+            <Text style={styles.imgText}>Submit</Text>
           </Button>
         </View>
       </View>
@@ -91,11 +94,30 @@ export function AddBloodRequest({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: colors["background"],
   },
   input: {
     backgroundColor: "white",
-    marginBottom: 20
+    marginBottom: 20,
+    elevation: 10,
+    borderRadius: 7,
+  },
+  touchableOpacity: {
+    marginTop: 10,
+    marginBottom: 20, 
+    flexDirection: 'row', 
+    justifyContent: 'center',
+    alignItems:'center',
+    borderRadius: 50,
+    height: 50,
+    width: 200, 
+    backgroundColor: "white",
+    elevation: 10, 
+    marginHorizontal: 40
+  },
+  imgText: {
+    color: colors["red"], 
+    fontSize: 17
   }
 });

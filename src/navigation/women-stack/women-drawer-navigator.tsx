@@ -23,6 +23,7 @@ function CustomDrawerContent(props: any) {
   const currentActiveIndex = props.state.index;
   const translatedAlerts = useTranslatedText("alerts");
   const translatedFavorites = useTranslatedText("favorites");
+  const translatedEmergency = useTranslatedText("emergency");
   const logoutText = useTranslatedText("logout");
 
   const { i18n } = useTranslation();
@@ -54,6 +55,14 @@ function CustomDrawerContent(props: any) {
           label={logoutText}
           active={currentActiveIndex === 100}
           onPress={logout}
+        />
+        <Drawer.Item
+          icon="account-arrow-right-outline"
+          label={translatedEmergency}
+          active={currentActiveIndex === 2}
+          onPress={() => {
+            props.navigation.navigate("emergency");
+          }}
         />
 
         <LanguagesDivider>

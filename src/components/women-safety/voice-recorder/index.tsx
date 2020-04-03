@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Fragment } from "react";
 import { Audio } from "expo-av";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { colors } from "config/colors";
@@ -34,7 +34,9 @@ function VoiceRecorder() {
   const recordText = useTranslatedText("Record");
   const sendText = useTranslatedText("send");
   const cancelText = useTranslatedText("cancel");
-  const introductionText = useTranslatedText("I am in danger, I need your help.");
+  const introductionText = useTranslatedText(
+    "I am in danger, I need your help."
+  );
 
   const [state, setState] = useState(initialState);
   const [isWatchingLocation, setisWatchingLocation] = useState(false);
@@ -185,39 +187,63 @@ function VoiceRecorder() {
             {sendText}
           </Button>
         ) : (
-          <Button
-            mode="text"
-            disabled={isWatchingLocation}
-            onPress={onStartRecording}
-            uppercase={false}
-            color={colors["red-vivid-600"]}
-            labelStyle={{
-              color: colors["primary"],
-              fontSize: 24
-            }}
-            contentStyle={{
-              backgroundColor: colors["white"],
-              elevation: 10,
-              borderRadius: 140,
-              height: 240,
-              width: 240,
-              margin: 30
-            }}
-          >
-            {recordText}
-          </Button>
+          <Fragment>
+            <Button
+              mode="text"
+              disabled={isWatchingLocation}
+              onPress={onStartRecording}
+              uppercase={false}
+              color={colors["red-vivid-600"]}
+              labelStyle={{
+                color: colors["primary"],
+                fontSize: 24
+              }}
+              contentStyle={{
+                backgroundColor: colors["white"],
+                elevation: 10,
+                borderRadius: 140,
+                height: 240,
+                width: 240,
+                margin: 30
+              }}
+            >
+              {recordText}
+            </Button>
+
+            <Text style={styles.text}>{introductionText}</Text>
+            <View style={{ margin: 10, alignItems: "flex-start" }}>
+              <Text style={[styles.text, styles.text2]}>How to:</Text>
+              <Text style={styles.text2}>
+                <Text style={styles.text}>1. </Text> A request will be send to 5
+                people who are near by to 500 meter to you with your real time
+                location on google map.
+              </Text>
+              <Text style={styles.text2}>
+                <Text style={styles.text}>2. </Text> Similar request have been
+                sent to your family and friends.
+              </Text>
+              <Text style={styles.text2}>
+                <Text style={styles.text}>3. </Text> A call will be placed to
+                181 or 100.
+              </Text>
+              <Text style={styles.text2}>
+                <Text style={styles.text}>4. </Text> Once you activated help,
+                all surrounding voice recording will be started till you clicked
+                on "I'M SAFE" button or till 2 hrs after help activation.
+              </Text>
+              <Text style={styles.text2}>
+                <Text style={styles.text}>-- </Text> All the people who have
+                received your help request can see your real time movement on
+                google map till 12 hours or till you marked yourself safe.
+              </Text>
+              <Text style={styles.text2}>
+                <Text style={styles.text}>-- </Text> So do not forget to click I
+                AM SAFE button once you feel that you are safe.
+              </Text>
+            </View>
+          </Fragment>
         )}
 
-          <Text style={styles.text}>{introductionText}</Text>
-          <View style={{margin: 10,alignItems: 'flex-start'}}>
-          <Text style={[styles.text,styles.text2]}>How to:</Text>
-          <Text style={styles.text2}><Text style={styles.text}>1. </Text>  A request will be send to 5 people who are near by to 500 meter to you with your real time location on google map.</Text>
-          <Text style={styles.text2}><Text style={styles.text}>2. </Text> Similar request have been sent to your family and friends.</Text>
-          <Text style={styles.text2}><Text style={styles.text}>3. </Text> A call will be placed to 181 or 100.</Text>
-          <Text style={styles.text2}><Text style={styles.text}>4. </Text> Once you activated help, all surrounding voice recording will be started till you clicked on "I'M SAFE" button or till 2 hrs after help activation.</Text>
-          <Text style={styles.text2}><Text style={styles.text}>-- </Text> All the people who have received your help request can see your real time movement on google map till 12 hours or till you marked yourself safe.</Text>
-          <Text style={styles.text2}><Text style={styles.text}>-- </Text> So do not forget to click I AM SAFE button once you feel that you are safe.</Text>
-            </View>
         {state.error ? (
           <>
             <Text>{state.error}</Text>
@@ -259,22 +285,23 @@ function VoiceRecorder() {
           {state.error}
         </Snackbar>
       </View>
-      </>
+    </>
   );
 }
 const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: colors["background"]
   },
   text: {
     color: theme.colors.primary,
-    fontWeight: 'bold',
+    fontWeight: "bold"
   },
   text2: {
-    paddingBottom: 5,
-  },
+    paddingBottom: 5
+  }
 });
 
 export { VoiceRecorder };

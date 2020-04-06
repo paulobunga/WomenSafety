@@ -24,7 +24,8 @@ i18n.use(initReactI18next).init({
         logout: "Logout",
         emergency: "Emergency",
         yourFavorites: "Your favorites",
-        addFavorites: "Add Favorites"
+        addFavorites: "Add Favorites",
+        emergencyContacts: "Emergency Contacts"
       }
     },
     gu: {

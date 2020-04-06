@@ -13,8 +13,8 @@ export function BottomTabNavigator() {
   return (
     <Tab.Navigator
       initialRouteName="Women"
-      activeColor={'white'}
-      inactiveColor={colors["cool-grey-050"]}
+      activeColor={colors["bottom-color"]}
+      inactiveColor={colors["light-pink"]}
       barStyle={{ backgroundColor: theme.colors.primary }}
       labeled={true}
       sceneAnimationEnabled={false}

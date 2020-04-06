@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import theme from 'config/theme';
 import styled from 'styled-components';
 import { LoginStack, BottomTabNavigator } from "navigation";
+import { EmergencyStack } from "../emergency-stack";
 
 const DrawerNav = createDrawerNavigator();
 
@@ -119,6 +120,7 @@ export function WomenDrawerNavigator({ navigation }) {
       {/* <DrawerNav.Screen name="home" component={BottomTabNavigator} /> */}
       <DrawerNav.Screen name="alerts" component={CreateAlertScreen} />
       <DrawerNav.Screen name="favorites" component={FavoritesStack} />
+      <DrawerNav.Screen name="emergency" component={EmergencyStack} />
     </DrawerNav.Navigator>
   );
 }

@@ -26,5 +26,5 @@ export const colors = {
     "white": '#FFFFFF',
     "red": '#DF0051',
     "bottom-color": '#FAEDE7',
-    "light-pink": '#f7acc4',
+    "light-pink": '#f595b3',
 };

@@ -25,7 +25,13 @@ i18n.use(initReactI18next).init({
         emergency: "Emergency",
         yourFavorites: "Your favorites",
         addFavorites: "Add Favorites",
-        emergencyContacts: "Emergency Contacts"
+        emergencyContacts: "Emergency Contacts",
+        ambulance: 'Ambulance',
+        police: 'Police',
+        alert: 'Alert',
+        violence: 'Violence',
+        kidnapping: 'Kidnapping',
+        fireFighter: 'Firefighter'
       }
     },
     gu: {

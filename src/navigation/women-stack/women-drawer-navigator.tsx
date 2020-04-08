@@ -17,6 +17,8 @@ import theme from 'config/theme';
 import styled from 'styled-components';
 import { LoginStack, BottomTabNavigator } from "navigation";
 import { EmergencyStack } from "../emergency-stack";
+import { ChildStack } from "../child-stack";
+import { BloodDonationStack } from "../blood-donation-stack";
 
 const DrawerNav = createDrawerNavigator();
 
@@ -25,6 +27,8 @@ function CustomDrawerContent(props: any) {
   const translatedAlerts = useTranslatedText("alerts");
   const translatedFavorites = useTranslatedText("favorites");
   const translatedEmergency = useTranslatedText("emergency");
+  const translatedMissingChild = useTranslatedText("missingChildren");
+  const translatedBloodDonation = useTranslatedText("bloodDonation");
   const logoutText = useTranslatedText("logout");
 
   const { i18n } = useTranslation();
@@ -37,14 +41,14 @@ function CustomDrawerContent(props: any) {
         </View>
         <Drawer.Item
           label={translatedAlerts}
-          icon="alarm-light-outline"
+          icon="alarm-light"
           active={currentActiveIndex === 0}
           onPress={() => {
             props.navigation.navigate("alerts");
           }}
         />
         <Drawer.Item
-          icon="account-heart-outline"
+          icon="account-heart"
           label={translatedFavorites}
           active={currentActiveIndex === 1}
           onPress={() => {
@@ -52,18 +56,34 @@ function CustomDrawerContent(props: any) {
           }}
         />
         <Drawer.Item
-          icon="account-arrow-right-outline"
-          label={logoutText}
-          active={currentActiveIndex === 100}
-          onPress={logout}
-        />
-        <Drawer.Item
-          icon="account-arrow-right-outline"
+          icon="plus-circle"
           label={translatedEmergency}
           active={currentActiveIndex === 2}
           onPress={() => {
             props.navigation.navigate("emergency");
           }}
+        />
+        <Drawer.Item
+          icon="account-search"
+          label={translatedMissingChild}
+          active={currentActiveIndex === 3}
+          onPress={() => {
+            props.navigation.navigate("missingChild");
+          }}
+        />
+        <Drawer.Item
+          icon="water"
+          label={translatedBloodDonation}
+          active={currentActiveIndex === 4}
+          onPress={() => {
+            props.navigation.navigate("bloodDonation");
+          }}
+        />
+        <Drawer.Item
+          icon="account-arrow-right"
+          label={logoutText}
+          active={currentActiveIndex === 100}
+          onPress={logout}
         />
 
         <LanguagesDivider>
@@ -121,6 +141,8 @@ export function WomenDrawerNavigator({ navigation }) {
       <DrawerNav.Screen name="alerts" component={CreateAlertScreen} />
       <DrawerNav.Screen name="favorites" component={FavoritesStack} />
       <DrawerNav.Screen name="emergency" component={EmergencyStack} />
+      <DrawerNav.Screen name="missingChild" component={ChildStack} />
+      <DrawerNav.Screen name="bloodDonation" component={BloodDonationStack} />
     </DrawerNav.Navigator>
   );
 }

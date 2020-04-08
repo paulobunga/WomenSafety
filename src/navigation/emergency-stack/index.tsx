@@ -1,16 +1,16 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { EmergencyScreen, ManageFavorites } from "screens";
+import { EmergencyScreen } from "screens";
 
-const AddedFavoritesStack = createStackNavigator();
+const AddedEmergencyStack = createStackNavigator();
 
 export function EmergencyStack() {
   return (
-    <AddedFavoritesStack.Navigator headerMode="none">
-      <AddedFavoritesStack.Screen
+    <AddedEmergencyStack.Navigator headerMode="none">
+      <AddedEmergencyStack.Screen
         name="Main"
         component={EmergencyScreen}
       />
-    </AddedFavoritesStack.Navigator>
+    </AddedEmergencyStack.Navigator>
   );
 }

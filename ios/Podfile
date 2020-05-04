@@ -49,15 +49,15 @@ target 'WomenSafety' do
 
   pod 'RNFBAuth', :path => '../node_modules/@react-native-firebase/auth'
   pod 'RNFBFirestore', :path => '../node_modules/@react-native-firebase/firestore'
+  pod 'RNFBMessaging', :path => '../rn-firebase-messaging'
 
   pod 'RNFBStorage', :path => '../node_modules/@react-native-firebase/storage'
 
   pod 'react-native-maps', :path => '../node_modules/react-native-maps'
 
-  pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
-
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
   pod '@mauron85_react-native-background-geolocation', :path => '../node_modules/@mauron85/react-native-background-geolocation'
+  
 
 end

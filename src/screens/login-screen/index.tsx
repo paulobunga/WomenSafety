@@ -39,8 +39,7 @@ export function LoginScreen() {
             {!showOTPScreen &&
               <View style={{ alignItems: 'center' }}>
                 <Subheading>By Providing my phone number, I hearby agree and</Subheading>
-                <Subheading>accept the <Subheading style={{ color: colors["primary"] }}>Terms Of service</Subheading> and <Subheading style={{ color: colors["primary"] }}>Private Policy</Subheading> in use</Subheading>
-                <Subheading>of the app</Subheading>
+                <Subheading style={{  textAlign: 'center' }}>accept the <Subheading style={{ color: colors["primary"] }}>Terms Of service</Subheading> and <Subheading style={{ color: colors["primary"] }}>Private Policy</Subheading> in use of the app</Subheading>
               </View>
             }
           </View>
@@ -81,7 +80,7 @@ const PhoneNumber = ({ onSubmit }: { onSubmit: any }) => {
         <TextInput
           defaultValue={"+91"}
           editable={false}
-          style={styles.countryCodeInput}
+          style={[styles.countryCodeInput,{paddingLeft:0, textAlign: 'right'}]}
         />
         <TextInput
           returnKeyLabel="next"

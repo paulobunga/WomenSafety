@@ -52,13 +52,47 @@ i18n.use(initReactI18next).init({
         age: "ઉંમર",
         childInfoForm: "બાળક માહિતી ફોર્મ",
         logout: "લૉગ આઉટ",
+        emergency: "કટોકટી",
         yourFavorites: "તમારા મિત્રો",
-        addFavorites: "મિત્રો ઉમેરો"
+        addFavorites: "મિત્રો ઉમેરો",
+        emergencyContacts: "કટોકટી સંપર્કો",
+        ambulance: 'દર્દીવાહિની',
+        police: 'પોલીસ',
+        alert: 'ચેતવણી',
+        violence: 'હિંસા',
+        kidnapping: 'અપહરણ',
+        fireFighter: 'અગ્નિશામક'
       }
     },
     hi: {
       translation: {
-        title: "स्वागत हे"
+        title: "स्वागत हे",
+        alerts: "चेतावनी",
+        favorites: "पसंदीदा",
+        record: "अभिलेख",
+        cancel: "रद्द करना",
+        send: "भेजना",
+        phone: "फ़ोन",
+        address: "पता",
+        postedOn: "पर प्रविष्ट किया",
+        name: "नाम",
+        bloodRequestForm: "रक्त अनुरोध प्रपत्र",
+        bloodRequests: "रक्त अनुरोध",
+        missingChildren: "ग़ुम बच्चे",
+        bloodDonation: "रक्त दान",
+        age: "उम्र",
+        childInfoForm: "बाल जानकारी प्रपत्र",
+        logout: "लॉग आउट",
+        emergency: "आपातकालीन",
+        yourFavorites: "आपका पसंदीदा",
+        addFavorites: "पसंदीदा मे समूह करना",
+        emergencyContacts: "आपातकालीन संपर्क",
+        ambulance: 'रोगी-वाहन',
+        police: 'पुलिस',
+        alert: 'चेतावनी',
+        violence: 'हिंसा',
+        kidnapping: 'अपहरण',
+        fireFighter: 'आग बुझानेवाला'
       }
     }
   },

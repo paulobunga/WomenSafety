@@ -19,6 +19,11 @@ export interface IChild {
   age: number;
 }
 
+export interface IBlood {
+  address: string;
+  contact: string;
+  created_at: any;
+}
 export interface IAudioMessage {
   type: "audio";
   location?: FirebaseFirestoreTypes.GeoPoint;

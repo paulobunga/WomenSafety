@@ -5,6 +5,7 @@ import * as Font from "expo-font";
 import "./src/utils/localization";
 import DefaulTheme from "./config/theme";
 import { LoginStack, BottomTabNavigator } from "navigation";
+// import { WomenDrawerNavigator } from "./src/navigation/women-stack/women-drawer-navigator";
 import {
   useUserStore,
   registerAppWithFCM,
@@ -102,7 +103,7 @@ export default function App(props: any) {
       <StatusBar
         barStyle="dark-content"
         hidden={false}
-        backgroundColor={colors["cyan-vivid-900"]}
+        backgroundColor={colors["primary"]}
         translucent={false}
         networkActivityIndicatorVisible={true}
       />

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AppBar, ErrorText, useTranslatedText } from "components";
 import { TextInput, Button } from "react-native-paper";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, Text, Dimensions } from "react-native";
 import { useForm } from "react-hook-form";
 import { useUserStore, childService } from "packages";
 import { useMutation } from "react-query";
@@ -9,7 +9,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import ImagePicker from "react-native-image-picker";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { colors } from "config/colors";
 
+const { height, width } = Dimensions.get("window");
 export function AddMissingChildren({ navigation }) {
   let { phoneNumber } = useUserStore(state => state.user);
   const [image, setImage] = useState(null);
@@ -19,6 +21,7 @@ export function AddMissingChildren({ navigation }) {
   const age = useTranslatedText("age");
   const address = useTranslatedText("address");
   const phone = useTranslatedText("phone");
+  
 
   const [mutate, { status }] = useMutation(
     childService.onSubmitMissingChildren,
@@ -63,12 +66,11 @@ export function AddMissingChildren({ navigation }) {
   return (
     <>
       <AppBar title={childInfoForm} isModal navigation={navigation} />
-
       <KeyboardAwareScrollView>
         <View style={styles.container}>
-          <View style={{ width: "80%" }}>
+          <View style={{ width: "80%", marginTop: 20,}}>
             <TextInput
-              mode="outlined"
+              mode="flat"
               style={styles.input}
               label={name}
               multiline
@@ -77,14 +79,14 @@ export function AddMissingChildren({ navigation }) {
             />
             <TextInput
               style={styles.input}
-              mode="outlined"
+              mode="flat"
               label={age}
               keyboardType="phone-pad"
               error={errors.age ? true : false}
               onChangeText={text => setValue("age", text)}
             />
             <TextInput
-              mode="outlined"
+              mode="flat"
               style={styles.input}
               label={phone}
               keyboardType="phone-pad"
@@ -93,7 +95,7 @@ export function AddMissingChildren({ navigation }) {
             />
 
             <TextInput
-              mode="outlined"
+              mode="flat"
               style={styles.input}
               label={address}
               multiline
@@ -101,10 +103,10 @@ export function AddMissingChildren({ navigation }) {
               onChangeText={text => setValue("address", text)}
             />
 
-            <TouchableOpacity onPress={pickImage} style={{ marginBottom: 10 }}>
+            <TouchableOpacity onPress={pickImage} style={[styles.touchableOpacity,{paddingLeft:35}]}>
               <MaterialCommunityIcons name="camera-image" size={25} />
-              {errors.image && (
-                <ErrorText message="Select an image"></ErrorText>
+              { !errors.image ? ( <Text style={[styles.imgText,{paddingLeft: 10}]}>Upload Image</Text>) :
+                (<ErrorText  message="Select an image"></ErrorText>
               )}
             </TouchableOpacity>
 
@@ -116,12 +118,14 @@ export function AddMissingChildren({ navigation }) {
             ) : null}
 
             <Button
+              style={[styles.touchableOpacity, styles.text]}
               mode="contained"
               disabled={status === "loading"}
               loading={status === "loading"}
               onPress={handleSubmit(onSubmit)}
+              uppercase={false}
             >
-              Submit
+              <Text style={styles.imgText}>Submit</Text>
             </Button>
           </View>
         </View>
@@ -133,11 +137,36 @@ export function AddMissingChildren({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
-    alignItems: "center"
+    alignItems: "center",
+    height: height,
+    width: width,
+    backgroundColor: colors["background"]
   },
   input: {
     marginBottom: 20,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    elevation: 10,
+    borderRadius: 7,
+  },
+  touchableOpacity: {
+    marginTop: 10,
+    marginBottom: 20, 
+    flexDirection: 'row', 
+    justifyContent: 'flex-start',
+    alignItems:'center',
+    borderRadius: 50,
+    height: 50,
+    width: 200, 
+    backgroundColor: "white",
+    elevation: 10, 
+    marginHorizontal: 40
+  },
+  text: {
+    justifyContent: 'center',
+  },
+  imgText: {
+    color: colors["red"], 
+    fontSize: 17,
+    fontWeight: 'bold',
   }
 });

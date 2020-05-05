@@ -1,5 +1,8 @@
 import color from "color";
 import { colors } from "./colors";
+import { Dimensions } from 'react-native';
+
+const { height: windowHeight, width: windowWidth } = Dimensions.get('window')
 
 import { Theme, DefaultTheme, configureFonts } from "react-native-paper";
 const fontConfig = {
@@ -23,9 +26,9 @@ const CustomTheme: Theme = {
   dark: false,
   roundness: 6,
   colors: {
-    primary: colors["cyan-vivid-900"],
+    primary: colors["primary"],
     accent: colors["red-vivid-600"],
-    background: colors["cool-grey-200"],
+    background: colors["background"],
     surface: colors["cyan-vivid-050"],
     error: "#B00020",
     text: colors["cool-grey-900"],
@@ -43,10 +46,15 @@ const CustomTheme: Theme = {
       .alpha(0.5)
       .rgb()
       .string(),
-    notification: colors["pink-vivid-500"]
+    notification: colors["pink-vivid-500"],
+    lightPrimary: colors['lightPrimary']
   },
   animation: {
     scale: 1.0
+  },
+  layout: {
+    windowHeight,
+    windowWidth
   },
   fonts: configureFonts(fontConfig)
 };

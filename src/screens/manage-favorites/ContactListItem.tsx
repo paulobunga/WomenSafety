@@ -19,7 +19,7 @@ const ContactListItem = ({ name, contactNumber, selected, onSelect, id }) => (
         style={{
             backgroundColor: selected
                 ? colors["cool-grey-200"]
-                : colors["cool-grey-050"]
+                : colors["background"]
         }}
     >
         <List.Item

@@ -1,13 +1,14 @@
-import React, { Component, useReducer, useState, useEffect } from "react";
+import React, { Component, useReducer, useState, useEffect, Fragment } from "react";
 import styles from "./style";
 import {
+  Image,
   Keyboard,
   View,
   TextInput,
   TouchableWithoutFeedback,
   StyleSheet
 } from "react-native";
-import { Button, Text, Headline, ActivityIndicator } from "react-native-paper";
+import { Button, Subheading, ActivityIndicator, Title } from "react-native-paper";
 import { firebaseAuth } from "config/firebase";
 import { useForm } from "react-hook-form";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
@@ -23,13 +24,24 @@ export function LoginScreen() {
     <KeyboardAwareScrollView style={styles.containerView}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.loginScreenContainer}>
+          <Title style={styles.titleText}>{!showOTPScreen ? 'Login' : 'Verify Your Phone Number'}</Title>
           <View style={styles.loginFormView}>
-            <Headline style={styles.logoText}>WomenSafety</Headline>
-            {showOTPScreen ? (
-              <OTP onCancel={() => setShowOTPScreen(false)} />
-            ) : (
-              <PhoneNumber onSubmit={() => setShowOTPScreen(true)} />
-            )}
+            <View style={{ alignItems: 'center' }}>
+              <Image source={require('./assets/logo.png')} width={200} style={{ width: 200, height: 100, marginBottom: '20%' }} />
+              {!showOTPScreen && <Subheading>We will send you an <Subheading style={{ color: colors["primary"] }}>One Time Password</Subheading></Subheading>}
+              <Subheading>{showOTPScreen ? 'Enter your OTP code here' : 'on this mobile number'}</Subheading>
+              {showOTPScreen ? (
+                <OTP onCancel={() => setShowOTPScreen(false)} />
+              ) : (
+                  <PhoneNumber onSubmit={() => setShowOTPScreen(true)} />
+                )}
+            </View>
+            {!showOTPScreen &&
+              <View style={{ alignItems: 'center' }}>
+                <Subheading>By Providing my phone number, I hearby agree and</Subheading>
+                <Subheading style={{  textAlign: 'center' }}>accept the <Subheading style={{ color: colors["primary"] }}>Terms Of service</Subheading> and <Subheading style={{ color: colors["primary"] }}>Private Policy</Subheading> in use of the app</Subheading>
+              </View>
+            }
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -63,15 +75,13 @@ const PhoneNumber = ({ onSubmit }: { onSubmit: any }) => {
   };
 
   return (
-    <View style={{ flexDirection: "row" }}>
-      <View style={{ width: "25%" }}>
+    <View style={{ marginTop: '8%' }}>
+      <View style={styles.loginTextContainer}>
         <TextInput
           defaultValue={"+91"}
           editable={false}
-          style={styles.countryCodeInput}
+          style={[styles.countryCodeInput,{paddingLeft:0, textAlign: 'right'}]}
         />
-      </View>
-      <View style={{ width: "75%" }}>
         <TextInput
           returnKeyLabel="next"
           onSubmitEditing={handleSubmit(onPhoneSubmit)}
@@ -80,12 +90,12 @@ const PhoneNumber = ({ onSubmit }: { onSubmit: any }) => {
           style={styles.loginFormTextInput}
           onChangeText={text => setValue("phoneNumber", text)}
         />
-        {errors.phoneNumber ? (
-          <ErrorText message={"Please enter a valid phone number"} />
-        ) : null}
-        {error ? <ErrorText message={error} /> : null}
-        {loading ? <ActivityIndicator /> : null}
       </View>
+      {errors.phoneNumber ? (
+        <ErrorText message={"Please enter a valid phone number"} />
+      ) : null}
+      {error ? <ErrorText message={error} /> : null}
+      {loading ? <ActivityIndicator /> : null}
     </View>
   );
 };

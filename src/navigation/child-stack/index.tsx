@@ -8,7 +8,7 @@ export function ChildStack() {
   return (
     <RootStack.Navigator headerMode="none">
       <RootStack.Screen name="ChildListing" component={ChildrenTabs} />
-      <RootStack.Screen
+      <RootStack.Screen 
         name="AddMissingChildren"
         component={AddMissingChildren}
       />

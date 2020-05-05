@@ -2,22 +2,30 @@ import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { MyBloodRequests, BloodList } from "screens";
 import { colors } from "config/colors";
-import { AddFloatingButton } from "components";
+import { AddFloatingButton, AppBar, useTranslatedText } from "components";
 const Tab = createMaterialTopTabNavigator();
 
 export function BloodDonationTabs({ navigation }) {
+  const BloodDonation = useTranslatedText("bloodDonation");
+
   return (
     <>
+    <AppBar title={BloodDonation} navigation={navigation} />
       <Tab.Navigator
         tabBarOptions={{
           style: {
-            backgroundColor: colors["cyan-vivid-900"]
+            backgroundColor: colors["background"],
+            fontWeight: 'bold'
           },
-          activeTintColor: "white",
+          activeTintColor: colors["red"],
           upperCaseLabel: false,
           activeColor: "white",
           indicatorStyle: {
             backgroundColor: "white"
+          },
+          labelStyle: {
+            fontWeight: 'bold',
+            fontSize: 13
           }
         }}
       >

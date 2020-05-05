@@ -1,8 +1,11 @@
 import { StyleSheet } from "react-native";
+import { colors } from "config/colors";
+import theme from "config/theme";
 
 export default {
   containerView: {
-    flex: 1
+    flex: 1,
+    backgroundColor: colors['background']
   },
   loginScreenContainer: {
     flex: 1
@@ -15,33 +18,33 @@ export default {
     textAlign: "center"
   },
   loginFormView: {
-    flex: 1
+    flex: 1,
+    height: theme.layout.windowHeight - 70,
+    paddingTop: '12%',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  loginTextContainer: {
+    flexDirection: 'row', 
+    width: "90%", 
+    borderWidth: 2, 
+    borderColor: "#eaeaea", 
+    borderRadius: 8, 
+    marginHorizontal: 15, 
+    marginVertical: 5, 
+    backgroundColor: colors.white
   },
   loginFormTextInput: {
-    height: 43,
-    fontSize: 14,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#eaeaea",
-    backgroundColor: "#fafafa",
-    paddingLeft: 10,
-    marginLeft: 15,
-    marginRight: 15,
-    marginTop: 5,
-    marginBottom: 5
+    width: "72%",
+    fontSize: 18,
+    borderWidth: 0,
+    paddingLeft: 10
   },
   countryCodeInput: {
-    height: 43,
-    fontSize: 14,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#eaeaea",
-    backgroundColor: "#fafafa",
-    paddingLeft: 10,
-    marginLeft: 15,
-    marginRight: 15,
-    marginTop: 5,
-    marginBottom: 5
+    width: '12%',
+    fontSize: 18,
+    borderWidth: 0,
+    paddingLeft: 10
   },
   loginButton: {
     backgroundColor: "#3897f1",
@@ -53,5 +56,11 @@ export default {
     height: 45,
     marginTop: 10,
     backgroundColor: "transparent"
+  },
+  titleText: {
+    fontSize: 24,
+    paddingVertical: 16,
+    textAlign: 'center',
+    color: '#D5214E'
   }
 };

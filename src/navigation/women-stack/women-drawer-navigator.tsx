@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Alert, AsyncStorage } from "react-native";
+import { StyleSheet, Alert, AsyncStorage, View, Image } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView
 } from "@react-navigation/drawer";
 import { colors } from "config/colors";
-import { Drawer } from "react-native-paper";
+import { Drawer, Text, BottomNavigation } from "react-native-paper";
 import { CreateAlertScreen, WatchVolunteerLocation } from "screens";
 import { Dimensions } from "react-native";
 import { useTranslatedText } from "components";
@@ -13,6 +13,12 @@ import { alertMachineService, logout } from "packages";
 import { useService } from "@xstate/react";
 import { FavoritesStack } from "./favorites-stack";
 import { useTranslation } from "react-i18next";
+import theme from 'config/theme';
+import styled from 'styled-components';
+import { LoginStack, BottomTabNavigator } from "navigation";
+import { EmergencyStack } from "../emergency-stack";
+import { ChildStack } from "../child-stack";
+import { BloodDonationStack } from "../blood-donation-stack";
 
 const DrawerNav = createDrawerNavigator();
 
@@ -20,23 +26,29 @@ function CustomDrawerContent(props: any) {
   const currentActiveIndex = props.state.index;
   const translatedAlerts = useTranslatedText("alerts");
   const translatedFavorites = useTranslatedText("favorites");
+  const translatedEmergency = useTranslatedText("emergency");
+  const translatedMissingChild = useTranslatedText("missingChildren");
+  const translatedBloodDonation = useTranslatedText("bloodDonation");
   const logoutText = useTranslatedText("logout");
 
   const { i18n } = useTranslation();
 
   return (
     <DrawerContentScrollView {...props}>
-      <Drawer.Section title="Women Safety" style={styles.appTitle}>
+      <Drawer.Section>
+        <View style={{ height: 140, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: theme.colors.lightPrimary }}>
+          <Image source={require('../../screens/login-screen/assets/logo.png')} width={200} style={{ width: 160, height: 80 }} />
+        </View>
         <Drawer.Item
           label={translatedAlerts}
-          icon="alarm-light-outline"
+          icon="alarm-light"
           active={currentActiveIndex === 0}
           onPress={() => {
             props.navigation.navigate("alerts");
           }}
         />
         <Drawer.Item
-          icon="account-heart-outline"
+          icon="account-heart"
           label={translatedFavorites}
           active={currentActiveIndex === 1}
           onPress={() => {
@@ -44,11 +56,39 @@ function CustomDrawerContent(props: any) {
           }}
         />
         <Drawer.Item
-          icon="account-arrow-right-outline"
+          icon="plus-circle"
+          label={translatedEmergency}
+          active={currentActiveIndex === 2}
+          onPress={() => {
+            props.navigation.navigate("emergency");
+          }}
+        />
+        <Drawer.Item
+          icon="account-search"
+          label={translatedMissingChild}
+          active={currentActiveIndex === 3}
+          onPress={() => {
+            props.navigation.navigate("missingChild");
+          }}
+        />
+        <Drawer.Item
+          icon="water"
+          label={translatedBloodDonation}
+          active={currentActiveIndex === 4}
+          onPress={() => {
+            props.navigation.navigate("bloodDonation");
+          }}
+        />
+        <Drawer.Item
+          icon="account-arrow-right"
           label={logoutText}
           active={currentActiveIndex === 100}
           onPress={logout}
         />
+
+        <LanguagesDivider>
+          <LanguagesDividerText>Languages</LanguagesDividerText>
+        </LanguagesDivider>
 
         <Drawer.Item
           label={"English"}
@@ -77,7 +117,6 @@ function CustomDrawerContent(props: any) {
 export function WomenDrawerNavigator({ navigation }) {
   const [alertMachineState] = useService(alertMachineService);
 
-  // console.log("current state machine state ", alertMachineState);
   useEffect(() => {
     if (alertMachineState.matches("alert")) {
       navigation.navigate("AlertSplashScreen");
@@ -98,19 +137,22 @@ export function WomenDrawerNavigator({ navigation }) {
       initialRouteName="alerts"
       drawerContent={props => <CustomDrawerContent {...props} />}
     >
+      {/* <DrawerNav.Screen name="home" component={BottomTabNavigator} /> */}
       <DrawerNav.Screen name="alerts" component={CreateAlertScreen} />
       <DrawerNav.Screen name="favorites" component={FavoritesStack} />
+      <DrawerNav.Screen name="emergency" component={EmergencyStack} />
+      <DrawerNav.Screen name="missingChild" component={ChildStack} />
+      <DrawerNav.Screen name="bloodDonation" component={BloodDonationStack} />
     </DrawerNav.Navigator>
   );
 }
 
 const styles = StyleSheet.create({
   drawerStyle: {
-    backgroundColor: colors["cool-grey-050"],
+    backgroundColor: colors["background"],
     width: Dimensions.get("window").width / 1.5
   },
   appTitle: {
-    marginVertical: 10,
     fontFamily: "roboto-bold"
   }
 });
@@ -132,3 +174,15 @@ const showReceiveAlert = () => {
     );
   });
 };
+
+const LanguagesDivider = styled.View`
+  border-top-width: 1;
+  border-color: ${colors["cool-grey-200"]};
+  margin: 20px 10px;
+  padding-top: 10px;
+`
+
+const LanguagesDividerText = styled.Text`
+  color: ${colors["cool-grey-300"]};
+  font-size: 14px;
+`

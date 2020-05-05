@@ -6,15 +6,17 @@ import { WomenStack } from "./women-stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { colors } from "config/colors";
+import theme from "config/theme";
 
 const Tab = createMaterialBottomTabNavigator();
 export function BottomTabNavigator() {
   return (
     <Tab.Navigator
       initialRouteName="Women"
-      activeColor="white"
-      barStyle={{ backgroundColor: colors["cyan-vivid-800"] }}
-      labeled={false}
+      activeColor={colors["bottom-color"]}
+      inactiveColor={colors["light-pink"]}
+      barStyle={{ backgroundColor: theme.colors.primary }}
+      labeled={true}
       sceneAnimationEnabled={false}
     >
       <Tab.Screen
@@ -26,7 +28,7 @@ export function BottomTabNavigator() {
             <MaterialCommunityIcons
               name="human-female"
               color={color}
-              size={25}
+              size={24}
             />
           )
         }}
@@ -37,7 +39,7 @@ export function BottomTabNavigator() {
         options={{
           tabBarLabel: "Blood",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="water" color={color} size={25} />
+            <MaterialCommunityIcons name="water" color={color} size={28} />
           )
         }}
       />
@@ -50,7 +52,7 @@ export function BottomTabNavigator() {
             <MaterialCommunityIcons
               name="account-child"
               color={color}
-              size={25}
+              size={28}
             />
           )
         }}

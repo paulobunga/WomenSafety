@@ -21,6 +21,8 @@ export function AddMissingChildren({ navigation }) {
   const age = useTranslatedText("age");
   const address = useTranslatedText("address");
   const phone = useTranslatedText("phone");
+  const submit = useTranslatedText("submit");
+  const uploadImage = useTranslatedText("uploadImage");
   
 
   const [mutate, { status }] = useMutation(
@@ -105,7 +107,7 @@ export function AddMissingChildren({ navigation }) {
 
             <TouchableOpacity onPress={pickImage} style={[styles.touchableOpacity,{paddingLeft:35}]}>
               <MaterialCommunityIcons name="camera-image" size={25} />
-              { !errors.image ? ( <Text style={[styles.imgText,{paddingLeft: 10}]}>Upload Image</Text>) :
+              { !errors.image ? ( <Text style={[styles.imgText,{paddingLeft: 10}]}>{uploadImage}</Text>) :
                 (<ErrorText  message="Select an image"></ErrorText>
               )}
             </TouchableOpacity>
@@ -125,7 +127,7 @@ export function AddMissingChildren({ navigation }) {
               onPress={handleSubmit(onSubmit)}
               uppercase={false}
             >
-              <Text style={styles.imgText}>Submit</Text>
+              <Text style={styles.imgText}>{submit}</Text>
             </Button>
           </View>
         </View>

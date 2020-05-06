@@ -64,19 +64,19 @@ function CustomDrawerContent(props: any) {
           }}
         />
         <Drawer.Item
-          icon="account-search"
-          label={translatedMissingChild}
+          icon="water"
+          label={translatedBloodDonation}
           active={currentActiveIndex === 3}
           onPress={() => {
-            props.navigation.navigate("missingChild");
+            props.navigation.navigate("bloodDonation");
           }}
         />
         <Drawer.Item
-          icon="water"
-          label={translatedBloodDonation}
+          icon="account-search"
+          label={translatedMissingChild}
           active={currentActiveIndex === 4}
           onPress={() => {
-            props.navigation.navigate("bloodDonation");
+            props.navigation.navigate("missingChild");
           }}
         />
         <Drawer.Item
@@ -105,6 +105,15 @@ function CustomDrawerContent(props: any) {
           onPress={() => {
             i18n.changeLanguage("gu");
             AsyncStorage.setItem("defaultLang", "gu");
+            props.navigation.closeDrawer();
+          }}
+        />
+        <Drawer.Item
+          label={"हिन्दी"}
+          active={i18n.language === "hi"}
+          onPress={() => {
+            i18n.changeLanguage("hi");
+            AsyncStorage.setItem("defaultLang", "hi");
             props.navigation.closeDrawer();
           }}
         />
@@ -176,7 +185,7 @@ const showReceiveAlert = () => {
 };
 
 const LanguagesDivider = styled.View`
-  border-top-width: 1;
+  border-top-width: 1px;
   border-color: ${colors["cool-grey-200"]};
   margin: 20px 10px;
   padding-top: 10px;

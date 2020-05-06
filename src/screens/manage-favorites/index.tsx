@@ -6,6 +6,7 @@ import ContactListItem from "./ContactListItem";
 import { firestore } from "config/firebase";
 import { default as firestoreImpl } from "@react-native-firebase/firestore";
 import { useUserStore } from "packages";
+import { colors } from "config/colors";
 
 export function ManageFavorites({ navigation, route }) {
   const favoriteContacts = route.params.contacts;
@@ -106,6 +107,7 @@ export function ManageFavorites({ navigation, route }) {
           renderItem={_renderItem}
           keyExtractor={item => item.key}
           extraData={selectedContacts}
+          style={{backgroundColor: colors.background}}
         />
       </View>
     </>

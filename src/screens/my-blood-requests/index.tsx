@@ -107,6 +107,7 @@ const BloodListItem = ({ item }: any) => {
   const phone = useTranslatedText("phone");
   const address = useTranslatedText("address");
   const postedOn = useTranslatedText("postedOn");
+  const markAsFound = useTranslatedText("Mark as found");
 
   return (
     <Card style={{ backgroundColor: "white", margin: 15, marginBottom: 5, elevation:10 }}>
@@ -124,7 +125,7 @@ const BloodListItem = ({ item }: any) => {
           </TouchableOpacity>
         </View>
         <View style={styles.text}>
-          <Text style={styles.text}>{address}: </Text>
+          <Text style={[styles.label,styles.text]}>{address}: </Text>
           <Text>{item.address}</Text>
         </View>
         <View style={styles.text}>
@@ -140,6 +141,7 @@ const BloodListItem = ({ item }: any) => {
 };
 
 function MarkAsfound({ item }: any) {
+  const markAsFound = useTranslatedText("markAsFound");
   const [mutate, { status }] = useMutation(bloodService.onRemoveBloodRequest, {
     onSuccess: () => {
       if (queryRefetch) {
@@ -166,7 +168,7 @@ function MarkAsfound({ item }: any) {
 
   return (
     <Button icon="check" onPress={showAlert}>
-      Mark as found
+      {markAsFound}
     </Button>
   );
 }

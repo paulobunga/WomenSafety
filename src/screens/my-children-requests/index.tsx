@@ -199,6 +199,7 @@ function ChildItem({ item }: { item: IChild }) {
 }
 
 function MarkAsfound({ item }: any) {
+  const markAsFound = useTranslatedText("markAsFound");
   const [mutate, { status }] = useMutation(
     childService.onRemoveChildMissingRequest,
     {
@@ -228,7 +229,7 @@ function MarkAsfound({ item }: any) {
 
   return (
     <Button icon="check" onPress={showAlert}>
-      Mark as found
+      {markAsFound}
     </Button>
   );
 }

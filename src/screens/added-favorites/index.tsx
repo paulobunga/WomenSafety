@@ -5,6 +5,7 @@ import { List } from "react-native-paper";
 import { firestore } from "config/firebase";
 import { AddFloatingButton } from "components";
 import { useUserStore } from "packages";
+import { colors } from "config/colors";
 let unsubscribeFromContacts;
 
 export function AddedFavoritesScreen({ navigation }) {
@@ -19,6 +20,7 @@ export function AddedFavoritesScreen({ navigation }) {
         title={title}
         description={item}
         left={props => <List.Icon {...props} icon="phone" />}
+        style={{backgroundColor: colors.background}}
       />
     );
   };
@@ -47,7 +49,7 @@ export function AddedFavoritesScreen({ navigation }) {
   return (
     <>
       <AppBar navigation={navigation} title={yourFavoritesText} />
-      <View>
+      <View style={{backgroundColor: colors.background}}>
         <FlatList
           data={fetchedContacts}
           renderItem={_renderItem}

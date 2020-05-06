@@ -7,6 +7,8 @@ const Tab = createMaterialTopTabNavigator();
 
 export function ChildrenTabs({ navigation }) {
   const missingChildren = useTranslatedText("missingChildren");
+  const yourRequests = useTranslatedText("yourRequests");
+  const childRequests = useTranslatedText("childRequests");
 
   return (
     <>
@@ -30,9 +32,9 @@ export function ChildrenTabs({ navigation }) {
         }}
         style={{ fontWeight: "bold" }}
       >
-        <Tab.Screen name={missingChildren} component={MissingChildrenList} />
+        <Tab.Screen name={childRequests} component={MissingChildrenList} />
         <Tab.Screen
-          name="Your Requests"
+          name={yourRequests}
           component={MyMissingChildrenRequests}
         />
       </Tab.Navigator>

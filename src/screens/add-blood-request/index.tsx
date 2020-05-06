@@ -12,6 +12,7 @@ export function AddBloodRequest({ navigation }) {
   const bloodRequestForm = useTranslatedText("bloodRequestForm");
   const phone = useTranslatedText("phone");
   const address = useTranslatedText("address");
+  const submit = useTranslatedText("submit");
 
   const { register, handleSubmit, setValue, errors } = useForm({
     defaultValues: {
@@ -83,7 +84,7 @@ export function AddBloodRequest({ navigation }) {
             onPress={handleSubmit(onSubmit)}
             uppercase={false}
           >
-            <Text style={styles.imgText}>Submit</Text>
+            <Text style={styles.imgText}>{submit}</Text>
           </Button>
         </View>
       </View>

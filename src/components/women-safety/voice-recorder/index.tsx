@@ -31,12 +31,21 @@ function VoiceRecorder() {
   const lastAudiodownloadURI = useRef(null);
 
   const senderPhoneNumber = useUserStore(state => state.user.phoneNumber);
-  const recordText = useTranslatedText("Record");
+  const recordText = useTranslatedText("record");
   const sendText = useTranslatedText("send");
   const cancelText = useTranslatedText("cancel");
-  const introductionText = useTranslatedText(
-    "I am in danger, I need your help."
-  );
+  const introductionText = useTranslatedText("introText");
+  const howTo = useTranslatedText("howTo");
+  const paragraphOne = useTranslatedText("paragraphOne");
+  const paragraphTwo = useTranslatedText("paragraphTwo");
+  const paragraphThree = useTranslatedText("paragraphThree");
+  const paragraphFour = useTranslatedText("paragraphFour");
+  const paragraphFive = useTranslatedText("paragraphFive");
+  const paragraphSix = useTranslatedText("paragraphSix");
+  const errorMsg = useTranslatedText("errorMsg");
+  const retryUpload = useTranslatedText("retryUpload");
+  const uploadProgress = useTranslatedText("uploadProgress");
+  const recordingUpload = useTranslatedText("recordingUpload");
 
   const [state, setState] = useState(initialState);
   const [isWatchingLocation, setisWatchingLocation] = useState(false);
@@ -86,7 +95,7 @@ function VoiceRecorder() {
         () => {
           setState({
             ...state,
-            error: "File upload failed"
+            error: {errorMsg}
           });
         },
         async downloadUri => {
@@ -104,7 +113,7 @@ function VoiceRecorder() {
     } catch (error) {
       setState({
         ...state,
-        error: "File upload failed"
+        error: {errorMsg}
       });
     }
   };
@@ -212,34 +221,19 @@ function VoiceRecorder() {
 
             <Text style={styles.text}>{introductionText}</Text>
             <View style={{ margin: 10, alignItems: "flex-start" }}>
-              <Text style={[styles.text, styles.text2]}>How to:</Text>
+              <Text style={[styles.text, styles.text2]}>{howTo}</Text>
               <Text style={styles.text2}>
-                <Text style={styles.text}>1. </Text> A request will be send to 5
-                people who are near by to 500 meter to you with your real time
-                location on google map.
-              </Text>
+                <Text style={styles.text}>1. </Text> {paragraphOne} </Text>
               <Text style={styles.text2}>
-                <Text style={styles.text}>2. </Text> Similar request have been
-                sent to your family and friends.
-              </Text>
+                <Text style={styles.text}>2. </Text> {paragraphTwo} </Text>
               <Text style={styles.text2}>
-                <Text style={styles.text}>3. </Text> A call will be placed to
-                181 or 100.
-              </Text>
+                  <Text style={styles.text}>3. </Text> {paragraphThree} </Text>
               <Text style={styles.text2}>
-                <Text style={styles.text}>4. </Text> Once you activated help,
-                all surrounding voice recording will be started till you clicked
-                on "I'M SAFE" button or till 2 hrs after help activation.
-              </Text>
+                <Text style={styles.text}>4. </Text> {paragraphFour} </Text>
               <Text style={styles.text2}>
-                <Text style={styles.text}>-- </Text> All the people who have
-                received your help request can see your real time movement on
-                google map till 12 hours or till you marked yourself safe.
-              </Text>
+                <Text style={styles.text}>-- </Text> {paragraphFive} </Text>
               <Text style={styles.text2}>
-                <Text style={styles.text}>-- </Text> So do not forget to click I
-                AM SAFE button once you feel that you are safe.
-              </Text>
+                <Text style={styles.text}>-- </Text> {paragraphSix} </Text>
             </View>
           </Fragment>
         )}
@@ -252,11 +246,11 @@ function VoiceRecorder() {
               icon="upload"
               labelStyle={{ color: colors["green-vivid-200"] }}
             >
-              Retry Upload
+              {retryUpload}
             </Button>
           </>
         ) : null}
-        {state.progress ? <Text>Upload progress: {state.progress}</Text> : null}
+        {state.progress ? <Text>{uploadProgress} {state.progress}</Text> : null}
         {recordingStatus.isRecording ? (
           <>
             <Text style={{ marginTop: 10 }}>
@@ -272,7 +266,7 @@ function VoiceRecorder() {
           visible={state.success}
           onDismiss={() => setState({ ...state, success: false })}
         >
-          Recording uploaded successfully. Now sending to your favorites
+          {recordingUpload}
         </Snackbar>
         <Snackbar
           visible={state.error}

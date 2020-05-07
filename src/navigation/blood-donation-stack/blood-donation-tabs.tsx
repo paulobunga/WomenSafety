@@ -6,11 +6,13 @@ import { AddFloatingButton, AppBar, useTranslatedText } from "components";
 const Tab = createMaterialTopTabNavigator();
 
 export function BloodDonationTabs({ navigation }) {
-  const BloodDonation = useTranslatedText("bloodDonation");
+  const bloodDonation = useTranslatedText("bloodDonation");
+  const yourRequests = useTranslatedText("yourRequests");
+  const bloodRequests = useTranslatedText("bloodRequests");
 
   return (
     <>
-    <AppBar title={BloodDonation} navigation={navigation} />
+    <AppBar title={bloodDonation} navigation={navigation} />
       <Tab.Navigator
         tabBarOptions={{
           style: {
@@ -29,8 +31,8 @@ export function BloodDonationTabs({ navigation }) {
           }
         }}
       >
-        <Tab.Screen name="Blood Requests" component={BloodList} />
-        <Tab.Screen name="Your Requests" component={MyBloodRequests} />
+        <Tab.Screen name={bloodRequests} component={BloodList} />
+        <Tab.Screen name={yourRequests} component={MyBloodRequests} />
       </Tab.Navigator>
       <AddFloatingButton
         onPress={() => {

@@ -83,6 +83,7 @@ export function EmergencyScreen({ navigation }) {
   const violence = useTranslatedText("violence");
   const kidnapping = useTranslatedText("kidnapping");
   const fireFighter = useTranslatedText("fireFighter");
+  const emergencyScreenText = useTranslatedText('emergencyScreenText');
 
   const data = [
     {
@@ -121,7 +122,7 @@ export function EmergencyScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       <AppBar title={emergencyContacts} navigation={navigation} />
       <Text style={[styles.label, { marginVertical: 30, fontSize: 15 }]}>
-        Here You Will See The Latest News Of the Application
+        {emergencyScreenText}
       </Text>
       <FlatList
         data={data}

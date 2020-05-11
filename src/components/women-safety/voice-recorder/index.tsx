@@ -214,7 +214,6 @@ function VoiceRecorder() {
                 height: 240,
                 width: 240,
                 margin: 30,
-<<<<<<< HEAD
                 borderColor: "transparent",
                 shadowColor: '#000',
                 shadowOffset: {
@@ -223,9 +222,7 @@ function VoiceRecorder() {
                 },
                 shadowOpacity: 0.3,
                 shadowRadius: 10,
-=======
                 marginTop: 10
->>>>>>> ui-develop
               }}
             >
               {recordText}

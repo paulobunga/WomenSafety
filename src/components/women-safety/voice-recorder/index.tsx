@@ -213,7 +213,8 @@ function VoiceRecorder() {
                 borderRadius: 140,
                 height: 240,
                 width: 240,
-                margin: 30
+                margin: 30,
+                marginTop: 10
               }}
             >
               {recordText}

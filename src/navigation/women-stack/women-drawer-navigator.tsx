@@ -150,8 +150,8 @@ export function WomenDrawerNavigator({ navigation }) {
       <DrawerNav.Screen name="alerts" component={CreateAlertScreen} />
       <DrawerNav.Screen name="favorites" component={FavoritesStack} />
       <DrawerNav.Screen name="emergency" component={EmergencyStack} />
-      <DrawerNav.Screen name="missingChild" component={ChildStack} />
       <DrawerNav.Screen name="bloodDonation" component={BloodDonationStack} />
+      <DrawerNav.Screen name="missingChild" component={ChildStack} />
     </DrawerNav.Navigator>
   );
 }

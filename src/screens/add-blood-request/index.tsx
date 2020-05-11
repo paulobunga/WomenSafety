@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { AppBar, useTranslatedText } from "components";
 import { TextInput, Button } from "react-native-paper";
-import { StyleSheet, View, Picker,Text } from "react-native";
+import { StyleSheet, View, Picker, Text } from "react-native";
 import { useForm } from "react-hook-form";
 import { bloodService, useUserStore } from "packages";
 import { useMutation } from "react-query";
 import { colors } from "config/colors";
 
 export function AddBloodRequest({ navigation }) {
-  let { phoneNumber } = useUserStore(state => state.user);
+  let { phoneNumber } = useUserStore((state) => state.user);
   const bloodRequestForm = useTranslatedText("bloodRequestForm");
   const phone = useTranslatedText("phone");
   const address = useTranslatedText("address");
@@ -17,8 +17,8 @@ export function AddBloodRequest({ navigation }) {
   const { register, handleSubmit, setValue, errors } = useForm({
     defaultValues: {
       address: null,
-      contact: null
-    }
+      contact: null,
+    },
   });
 
   const [type, setType] = useState("O+");
@@ -27,7 +27,7 @@ export function AddBloodRequest({ navigation }) {
     onSuccess: () => {
       navigation.navigate("BloodDonationListing");
     },
-    onError: () => {}
+    onError: () => {},
   });
 
   const onSubmit = (formValues: any) => {
@@ -43,14 +43,14 @@ export function AddBloodRequest({ navigation }) {
     <>
       <AppBar title={bloodRequestForm} isModal navigation={navigation} />
       <View style={styles.container}>
-        <View style={{ width: "80%",marginTop: 20,  }}>
+        <View style={{ width: "80%", marginTop: 20 }}>
           <TextInput
             style={styles.input}
             mode="flat"
             label={address}
             multiline
             error={errors.address ? true : false}
-            onChangeText={text => setValue("address", text)}
+            onChangeText={(text) => setValue("address", text)}
           />
           <TextInput
             style={styles.input}
@@ -58,12 +58,12 @@ export function AddBloodRequest({ navigation }) {
             mode="flat"
             keyboardType="phone-pad"
             error={errors.contact ? true : false}
-            onChangeText={text => setValue("contact", text)}
+            onChangeText={(text) => setValue("contact", text)}
           />
           <Picker
             style={styles.input}
             selectedValue={type}
-            onValueChange={itemValue => {
+            onValueChange={(itemValue) => {
               setType(itemValue);
             }}
           >
@@ -76,6 +76,7 @@ export function AddBloodRequest({ navigation }) {
             <Picker.Item label="B (+)" value="B+" />
             <Picker.Item label="B (-)" value="B-" />
           </Picker>
+          <View style={{alignItems: 'center'}}>
           <Button
             style={styles.touchableOpacity}
             mode="contained"
@@ -86,6 +87,7 @@ export function AddBloodRequest({ navigation }) {
           >
             <Text style={styles.imgText}>{submit}</Text>
           </Button>
+          </View>
         </View>
       </View>
     </>
@@ -103,22 +105,30 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     elevation: 10,
     borderRadius: 7,
+    borderColor: "transparent",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
   },
   touchableOpacity: {
     marginTop: 10,
-    marginBottom: 20, 
-    flexDirection: 'row', 
-    justifyContent: 'center',
-    alignItems:'center',
+    marginBottom: 20,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 50,
     height: 50,
-    width: 200, 
+    width: 200,
     backgroundColor: "white",
-    elevation: 10, 
-    marginHorizontal: 40
+    elevation: 10,
+    marginHorizontal: 40,
   },
   imgText: {
-    color: colors["red"], 
-    fontSize: 17
-  }
+    color: colors["red"],
+    fontSize: 17,
+  },
 });

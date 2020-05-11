@@ -213,7 +213,15 @@ function VoiceRecorder() {
                 borderRadius: 140,
                 height: 240,
                 width: 240,
-                margin: 30
+                margin: 30,
+                borderColor: "transparent",
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 0,
+                },
+                shadowOpacity: 0.3,
+                shadowRadius: 10,
               }}
             >
               {recordText}

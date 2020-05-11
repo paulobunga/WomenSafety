@@ -13,7 +13,7 @@ import { colors } from "config/colors";
 
 const { height, width } = Dimensions.get("window");
 export function AddMissingChildren({ navigation }) {
-  let { phoneNumber } = useUserStore(state => state.user);
+  let { phoneNumber } = useUserStore((state) => state.user);
   const [image, setImage] = useState(null);
   const { register, handleSubmit, setValue, errors } = useForm();
   const childInfoForm = useTranslatedText("childInfoForm");
@@ -23,7 +23,6 @@ export function AddMissingChildren({ navigation }) {
   const phone = useTranslatedText("phone");
   const submit = useTranslatedText("submit");
   const uploadImage = useTranslatedText("uploadImage");
-  
 
   const [mutate, { status }] = useMutation(
     childService.onSubmitMissingChildren,
@@ -31,12 +30,12 @@ export function AddMissingChildren({ navigation }) {
       onSuccess: () => {
         navigation.navigate("ChildListing");
       },
-      onError: () => {}
+      onError: () => {},
     }
   );
 
   const pickImage = () => {
-    ImagePicker.showImagePicker({ noData: true }, response => {
+    ImagePicker.showImagePicker({ noData: true }, (response) => {
       console.log("Response = ", response);
 
       if (response.didCancel) {
@@ -70,14 +69,14 @@ export function AddMissingChildren({ navigation }) {
       <AppBar title={childInfoForm} isModal navigation={navigation} />
       <KeyboardAwareScrollView>
         <View style={styles.container}>
-          <View style={{ width: "80%", marginTop: 20,}}>
+          <View style={{ width: "80%", marginTop: 20 }}>
             <TextInput
               mode="flat"
               style={styles.input}
               label={name}
               multiline
               error={errors.name ? true : false}
-              onChangeText={text => setValue("name", text)}
+              onChangeText={(text) => setValue("name", text)}
             />
             <TextInput
               style={styles.input}
@@ -85,7 +84,7 @@ export function AddMissingChildren({ navigation }) {
               label={age}
               keyboardType="phone-pad"
               error={errors.age ? true : false}
-              onChangeText={text => setValue("age", text)}
+              onChangeText={(text) => setValue("age", text)}
             />
             <TextInput
               mode="flat"
@@ -93,7 +92,7 @@ export function AddMissingChildren({ navigation }) {
               label={phone}
               keyboardType="phone-pad"
               error={errors.age ? true : false}
-              onChangeText={text => setValue("contact", text)}
+              onChangeText={(text) => setValue("contact", text)}
             />
 
             <TextInput
@@ -102,15 +101,23 @@ export function AddMissingChildren({ navigation }) {
               label={address}
               multiline
               error={errors.address ? true : false}
-              onChangeText={text => setValue("address", text)}
+              onChangeText={(text) => setValue("address", text)}
             />
-
-            <TouchableOpacity onPress={pickImage} style={[styles.touchableOpacity,{paddingLeft:35}]}>
-              <MaterialCommunityIcons name="camera-image" size={25} />
-              { !errors.image ? ( <Text style={[styles.imgText,{paddingLeft: 10}]}>{uploadImage}</Text>) :
-                (<ErrorText  message="Select an image"></ErrorText>
-              )}
-            </TouchableOpacity>
+            <View style={{ alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={pickImage}
+                style={[styles.touchableOpacity, { paddingLeft: 35 }]}
+              >
+                <MaterialCommunityIcons name="camera-image" size={25} />
+                {!errors.image ? (
+                  <Text style={[styles.imgText, { paddingLeft: 10 }]}>
+                    {uploadImage}
+                  </Text>
+                ) : (
+                  <ErrorText message="Select an image"></ErrorText>
+                )}
+              </TouchableOpacity>
+            </View>
 
             {image ? (
               <Image
@@ -118,17 +125,18 @@ export function AddMissingChildren({ navigation }) {
                 style={{ height: 100, width: 100, marginBottom: 10 }}
               />
             ) : null}
-
-            <Button
-              style={[styles.touchableOpacity, styles.text]}
-              mode="contained"
-              disabled={status === "loading"}
-              loading={status === "loading"}
-              onPress={handleSubmit(onSubmit)}
-              uppercase={false}
-            >
-              <Text style={styles.imgText}>{submit}</Text>
-            </Button>
+            <View style={{ alignItems: "center" }}>
+              <Button
+                style={[styles.touchableOpacity, styles.text]}
+                mode="contained"
+                disabled={status === "loading"}
+                loading={status === "loading"}
+                onPress={handleSubmit(onSubmit)}
+                uppercase={false}
+              >
+                <Text style={styles.imgText}>{submit}</Text>
+              </Button>
+            </View>
           </View>
         </View>
       </KeyboardAwareScrollView>
@@ -142,33 +150,49 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: height,
     width: width,
-    backgroundColor: colors["background"]
+    backgroundColor: colors["background"],
   },
   input: {
     marginBottom: 20,
     backgroundColor: "white",
     elevation: 10,
     borderRadius: 7,
+    borderColor: "transparent",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
   },
   touchableOpacity: {
     marginTop: 10,
-    marginBottom: 20, 
-    flexDirection: 'row', 
-    justifyContent: 'flex-start',
-    alignItems:'center',
+    marginBottom: 20,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
     borderRadius: 50,
     height: 50,
-    width: 200, 
+    width: 200,
     backgroundColor: "white",
-    elevation: 10, 
-    marginHorizontal: 40
+    elevation: 10,
+    marginHorizontal: 40,
+    borderColor: "transparent",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
   },
   text: {
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   imgText: {
-    color: colors["red"], 
+    color: colors["red"],
     fontSize: 17,
-    fontWeight: 'bold',
-  }
+    fontWeight: "bold",
+  },
 });

@@ -31,7 +31,7 @@ export function AppBar({
           ? (<Appbar.Action onPress={navigation.goBack} icon="arrow-left" color={theme.colors.primary} size={32} />)
           : (<Appbar.Action onPress={openDrawer} icon="menu" color={theme.colors.primary} size={32} />)
       }
-      <Appbar.Content title={<Text> {title} </Text>} titleStyle={{ color: theme.colors.primary, fontFamily: theme.fonts.medium.fontFamily }} style={{ alignItems: 'center', paddingRight: 80 }} />
+      <Appbar.Content title={<Text> {title} </Text>} titleStyle={{ color: theme.colors.primary, fontFamily: theme.fonts.medium.fontFamily }} style={{ alignItems: 'center' }} />
       {
         isSelectingContacts && (<Appbar.Action icon="check" onPress={onSelectingContacts} color={theme.colors.primary} size={32} />)
       }

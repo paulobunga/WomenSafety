@@ -34,7 +34,11 @@ const fetchFonts = () => {
   });
 };
 export default function App(props: any) {
+<<<<<<< HEAD
   console.disableYellowBox = true;
+=======
+  console.disableYellowBox = true; 
+>>>>>>> ui-develop
   const { i18n } = useTranslation();
 
   const [fontsLoaded, setFontsLoaded] = useState(false);

@@ -211,8 +211,8 @@ function VoiceRecorder() {
                 backgroundColor: colors["white"],
                 elevation: 10,
                 borderRadius: 140,
-                height: 240,
-                width: 240,
+                height: 220,
+                width: 220,
                 margin: 30,
                 marginTop: 10
               }}

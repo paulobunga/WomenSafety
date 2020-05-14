@@ -1,12 +1,13 @@
 import { AppBar, useTranslatedText } from "components";
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, FlatList } from "react-native";
 import * as Contacts from "expo-contacts";
 import ContactListItem from "./ContactListItem";
 import { firestore } from "config/firebase";
 import { default as firestoreImpl } from "@react-native-firebase/firestore";
 import { useUserStore } from "packages";
 import { colors } from "config/colors";
+import { Searchbar } from "react-native-paper";
 
 export function ManageFavorites({ navigation, route }) {
   const favoriteContacts = route.params.contacts;
@@ -45,6 +46,15 @@ export function ManageFavorites({ navigation, route }) {
       navigation.goBack();
     }
   };
+
+  const SearchFilterFunction = ({item}) => {
+    console.log('item', item)
+      const contactData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+      const textData = item.toUpperCase();
+
+      console.log (contactData.indexOf(textData) > -1);
+    }
+
   const _renderItem = ({ item }) => {
     const receivedItemPhoneNumber = `+91${item.number}`;
     if (favoriteContacts.includes(receivedItemPhoneNumber)) return null;
@@ -102,6 +112,12 @@ export function ManageFavorites({ navigation, route }) {
         isSelectingContacts={isSelectingContacts}
       />
       <View>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={item => SearchFilterFunction({item})}
+        value={item => item.name}
+        style={{backgroundColor: colors.background}}
+      />
         <FlatList
           data={retrievedContacts}
           renderItem={_renderItem}
